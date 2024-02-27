@@ -27,12 +27,13 @@
 
 
         <!-- Topbar -->
-        <?php include_once(__DIR__ . '/templates/topbar.php'); ?>
+        @include('Templates.topbar')
         <!-- Topbar -->
 
         <!-- Sidebar -->
-        <?php include_once(__DIR__ . '/templates/sidebar.php'); ?>
+        @include('Templates.sidebar')
         <!-- Sidebar -->
+
 
 
 
@@ -120,7 +121,7 @@
             </div> <!-- content -->
 
             <!-- Footer Start -->
-            <?php include_once(__DIR__ . '/templates/footer.php'); ?>
+            @include('Templates.footer')
             <!-- End Footer -->
 
         </div>

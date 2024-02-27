@@ -84,12 +84,12 @@
             </li> -->
             <li class="side-nav-title mt-2">Gestion</li>
 
-            <li class="side-nav-item">
-                <a href="Proyectos.php" class="side-nav-link">
-                    <i class="ri-stack-line"></i>
-                    <span> Proyectos </span>
-                </a>
-            </li>
+            <a href="/Proyectos" class="side-nav-link">
+    <i class="ri-stack-line"></i>
+    <span> Proyectos </span>
+</a>
+    
+
 
 
 

@@ -29,11 +29,11 @@
 
             
             <!-- Topbar -->
-            <?php include_once(__DIR__ . '/templates/topbar.php'); ?>
+            <?php include_once(__DIR__ . '/templates/topbar.blade.php'); ?>
             <!-- Topbar -->
 
             <!-- Sidebar -->
-            <?php include_once(__DIR__ . '/templates/sidebar.php'); ?>
+            <?php include_once(__DIR__ . '/templates/sidebar.blade.php'); ?>
             <!-- Sidebar -->
 
             
