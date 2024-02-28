@@ -21,6 +21,6 @@ class Project extends Model
 
     public function projectStatus()
     {
-        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+        return $this->belongsTo(ProjectStatus::class, 'rol_id');
     }
 }
