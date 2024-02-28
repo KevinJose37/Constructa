@@ -17,6 +17,9 @@
     <!-- App css -->
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
+    <!-- Flatpickr Timepicker css -->
+    <link href="assets/vendor/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+
     <!-- Icons css -->
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -236,6 +239,15 @@
                                     <div class="invalid-feedback">Selecciona una categoria válida</div>
                                 </div>
                             </div>
+                            <div class="mb-3">
+    <label class="form-label">Fecha Inicio</label>
+    <input type="text" id="start-datepicker" name="project_start_date" class="form-control flatpickr-input"  placeholder="Fecha de inicio del proyecto">
+</div>
+<div class="mb-3">
+    <label class="form-label">Fecha Fin Estimada</label>
+    <input type="text" id="end-datepicker" name="project_estimated_end" class="form-control flatpickr-input" placeholder="Fecha de fin estimada">
+</div>
+
                         </div>
                         <div class="row">
                             <div class="col-6">
@@ -246,10 +258,13 @@
                                 <button type="submit" class="btn btn-success" id="btn-save-event">Editar</button>
                             </div>
                         </div>
+
                     </div>
                 </form>
+
             </div> <!-- end modal-content-->
         </div> <!-- end modal dialog-->
+
     </div>
     <!-- end modal-->
 
@@ -260,9 +275,25 @@
 
     <!-- Vendor js -->
     <script src="assets/js/vendor.min.js"></script>
+<!-- Flatpickr Timepicker Plugin js -->
+<script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+<!-- Timepicker Demo js -->
+<script src="assets/js/pages/demo.flatpickr.js"></script>
 
-    <!-- App js -->
-    <script src="assets/js/app.min.js"></script>
+<script>
+    // Inicializar Flatpickr para el campo de fecha de inicio
+    flatpickr("#start-datepicker", {
+        dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de inicio
+        // Otras opciones y configuraciones según tus necesidades
+    });
+
+    // Inicializar Flatpickr para el campo de fecha de fin estimada
+    flatpickr("#end-datepicker", {
+        dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de fin estimada
+        // Otras opciones y configuraciones según tus necesidades
+    });
+</script>
+
 
 </body>
 
