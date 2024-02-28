@@ -47,5 +47,5 @@ class User extends Authenticatable
      *
      * @var string
      */
-    protected $table = 'usuarios'; // Cambia 'usuarios' por el nombre de tu tabla
+    protected $table = 'users'; // Cambia 'usuarios' por el nombre de tu tabla
 }

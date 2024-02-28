@@ -74,16 +74,21 @@
                                             <thead>
                                                 <tr>
                                                     <th>Nombre del proyecto</th>
-                                                    <th>Responsable del proyecto</th>
+                                                    <th>Descripción del proyecto</th>
                                                     <th>Estado</th>
+                                                    <th>Fecha inicio</th>
+                                                    <th>Fecha estimada fin</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($projects as $project)
                                                 <tr>
-                                                    <td>Prueba</td>
-                                                    <td>Prueba</td>
-                                                    <td>Prueba</td>
+                                                    <td>{{ $project->project_name }}</td>
+                                                    <td>{{ $project->project_description }}</td>
+                                                    <td>{{ $project->projectStatus->status_name }}</td>
+                                                    <td>{{ $project->project_start_date }}</td>
+                                                    <td>{{ $project->project_estimated_end }}</td>
                                                     <td style="display: flex; align-items: center;">
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,17 +98,13 @@
                                                                 <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#event-modal-editar" data-project-id="">Editar proyecto</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
-                                                                <a href="" class="dropdown-item" onclick="return confirm('¿Estás seguro de querer eliminar este proyecto?');">Eliminar proyecto</a>
                                                             </div>
                                                         </div>
 
                                                         <a href="javascript:void(0);" class="text-reset fs-19 px-1" onclick="eliminarProyecto()"> <i class="ri-delete-bin-2-line"></i></a>
                                                     </td>
-
-
-
                                                 </tr>
-
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div> <!-- end table-responsive-->
