@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-
     <head>
         <meta charset="utf-8" />
         <title>Dashboard Principal</title>
@@ -11,7 +9,7 @@
         <meta content="Coderthemes" name="author" />
 
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/prueba.png">
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
 
         <!-- Theme Config Js -->
         <script src="assets/js/config.js"></script>
@@ -29,11 +27,11 @@
 
             
             <!-- Topbar -->
-            <?php include_once(__DIR__ . '/templates/topbar.blade.php'); ?>
+            <?php include_once(__DIR__ . '/templates/topbar.php'); ?>
             <!-- Topbar -->
 
             <!-- Sidebar -->
-            <?php include_once(__DIR__ . '/templates/sidebar.blade.php'); ?>
+            <?php include_once(__DIR__ . '/templates/sidebar.php'); ?>
             <!-- Sidebar -->
 
             
