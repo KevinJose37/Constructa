@@ -25,10 +25,6 @@ Route::get('/LoginConstructa', function () {
     return view('LoginConstructa');
 })->name('loginconstructa');
 
-<<<<<<< HEAD
 Route::get('/Proyectos', function () {
     return view('Proyectos');
 });
-=======
-
->>>>>>> origin/Dev/Kevin
