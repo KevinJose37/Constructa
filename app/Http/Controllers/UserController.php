@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\UserServices;
+use App\Validators\UserValidator;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    protected $userService;
+
+    public function __construct(UserServices $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json($this->userService->getAll($request), 200);
     }
 
     /**
@@ -35,7 +45,25 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $validator = UserValidator::validateId(['id' => $id]);
+        if($validator->fails()){
+            return response()->json([
+                'status' => false,
+                'message' => "Bad request",
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $userInfo = $this->userService->getById($id);
+        if($userInfo === null){
+            return response()->json([
+                'status' => false,
+                'message' => 'Not found',
+                'errors' => ''
+            ], 404);
+        }
+
+        return response()->json($this->userService->getById($id));
     }
 
     /**
