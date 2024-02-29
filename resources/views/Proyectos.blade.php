@@ -17,6 +17,9 @@
     <!-- App css -->
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
+    <!-- Flatpickr Timepicker css -->
+    <link href="assets/vendor/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+
     <!-- Icons css -->
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -74,16 +77,21 @@
                                             <thead>
                                                 <tr>
                                                     <th>Nombre del proyecto</th>
-                                                    <th>Responsable del proyecto</th>
+                                                    <th>Descripción del proyecto</th>
                                                     <th>Estado</th>
+                                                    <th>Fecha inicio</th>
+                                                    <th>Fecha estimada fin</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($projects as $project)
                                                 <tr>
-                                                    <td>Prueba</td>
-                                                    <td>Prueba</td>
-                                                    <td>Prueba</td>
+                                                    <td>{{ $project->project_name }}</td>
+                                                    <td>{{ $project->project_description }}</td>
+                                                    <td>{{ $project->projectStatus->status_name }}</td>
+                                                    <td>{{ $project->project_start_date }}</td>
+                                                    <td>{{ $project->project_estimated_end }}</td>
                                                     <td style="display: flex; align-items: center;">
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
@@ -93,17 +101,13 @@
                                                                 <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#event-modal-editar" data-project-id="">Editar proyecto</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
-                                                                <a href="" class="dropdown-item" onclick="return confirm('¿Estás seguro de querer eliminar este proyecto?');">Eliminar proyecto</a>
                                                             </div>
                                                         </div>
 
                                                         <a href="javascript:void(0);" class="text-reset fs-19 px-1" onclick="eliminarProyecto()"> <i class="ri-delete-bin-2-line"></i></a>
                                                     </td>
-
-
-
                                                 </tr>
-
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div> <!-- end table-responsive-->
@@ -235,6 +239,15 @@
                                     <div class="invalid-feedback">Selecciona una categoria válida</div>
                                 </div>
                             </div>
+                            <div class="mb-3">
+    <label class="form-label">Fecha Inicio</label>
+    <input type="text" id="start-datepicker" name="project_start_date" class="form-control flatpickr-input"  placeholder="Fecha de inicio del proyecto">
+</div>
+<div class="mb-3">
+    <label class="form-label">Fecha Fin Estimada</label>
+    <input type="text" id="end-datepicker" name="project_estimated_end" class="form-control flatpickr-input" placeholder="Fecha de fin estimada">
+</div>
+
                         </div>
                         <div class="row">
                             <div class="col-6">
@@ -245,10 +258,13 @@
                                 <button type="submit" class="btn btn-success" id="btn-save-event">Editar</button>
                             </div>
                         </div>
+
                     </div>
                 </form>
+
             </div> <!-- end modal-content-->
         </div> <!-- end modal dialog-->
+
     </div>
     <!-- end modal-->
 
@@ -259,9 +275,25 @@
 
     <!-- Vendor js -->
     <script src="assets/js/vendor.min.js"></script>
+<!-- Flatpickr Timepicker Plugin js -->
+<script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+<!-- Timepicker Demo js -->
+<script src="assets/js/pages/demo.flatpickr.js"></script>
 
-    <!-- App js -->
-    <script src="assets/js/app.min.js"></script>
+<script>
+    // Inicializar Flatpickr para el campo de fecha de inicio
+    flatpickr("#start-datepicker", {
+        dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de inicio
+        // Otras opciones y configuraciones según tus necesidades
+    });
+
+    // Inicializar Flatpickr para el campo de fecha de fin estimada
+    flatpickr("#end-datepicker", {
+        dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de fin estimada
+        // Otras opciones y configuraciones según tus necesidades
+    });
+</script>
+
 
 </body>
 

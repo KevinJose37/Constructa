@@ -31,6 +31,10 @@ class LoginController extends Controller
             return back()->withInput()->with('message', 'Credenciales inválidas');
         }
     }
+    public function showLoginForm()
+    {
+        return view('LoginConstructa');
+    }
 
     /**
      * Log the user out of the application.
@@ -40,14 +44,11 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        // Cerrar la sesión del usuario
         Auth::logout();
 
-        // Invalidar la sesión y regenerar el token de CSRF
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Redirigir al usuario a la página de inicio
-        return redirect('/');
+        return redirect('/login');
     }
 }
