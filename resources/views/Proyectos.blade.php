@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard Principal</title>
+    <title>Crear proyecto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Constructa ERP Gestion de recursos para constructoras." name="description" />
     <meta content="Coderthemes" name="author" />
@@ -69,9 +69,11 @@
                                         </ol>
                                     </div>
                                     <div class="table-responsive-sm">
-                                        <form action="{{ route('projects')}}" method="get" id="search_form">
+                                        <form class="needs-validation" name="event-form-editar" id="form-event-editar" action="{{ route('projects.update', ['id' => $project->id]) }}" method="POST" novalidate>
+                                            @csrf
+                                            @method('PUT')
                                             <div class="col-lg-3 col-md-6 ">
-                                                <div class="input-group" >
+                                                <div class="input-group">
                                                     <button class="btn btn-primary"><i class="ri-search-line"></i></button>
                                                     <input type="text" name="filter" id="" class="form-control" value="{{ isset($filter) ? $filter : ''}}">
                                                     <button class="btn" id="clear-filter"><i class="ri-close-line"></i></button>
@@ -104,13 +106,20 @@
                                                                 <i class="ri-settings-3-line"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-animated">
-                                                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#event-modal-editar" data-project-id="">Editar proyecto</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item edit-project-btn" data-bs-toggle="modal" data-bs-target="#event-modal-editar" data-project-id="{{ $project->id }}">Editar proyecto</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
                                                             </div>
                                                         </div>
 
-                                                        <a href="javascript:void(0);" class="text-reset fs-19 px-1" onclick="eliminarProyecto()"> <i class="ri-delete-bin-2-line"></i></a>
+                                                        <a href="#" class="text-reset fs-19 px-1 delete-project-btn" onclick="confirmDelete('{{ $project->id }}')"> <i class="ri-delete-bin-2-line"></i></a>
+
+                                                        <!-- Formulario oculto para enviar la solicitud DELETE -->
+                                                        <form id="delete-project-form-{{ $project->id }}" action="{{ route('projects.destroy', ['id' => $project->id]) }}" method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+
                                                         <a href="javascript:void(0);" class="text-reset fs-19 px-1"> <i class="ri-presentation-line"></i></a>
                                                     </td>
                                                 </tr>
@@ -148,7 +157,8 @@
     <div class="modal fade" id="event-modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form class="needs-validation" name="event-form" id="form-event" action="../Controller/projectinsert.php" method="POST" novalidate>
+                <form class="needs-validation" name="event-form" id="form-event" action="{{ route('projects.store') }}" method="POST" novalidate>
+                    @csrf
                     <div class="modal-header py-3 px-4 border-bottom-0">
                         <h5 class="modal-title" id="modal-title">Crear nuevo proyecto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -158,34 +168,48 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="control-label form-label">Nombre del proyecto</label>
-                                    <input class="form-control" placeholder="Insertar nombre de proyecto" type="text" name="projectName" id="project-name" required />
+                                    <input class="form-control" placeholder="Insertar nombre de proyecto" type="text" name="project_name" id="project-name" required />
                                     <div class="invalid-feedback">Escriba un nombre válido</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label class="control-label form-label">Encargado del proyecto</label>
-                                    <input class="form-control" placeholder="Ingresar nombre del encargado" type="text" name="projectOwner" id="project-owner" required />
-                                    <div class="invalid-feedback">Escriba un nombre válido</div>
+                                    <label class="control-label form-label">Descripción del proyecto</label>
+                                    <input class="form-control" placeholder="Ingresar descripción del proyecto" type="text" name="project_description" id="project-description" required />
+                                    <div class="invalid-feedback">Escriba una descripción válida</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label class="control-label form-label">Estado</label>
-                                    <select class="form-select" name="projectStatus" id="project-status" required>
-                                        <option value="En progreso" selected>En progreso</option>
-                                        <option value="Pausado">Pausado</option>
-                                        <option value="No iniciado">No iniciado</option>
-                                        <option value="Cancelado">Cancelado</option>
-                                        <option value="Indefinido">Indefinido</option>
+                                    <label class="control-label form-label">Estado del proyecto</label>
+                                    <select class="form-select" name="project_status_id" id="project-status" required>
+                                        <option value="1" selected>En progreso</option>
+                                        <option value="2">Finalizado</option>
+                                        <option value="3">No iniciado</option>
+                                        <option value="4">Cancelado</option>
+                                        <option value="5">En pausa</option>
                                     </select>
-                                    <div class="invalid-feedback">Selecciona una categoria válida</div>
+                                    <div class="invalid-feedback">Selecciona una categoría válida</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="control-label form-label">Fecha de inicio</label>
+                                    <input type="date" class="form-control" name="project_start_date" id="project-start-date" required>
+                                    <div class="invalid-feedback">Ingrese una fecha de inicio válida</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="control-label form-label">Fecha estimada de finalización</label>
+                                    <input type="date" class="form-control" name="project_estimated_end" id="project-estimated-end" required>
+                                    <div class="invalid-feedback">Ingrese una fecha estimada de finalización válida</div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <!-- <button type="button" class="btn btn-danger" id="btn-delete-event">Delete</button> -->
+                                <!-- Puedes añadir botones adicionales si lo necesitas -->
                             </div>
                             <div class="col-6 text-end">
                                 <button type="button" class="btn btn-light me-1" data-bs-dismiss="modal">Cancelar</button>
@@ -197,6 +221,7 @@
             </div> <!-- end modal-content-->
         </div> <!-- end modal dialog-->
     </div>
+
     <!-- end modal-->
     <script>
         $('#event-modal-editar').on('show.bs.modal', function(event) {
@@ -208,13 +233,17 @@
             modal.find('#id_proyecto').val(projectId);
         });
     </script>
-    <!-- MODAL EDITAR PROYECTO -->
+
+
+    <!--EDITAR MODAL-->
     <div class="modal fade" id="event-modal-editar" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form class="needs-validation" name="event-form" id="form-event" action="../Controller/editproject.php" method="POST" novalidate>
+                <form class="needs-validation" name="event-form-editar" id="form-event-editar" action="{{ route('projects.update', ['id' => $project->id]) }}" method="POST" novalidate>
+                    @csrf
+                    @method('PUT')
                     <div class="modal-header py-3 px-4 border-bottom-0">
-                        <h5 class="modal-title" id="modal-title">Editar proyecto</h5>
+                        <h5 class="modal-title" id="modal-title-editar">Editar proyecto</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body px-4 pb-4 pt-0">
@@ -222,57 +251,58 @@
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="control-label form-label">Nombre del proyecto</label>
-                                    <input class="form-control" placeholder="Insertar nombre de proyecto" type="text" name="projectName" id="project-name" required />
-                                    <input type="hidden" name="projectId" id="id_proyecto">
+                                    <input class="form-control" placeholder="Insertar nombre de proyecto" type="text" name="project_name" id="project-name-editar" required />
+                                    <input type="hidden" name="project_id" id="project-id-editar">
                                     <div class="invalid-feedback">Escriba un nombre válido</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label class="control-label form-label">Encargado del proyecto</label>
-                                    <input class="form-control" placeholder="Ingresar nombre del encargado" type="text" name="projectOwner" id="project-owner" required />
-                                    <div class="invalid-feedback">Escriba un nombre válido</div>
+                                    <label class="control-label form-label">Descripción del proyecto</label>
+                                    <input class="form-control" placeholder="Ingresar descripción del proyecto" type="text" name="project_description" id="project-description-editar" required />
+                                    <div class="invalid-feedback">Escriba una descripción válida</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label class="control-label form-label">Estado</label>
-                                    <select class="form-select" name="projectStatus" id="project-status" required>
-                                        <option value="En progreso" selected>En progreso</option>
-                                        <option value="Pausado">Pausado</option>
-                                        <option value="No iniciado">No iniciado</option>
-                                        <option value="Cancelado">Cancelado</option>
-                                        <option value="Indefinido">Indefinido</option>
+                                    <label class="control-label form-label">Estado del proyecto</label>
+                                    <select class="form-select" name="project_status_id" id="project-status-editar" required>
+                                        <option value="1" selected>En progreso</option>
+                                        <option value="2">Finalizado</option>
+                                        <option value="3">No iniciado</option>
+                                        <option value="4">Cancelado</option>
+                                        <option value="5">En pausa</option>
                                     </select>
-                                    <div class="invalid-feedback">Selecciona una categoria válida</div>
+                                    <div class="invalid-feedback">Selecciona una categoría válida</div>
                                 </div>
                             </div>
-                            <div class="mb-3">
-    <label class="form-label">Fecha Inicio</label>
-    <input type="text" id="start-datepicker" name="project_start_date" class="form-control flatpickr-input"  placeholder="Fecha de inicio del proyecto">
-</div>
-<div class="mb-3">
-    <label class="form-label">Fecha Fin Estimada</label>
-    <input type="text" id="end-datepicker" name="project_estimated_end" class="form-control flatpickr-input" placeholder="Fecha de fin estimada">
-</div>
-
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="control-label form-label">Fecha de inicio</label>
+                                    <input type="date" class="form-control" name="project_start_date" id="project-start-date-editar" required>
+                                    <div class="invalid-feedback">Ingrese una fecha de inicio válida</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="control-label form-label">Fecha estimada de finalización</label>
+                                    <input type="date" class="form-control" name="project_estimated_end" id="project-estimated-end-editar" required>
+                                    <div class="invalid-feedback">Ingrese una fecha estimada de finalización válida</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <!-- <button type="button" class="btn btn-danger" id="btn-delete-event">Delete</button> -->
                             </div>
                             <div class="col-6 text-end">
                                 <button type="button" class="btn btn-light me-1" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-success" id="btn-save-event">Editar</button>
+                                <button type="submit" class="btn btn-success" id="btn-save-event-editar">Editar</button>
                             </div>
                         </div>
-
                     </div>
                 </form>
-
             </div> <!-- end modal-content-->
         </div> <!-- end modal dialog-->
-
     </div>
     <!-- end modal-->
 
@@ -281,35 +311,51 @@
 
 
 
+
     <!-- Vendor js -->
     <script src="assets/js/vendor.min.js"></script>
-<!-- Flatpickr Timepicker Plugin js -->
-<script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
-<!-- Timepicker Demo js -->
-<script src="assets/js/pages/demo.flatpickr.js"></script>
+    <!-- Flatpickr Timepicker Plugin js -->
+    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <!-- Timepicker Demo js -->
+    <script src="assets/js/pages/demo.flatpickr.js"></script>
 
-<script>
-    // Inicializar Flatpickr para el campo de fecha de inicio
-    flatpickr("#start-datepicker", {
-        dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de inicio
-        // Otras opciones y configuraciones según tus necesidades
-    });
-
-    // Inicializar Flatpickr para el campo de fecha de fin estimada
-    flatpickr("#end-datepicker", {
-        dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de fin estimada
-        // Otras opciones y configuraciones según tus necesidades
-    });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('clear-filter').addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector('input[name="filter"]').value = ''; // Limpiar el campo de búsqueda
-            window.location.href = "{{ route('projects') }}";
+    <script>
+        flatpickr("#start-datepicker", {
+            dateFormat: "Y-m-d",
         });
-    });
 
-</script>
+        flatpickr("#end-datepicker", {
+            dateFormat: "Y-m-d",
+        });
+        flatpickr("#start-datepickerCreate", {
+            dateFormat: "Y-m-d",
+        });
+
+        flatpickr("#end-datepickerCreate", {
+            dateFormat: "Y-m-d",
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('clear-filter').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('input[name="filter"]').value = ''; // Limpiar el campo de búsqueda
+                window.location.href = "{{ route('projects.index') }}";
+            });
+        });
+
+        $('.edit-project-btn').click(function() {
+            var projectId = $(this).data('project-id');
+            $('#project-id-editar').val(projectId);
+        });
+
+        function confirmDelete(projectId) {
+            if (confirm('¿Estás seguro de querer eliminar el proyecto?')) {
+                document.getElementById('delete-project-form-' + projectId).submit();
+            } else {
+                return false;
+            }
+        }
+    </script>
 
 
 </body>
