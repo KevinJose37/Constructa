@@ -52,46 +52,23 @@
             <li class="side-nav-title mt-1"> Principal</li>
 
             <li class="side-nav-item">
-                <a href="DashboardIndex.php" class="side-nav-link">
+                <a href="/DashboardIndex" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
                     <span> Dashboard </span>
                 </a>
             </li>
-
-
-
-            <!-- <li class="side-nav-title mt-2">Perfil</li>
-
-            <li class="side-nav-item">
-                <a data-bs-toggle="collapse" href="#sidebarPages" aria-expanded="false" aria-controls="sidebarPages" class="side-nav-link">
-                    <i class="ri-pages-fill"></i>
-                    <span> Pages </span>
-                    <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="sidebarPages">
-                    <ul class="side-nav-second-level">
-                        <li>
-                            <a href="pages-profile.html">Perfil</a>
-                        </li>
-                        <li>
-                            <a href="pages-invoice.html">Cuenta de cobro</a>
-                        </li>
-                        <li>
-                            <a href="pages-faq.html">PQR</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> -->
             <li class="side-nav-title mt-2">Gestion</li>
 
             <a href="/Proyectos" class="side-nav-link">
-    <i class="ri-stack-line"></i>
-    <span> Proyectos </span>
-</a>
-    
+            <i class="ri-stack-fill"></i>
+            <span> Proyectos </span>
+            </a>
 
-
-
+            
+            <a href="/Usuarios" class="side-nav-link">
+            <i class="ri-user-fill"></i>
+            <span> Usuarios </span>
+            </a>
 
 
         </ul>

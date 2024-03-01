@@ -21,11 +21,12 @@ class UserServices implements IService{
         return $this->userRepository->getAll();
     }
 
-    public function getAllPaginate()
+    public function getAllPaginate($filter = '')
     {
         $usersQuery = $this->userRepository->UserQuery();
-        return $this->paginationService->filter($usersQuery);
+        return $this->paginationService->filter($usersQuery, $filter);
     }
+    
 
     public function getById(int $id)
     {

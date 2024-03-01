@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Dashboard Principal</title>
+        <title>Página sin titulo</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Constructa ERP Gestion de recursos para constructoras." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -26,13 +26,14 @@
         <div class="wrapper">
 
             
-            <!-- Topbar -->
-            <?php include_once(__DIR__ . '/templates/topbar.php'); ?>
-            <!-- Topbar -->
 
-            <!-- Sidebar -->
-            <?php include_once(__DIR__ . '/templates/sidebar.php'); ?>
-            <!-- Sidebar -->
+        <!-- Topbar -->
+        @include('Templates.topbar')
+        <!-- Topbar -->
+
+        <!-- Sidebar -->
+        @include('Templates.sidebar')
+        <!-- Sidebar -->
 
             
 
@@ -52,7 +53,7 @@
                 </div> <!-- content -->
 
                 <!-- Footer Start -->
-                <?php include_once(__DIR__ . '/templates/footer.php'); ?>
+                @include('Templates.footer')
                 <!-- End Footer -->
 
             </div>

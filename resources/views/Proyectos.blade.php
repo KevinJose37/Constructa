@@ -102,6 +102,7 @@
                                                     <td>{{ $project->project_estimated_end }}</td>
                                                     <td style="display: flex; align-items: center;">
                                                         <div class="dropdown">
+                                                            
                                                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <i class="ri-settings-3-line"></i>
                                                             </a>
@@ -111,6 +112,7 @@
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
                                                             </div>
                                                         </div>
+                                                        <a href="javascript:void(0);" class="text-reset fs-19 px-1"> <i class="ri-presentation-line"></i></a>
 
                                                         <a href="#" class="text-reset fs-19 px-1 delete-project-btn" onclick="confirmDelete('{{ $project->id }}')"> <i class="ri-delete-bin-2-line"></i></a>
 
@@ -120,7 +122,6 @@
                                                             @method('DELETE')
                                                         </form>
 
-                                                        <a href="javascript:void(0);" class="text-reset fs-19 px-1"> <i class="ri-presentation-line"></i></a>
                                                     </td>
                                                 </tr>
                                                 @endforeach

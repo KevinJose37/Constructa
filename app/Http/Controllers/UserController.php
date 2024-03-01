@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\UserServices;
 use App\Validators\UserValidator;
 use Illuminate\Http\Request;
+use App\Models\User;
+
 
 class UserController extends Controller
 {
@@ -20,9 +22,12 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        return response()->json($this->userService->getAll($request), 200);
-    }
+{
+    $users = User::all();
+    return view('Usuarios', compact('users'));
+}
+
+    
 
     /**
      * Show the form for creating a new resource.
