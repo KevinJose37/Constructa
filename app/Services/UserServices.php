@@ -1,44 +1,48 @@
 <?php
 namespace App\Services;
 
-use Illuminate\Support\Facades\Log;
-use App\Models\User;
+use App\Http\Repository\UserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class UserServices implements IService{
 
     protected $paginationService;
+    protected $userRepository;
 
-    public function __construct(PaginationService $paginationService)
+    public function __construct(PaginationServices $paginationService, UserRepository $userRepo)
     {
         $this->paginationService = $paginationService;
+        $this->userRepository = $userRepo;
     }
 
 
-    public function getAll(Request $request)
+    public function getAll()
     {
-        $usersQuery = User::with('rol');
+        return $this->userRepository->getAll();
+    }
+
+    public function getAllPaginate(Request $request)
+    {
+        $usersQuery = $this->userRepository->UserQuery();
         return $this->paginationService->filter($usersQuery);
     }
 
     public function getById(int $id)
     {
-        $usersQuery = User::with('rol')->find($id);
-        return $usersQuery;
+        return $this->userRepository->FindById($id);
     }
 
-    public function Add(Request $request)
+    public function Add(array $data)
     {
         
     }
 
-    public function Update(int $id, Request $request)
+    public function Update(int $id, array $data)
     {
         
     }
 
-    public function Delete(int $id, Request $request)
+    public function Delete(int $id)
     {
         
     }

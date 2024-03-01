@@ -58,7 +58,7 @@ class UserController extends Controller
         if($userInfo === null){
             return response()->json([
                 'status' => false,
-                'message' => 'Not found',
+                'message' => 'Usuario no encontrado',
                 'errors' => ''
             ], 404);
         }

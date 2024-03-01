@@ -52,4 +52,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Rol::class, 'rol_id');
     }
+
+    public function projects(){
+        return $this->belongsToMany(Project::class, 'participants_project', 'user_id', 'project_id');
+    }
 }

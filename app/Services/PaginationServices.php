@@ -4,7 +4,7 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 
-class PaginationService{
+class PaginationServices{
 
     protected $request;
 
