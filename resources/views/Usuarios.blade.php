@@ -91,7 +91,7 @@
                                                 <tr>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->rol->nombre }}</td> <!-- Asumiendo que tienes una relación con el modelo Rol -->
+                                                    <td>{{ $user->rol->rol_name }}</td> 
                                                     <td style="display: flex; align-items: center;">
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
