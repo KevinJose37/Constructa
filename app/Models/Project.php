@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = "projects";
 
@@ -22,5 +23,9 @@ class Project extends Model
     public function projectStatus()
     {
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id');
     }
 }
