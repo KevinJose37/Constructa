@@ -12,7 +12,7 @@ Route::middleware(['auth'])->group(function () {
         return view('BlankPage');
     })->name('blankpage');
 
-    Route::get('/Proyectos', [ProjectController::class, 'index']);
+    Route::get('/Proyectos', [ProjectController::class, 'index'])->name('projects');
 
     Route::get('/DashboardIndex', function () {
         return view('DashboardIndex');
@@ -24,7 +24,3 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/LoginConstructa', function () {
     return view('LoginConstructa');
 })->name('loginconstructa');
-
-// Route::get('/Proyectos', function () {
-//     return view('Proyectos');
-// });

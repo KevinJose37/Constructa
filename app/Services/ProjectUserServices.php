@@ -28,7 +28,7 @@ class ProjectUserServices implements IService{
         return $this->projectUserRepository->getAll();
     }
 
-    public function getAllPaginate(Request $request)
+    public function getAllPaginate()
     {
         $projectUsersQuery = $this->projectUserRepository->ProjectUserQuery();
         return $this->paginationService->filter($projectUsersQuery);

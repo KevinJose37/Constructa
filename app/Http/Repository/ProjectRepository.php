@@ -29,5 +29,16 @@ class ProjectRepository implements IRepository{
         return Project::with('projectStatus');
     }
 
+    public function filterLike($value){
+        return Project::with('projectStatus')->where(function ($queryBuilder) use ($value) {
+            $queryBuilder->where('project_name', 'like', "%$value%")
+                         ->orWhere('project_description', 'like', "%$value%")
+                         ->orWhere('project_start_date', 'like', "%$value%")
+                         ->orWhere('project_estimated_end', 'like', "%$value%")
+                         ->orWhereHas('projectStatus', function ($statusQuery) use ($value) {
+                            $statusQuery->where('status_name', 'like', "%$value%");
+                        });;
+        });
+    }
 
 }

@@ -59,7 +59,6 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-
                                     <div class="page-title-box justify-content-between d-flex align-items-md-center flex-md-row flex-column">
                                         <h4 class="page-title">Tabla de proyectos</h4>
                                         <ol class="breadcrumb m-0">
@@ -69,10 +68,17 @@
 
                                         </ol>
                                     </div>
-
-
-
                                     <div class="table-responsive-sm">
+                                        <form action="{{ route('projects')}}" method="get" id="search_form">
+                                            <div class="col-lg-3 col-md-6 ">
+                                                <div class="input-group" >
+                                                    <button class="btn btn-primary"><i class="ri-search-line"></i></button>
+                                                    <input type="text" name="filter" id="" class="form-control" value="{{ isset($filter) ? $filter : ''}}">
+                                                    <button class="btn" id="clear-filter"><i class="ri-close-line"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+
                                         <table class="table table-striped table-centered mb-0">
                                             <thead>
                                                 <tr>
@@ -105,11 +111,13 @@
                                                         </div>
 
                                                         <a href="javascript:void(0);" class="text-reset fs-19 px-1" onclick="eliminarProyecto()"> <i class="ri-delete-bin-2-line"></i></a>
+                                                        <a href="javascript:void(0);" class="text-reset fs-19 px-1"> <i class="ri-presentation-line"></i></a>
                                                     </td>
                                                 </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        {{ $projects->links('pagination::bootstrap-4') }}
                                     </div> <!-- end table-responsive-->
 
                                 </div> <!-- end card body-->
@@ -292,6 +300,15 @@
         dateFormat: "Y-m-d", // Formato de fecha deseado para fecha de fin estimada
         // Otras opciones y configuraciones según tus necesidades
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('clear-filter').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector('input[name="filter"]').value = ''; // Limpiar el campo de búsqueda
+            window.location.href = "{{ route('projects') }}";
+        });
+    });
+
 </script>
 
 

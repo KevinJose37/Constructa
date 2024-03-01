@@ -26,20 +26,20 @@ Route::prefix('v1')->group(function (){
     // Users 
     Route::get('users', [UserController::class, 'index']);
     Route::post('users', [UserController::class, 'store']);
-    Route::get('users/{id}', [UserController::class, 'show']);
-    Route::put('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
+    // Route::get('users/{id}', [UserController::class, 'show']);
+    // Route::put('users/{id}', [UserController::class, 'update']);
+    // Route::delete('users/{id}', [UserController::class, 'destroy']);
 
-    // Projects
-    Route::get('projects/users', [ProjectUserController::class, 'index']);
-    Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
-    Route::post('projects/assign', [ProjectUserController::class, 'store']);
+    // // Projects
+    // Route::get('projects/users', [ProjectUserController::class, 'index']);
+    // Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
+    // Route::post('projects/assign', [ProjectUserController::class, 'store']);
 
-    Route::get('projects', [ProjectController::class, 'index']);
-    Route::post('projects', [ProjectController::class, 'store']);
-    Route::get('projects/{id}', [ProjectController::class, 'show']);
-    Route::put('projects/{id}', [ProjectController::class, 'update']);
-    Route::delete('projects/{id}', [ProjectController::class, 'destroy']);
+    // Route::get('projects', [ProjectController::class, 'index']);
+    // Route::post('projects', [ProjectController::class, 'store']);
+    // Route::get('projects/{id}', [ProjectController::class, 'show']);
+    // Route::put('projects/{id}', [ProjectController::class, 'update']);
+    // Route::delete('projects/{id}', [ProjectController::class, 'destroy']);
 
 });
 

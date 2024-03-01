@@ -2,16 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use App\Services\ProjectServices;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+    protected $projectService;
+
+    public function __construct(ProjectServices $projectServices)
+    {
+        $this->projectService = $projectServices;
+    }
+    
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $filter = $request->input('filter');
+        $projects = $this->projectService->getAllPaginate($filter); // Obtener todos los proyectos
+        return view('Proyectos', compact('projects', 'filter'));
+    
     }
 
     /**
