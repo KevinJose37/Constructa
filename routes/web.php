@@ -27,9 +27,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/DashboardIndex', function () {
         return view('DashboardIndex');
     })->name('dashboardindex');
-    
+
+        // Rutas relacionadas con usuarios
     Route::get('/Usuarios', [UserController::class, 'index'])->name('usuarios.index');
     Route::post('/Usuarios', [UserController::class, 'store'])->name('usuarios.store');
+    Route::delete('/Usuarios/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    Route::put('/Usuarios/{id}', [UserController::class, 'update'])->name('usuarios.update');
+
 });
 
 Route::get('/LoginConstructa', function () {

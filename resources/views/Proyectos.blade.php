@@ -71,7 +71,7 @@
                                             <div class="col-lg-3 col-md-6 ">
                                                 <div class="input-group">
                                                     <button class="btn btn-primary"><i class="ri-search-line"></i></button>
-                                                    <input type="text" name="filter" id="" class="form-control" value="{{ isset($filter) ? $filter : ''}}">
+                                                    <input type="text" name="filter" id="" class="form-control" placeholder="Buscar por nombre de proyecto" value="{{ isset($filter) ? $filter : ''}}">
                                                     <button class="btn" id="clear-filter"><i class="ri-close-line"></i></button>
                                                 </div>
                                             </div>
@@ -103,6 +103,7 @@
                                                                 <i class="ri-settings-3-line"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-animated">
+
                                                                 <a href="javascript:void(0);" class="dropdown-item edit-project-btn" data-bs-toggle="modal" data-bs-target="#event-modal-editar" data-project-id="{{ $project->id }}">Editar proyecto</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                                                 <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
@@ -236,6 +237,7 @@
     <div class="modal fade" id="event-modal-editar" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
+                
                 <form class="needs-validation" name="event-form-editar" id="form-event-editar" action="{{ route('projects.update', ['id' => $project->id]) }}" method="POST" novalidate>
                     @csrf
                     @method('PUT')
