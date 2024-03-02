@@ -340,18 +340,16 @@
                                                     <table class="table table-striped table-centered mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th>Nombre de usuario</th>
-                                                    <th>Correo electrónico</th>
-                                                    <th>Rol</th>
-                                                    <th>Acciones</th>
+                                                    <th>Nombre del proyecto</th>
+                                                    <th>Estatus del proyecto</th>
+                                                    <th>Fecha de asignacion</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($users as $user)
                                                 <tr>
-                                                    <td>{{ $user->name }}</td>
-                                                    <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->rol->rol_name }}</td>
+                                                    <td>Ejemplo</td>
+                                                    <td>Ejemplo</td>
+                                                    <td>Ejemplo</td>
                                                     
                                                 </tr>
                                             </tbody>
@@ -366,8 +364,7 @@
                                                 <div class="col-6">
                                                 </div>
                                                 <div class="col-6 text-end">
-                                                    <button type="button" class="btn btn-light me-1" data-bs-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-success" id="btn-save-event">Guardar</button>
+                                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
                                                 </div>
                                             </div>
                                         </div>
