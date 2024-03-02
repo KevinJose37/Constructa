@@ -21,7 +21,7 @@
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<body class="show">
     <!-- Begin page -->
     <div class="wrapper">
 
@@ -60,7 +60,7 @@
                                         <h4 class="page-title">Tabla de usuarios</h4>
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event-modal">Crear un nuevo proyecto</button>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#event-modal">Crear un nuevo usuario</button>
                                             </li>
 
                                         </ol>
@@ -91,7 +91,7 @@
                                                 <tr>
                                                     <td>{{ $user->name }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->rol->rol_name }}</td> 
+                                                    <td>{{ $user->rol->rol_name }}</td>
                                                     <td style="display: flex; align-items: center;">
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
@@ -115,36 +115,94 @@
                             </div> <!-- end card -->
                         </div><!-- end col-->
 
+                        <!-- MODAL CREAR USUARIO -->
+                        <div class="modal fade" id="event-modal" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                        <form class="needs-validation" name="event-form" id="form-event" action="{{ route('usuarios.store') }}" method="POST" novalidate>
+                                        @csrf
+                                        <div class="modal-header py-3 px-4 border-bottom-0">
+                                            <h5 class="modal-title" id="modal-title">Crear nuevo usuario</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body px-4 pb-4 pt-0">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="mb-3">
+                                                        <label class="control-label form-label">Nombre de usuario</label>
+                                                        <input class="form-control" placeholder="Insertar nombre de usuario" type="text" name="name" id="user-name" required />
+                                                        <div class="invalid-feedback">Escriba un nombre de usuario valido</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="mb-3">
+                                                        <label class="control-label form-label">Contraseña de usuario</label>
+                                                        <input class="form-control" placeholder="Contraseña" type="password" name="user_password" id="user-password" minlength="8" required />
+                                                        <div class="invalid-feedback">Escriba una contraseña válida de minimo 8 caracteres</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="mb-3">
+                                                        <label class="control-label form-label">Email Usuario</label>
+                                                        <input class="form-control" placeholder="Email de usuario" type="text" name="email" id="email-user" required />
+                                                        <div class="invalid-feedback">Escriba una email válido</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="mb-3">
+                                                        <label class="control-label form-label">Rol</label>
+                                                        <select class="form-select" name="rol_id" id="rol-user" required>
+                                                            <option value="1">Administracion</option>
+                                                            <option value="2">Gerente de obra</option>
+                                                            <option value="3">Empleado</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">Selecciona una categoría válida</div>
+                                                    </div>
+                                                </div>
 
-                    </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                </div>
+                                                <div class="col-6 text-end">
+                                                    <button type="button" class="btn btn-light me-1" data-bs-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" class="btn btn-success" id="btn-save-event">Guardar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div> <!-- end modal-content-->
+                            </div> <!-- end modal dialog-->
+
+                        </div>
 
 
-                </div> <!-- container -->
+                    </div> <!-- container -->
 
-            </div> <!-- content -->
+                </div> <!-- content -->
 
-            <!-- Footer Start -->
-            @include('Templates.footer')
-            <!-- End Footer -->
+                <!-- Footer Start -->
+                @include('Templates.footer')
+                <!-- End Footer -->
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
 
         </div>
-
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
-
-    </div>
-    <!-- END wrapper -->
+        <!-- END wrapper -->
 
 
 
 
 
-    <!-- Vendor js -->
-    <script src="assets/js/vendor.min.js"></script>
+        <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
 
-    <!-- App js -->
-    <script src="assets/js/app.min.js"></script>
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
 
 </body>
 

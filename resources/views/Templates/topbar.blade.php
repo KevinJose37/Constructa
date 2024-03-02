@@ -83,8 +83,8 @@
                         <img src="assets/images/users/avatar-1.jpg" alt="user-image" width="32" class="rounded-circle">
                     </span>
                     <span class="d-lg-flex flex-column gap-1 d-none">
-                        <h5 class="my-0">User</h5>
-                        <h6 class="my-0 fw-normal">Compañia></h6>
+                        <h5 class="my-0">{{ Auth::user()->name }}</h5>
+                        <h6 class="my-0 fw-normal">{{ Auth::user()->rol->rol_name }}</h6>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
@@ -93,11 +93,7 @@
                         <h6 class="text-overflow m-0">¡Bienvenido!</h6>
                     </div>
 
-                    <!-- item-->
-                    <a href="pages-profile.html" class="dropdown-item">
-                        <i class="ri-account-circle-fill align-middle me-1"></i>
-                        <span>Mi cuenta</span>
-                    </a>
+
 
                     <!-- item-->
                     <a href="pages-faq.html" class="dropdown-item">

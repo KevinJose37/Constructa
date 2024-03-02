@@ -32,19 +32,18 @@
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <!-- Leftbar User -->
         <div class="leftbar-user p-3 text-white">
-            <a href="" class="d-flex align-items-center text-reset">
-                <div class="flex-shrink-0">
-                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow">
-                </div>
-                <div class="flex-grow-1 ms-2">
-                    <span class="fw-semibold fs-15 d-block">User</span>
-                    <span class="fs-13">Compañia</span>
-                </div>
-                <div class="ms-auto">
-                    <i class="ri-arrow-right-s-fill fs-20"></i>
-                </div>
-            </a>
+    <a href="#" class="d-flex align-items-center text-reset">
+        <div class="flex-shrink-0">
+            <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow">
         </div>
+        <div class="flex-grow-1 ms-2">
+        <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
+<span class="fs-13">{{ Auth::user()->rol->rol_name }}</span>
+        </div>
+    </a>
+</div>
+
+
 
         <!--- Sidemenu -->
         <ul class="side-nav">
@@ -57,19 +56,22 @@
                     <span> Dashboard </span>
                 </a>
             </li>
-            <li class="side-nav-title mt-2">Gestion</li>
 
-            <a href="/Proyectos" class="side-nav-link">
-            <i class="ri-stack-fill"></i>
-            <span> Proyectos </span>
-            </a>
+            <li class="side-nav-title mt-1">Gestion</li>
 
-            
-            <a href="/Usuarios" class="side-nav-link">
-            <i class="ri-user-fill"></i>
-            <span> Usuarios </span>
-            </a>
+            <li class="side-nav-item">
+                <a href="/Proyectos" class="side-nav-link">
+                    <i class="ri-stack-fill"></i>
+                    <span class="side-nav-item"> Proyectos </span>
+                </a>
+            </li>
 
+            <li class="side-nav-item">
+                <a href="/Usuarios" class="side-nav-link">
+                    <i class="ri-user-fill"></i>
+                    <span> Usuarios </span>
+                </a>
+            </li>
 
         </ul>
         <!--- End Sidemenu -->

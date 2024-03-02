@@ -6,6 +6,7 @@ use App\Services\UserServices;
 use App\Validators\UserValidator;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
@@ -23,8 +24,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
 {
-    $users = User::all();
-    return view('Usuarios', compact('users'));
+
+    $users = User::with('rol')->get();
+    $user = Auth::user();
+
+    return view('Usuarios', compact('users', 'user')); // Pasar el usuario a la vista
+
 }
 
     
@@ -41,9 +46,33 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
+{
+    // Validar los datos del formulario
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'password' => 'required|string|min:8',
+        'email' => 'required|email|unique:users,email',
+        'rol_id' => 'required|exists:roles,id' // Asegúrate de que existe el rol en la tabla 'roles'
+    ]);
+
+    try {
+        // Crear un nuevo usuario con los datos validados
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->password = bcrypt($validatedData['password']);
+        $user->email = $validatedData['email'];
+        $user->rol_id = $validatedData['rol_id']; // Asignar el rol_id del formulario al modelo User
+        $user->save();
+
+        // Redirigir a alguna parte o devolver una respuesta
+        return redirect()->route('usuarios.index')->with('success', 'Usuario creado exitosamente');
+    } catch (\Exception $e) {
+        // Manejar cualquier excepción que ocurra durante la creación
+        return back()->withInput()->withErrors(['error' => 'Ocurrió un error al crear el usuario: ' . $e->getMessage()]);
     }
+}
+
+    
 
     /**
      * Display the specified resource.

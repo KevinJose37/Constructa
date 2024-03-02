@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Crear proyecto</title>
+    <title>Proyectos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Constructa ERP Gestion de recursos para constructoras." name="description" />
     <meta content="Coderthemes" name="author" />
@@ -17,16 +17,14 @@
     <!-- App css -->
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
-    <!-- Flatpickr Timepicker css -->
-    <link href="assets/vendor/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
-
     <!-- Icons css -->
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
+<body class="show">
     <!-- Begin page -->
     <div class="wrapper">
+
 
 
         <!-- Topbar -->
@@ -39,7 +37,6 @@
 
 
 
-
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
@@ -47,7 +44,6 @@
         <div class="content-page">
             <div class="content">
 
-                <!-- Start Content-->
                 <div class="container-fluid">
 
                     <div class="page-title-box justify-content-between d-flex align-items-md-center flex-md-row flex-column">

@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboardindex');
     
     Route::get('/Usuarios', [UserController::class, 'index'])->name('usuarios.index');
-
+    Route::post('/Usuarios', [UserController::class, 'store'])->name('usuarios.store');
 });
 
 Route::get('/LoginConstructa', function () {
