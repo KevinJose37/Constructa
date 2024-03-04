@@ -84,8 +84,6 @@ document.querySelectorAll('.view-users').forEach(button => {
                 .catch(error => {
                     console.error('Error al enviar el formulario:', error);
                 });
-
-
             });
         } catch (error) {
             console.error('Error en la solicitud:', error);
