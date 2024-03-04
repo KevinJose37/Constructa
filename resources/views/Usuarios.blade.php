@@ -66,9 +66,8 @@
                                         </ol>
                                     </div>
                                     <div class="table-responsive-sm">
-                                        <form class="needs-validation" name="event-form-editar" id="form-event-editar" action="{{ route('usuarios.update', ['id' => $user->id]) }}" method="POST" novalidate>
+                                        <form class="needs-validation" name="event-form-search" id="form-event-search" action="{{ route('usuarios.index') }}" method="GET" novalidate>
                                             @csrf
-                                            @method('PUT')
                                             <div class="col-lg-3 col-md-6 ">
                                                 <div class="input-group">
                                                     <button class="btn btn-primary"><i class="ri-search-line"></i></button>

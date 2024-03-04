@@ -24,10 +24,7 @@ class ProjectController extends Controller
         $filter = $request->input('filter');
         $projects = $this->projectService->getAllPaginate($filter); // Obtener todos los proyectos
 
-        // Obtener un proyecto específico para editar
-        $project = Project::first(); // Por ejemplo, obtener el primer proyecto de la lista
-
-        return view('Proyectos', compact('projects', 'project', 'filter'));
+        return view('Proyectos', compact('projects', 'filter'));
     }
 
 

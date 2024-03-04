@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProjectUserController;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -15,14 +16,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/BlankPage', function () {
         return view('BlankPage');
     })->name('blankpage');
-
+    
     // Rutas relacionadas con proyectos
     Route::namespace('App\Http\Controllers')->group(function () {
         Route::get('/Proyectos', [ProjectController::class, 'index'])->name('projects.index');
         Route::post('/Proyectos/store', [ProjectController::class, 'store'])->name('projects.store');
         Route::put('/Proyectos/{id}', [ProjectController::class, 'update'])->name('projects.update');
         Route::delete('/Proyectos/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+        // Route::post('projects/assign', [ProjectUserController::class, 'store'])->name('projects.assign');
+
+        // Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
     });
+
 
     Route::get('/DashboardIndex', function () {
         return view('DashboardIndex');

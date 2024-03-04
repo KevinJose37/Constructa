@@ -13,12 +13,13 @@
 
     <!-- Theme Config Js -->
     <script src="assets/js/config.js"></script>
-
+    
     <!-- App css -->
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
     <!-- Icons css -->
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    @vite(['resources\js\Proyectos\projects.js'])
 </head>
 
 <body class="show">
@@ -35,12 +36,22 @@
         @include('Templates.sidebar')
         <!-- Sidebar -->
 
-
-
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
 
+
+        @if(session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="content-page">
             <div class="content">
 
@@ -65,9 +76,8 @@
                                         </ol>
                                     </div>
                                     <div class="table-responsive-sm">
-                                        <form class="needs-validation" name="event-form-editar" id="form-event-editar" action="{{ route('projects.update', ['id' => $project->id]) }}" method="POST" novalidate>
+                                        <form class="needs-validation" name="event-form-editar" id="form-event-editar" action="{{ route('projects.index')}}" method="GET" novalidate>
                                             @csrf
-                                            @method('PUT')
                                             <div class="col-lg-3 col-md-6 ">
                                                 <div class="input-group">
                                                     <button class="btn btn-primary"><i class="ri-search-line"></i></button>
@@ -76,7 +86,6 @@
                                                 </div>
                                             </div>
                                         </form>
-
                                         <table class="table table-striped table-centered mb-0">
                                             <thead>
                                                 <tr>
@@ -103,15 +112,13 @@
                                                                 <i class="ri-settings-3-line"></i>
                                                             </a>
                                                             <div class="dropdown-menu dropdown-menu-animated">
-
                                                                 <a href="javascript:void(0);" class="dropdown-item edit-project-btn" data-bs-toggle="modal" data-bs-target="#event-modal-editar" data-project-id="{{ $project->id }}">Editar proyecto</a>
-                                                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#event-modal-gestionar"> Gestionar usuarios al proyecto</a>
-                                                                <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
-                                                                <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#event-modal-gestionar" data-project-id="{{ $project->id }}" > Gestionar usuarios al proyecto</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item" data-project-id="{{ $project->id }}">Gestionar materiales</a>
+                                                                <a href="javascript:void(0);" class="dropdown-item" data-project-id="{{ $project->id }}">Gestionar finanzas</a>
                                                             </div>
                                                         </div>
-                                                        <a href="javascript:void(0);" class="text-reset fs-19 px-1" data-bs-toggle="modal" data-bs-target="#event-modal-proyectosusuario"> <i class="ri-presentation-line"></i></a>
-
+                                                        <a href="javascript:void(0);" class="text-reset fs-19 px-1 view-users"  id="view-users" data-project-id="{{ $project->id }}"> <i class="ri-presentation-line"></i></a>
                                                         <a href="#" class="text-reset fs-19 px-1 delete-project-btn" onclick="confirmDelete('{{ $project->id }}')"> <i class="ri-delete-bin-2-line"></i></a>
 
                                                         <!-- Formulario oculto para enviar la solicitud DELETE -->
@@ -423,53 +430,25 @@
                     <div class="modal fade" id="event-modal-proyectosusuario" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form class="needs-validation" name="event-form-proyectosusuario" id="event-form-proyectosusuario" action="" method="" novalidate>
-                                        @csrf
                                         <div class="modal-header py-3 px-4 border-bottom-0">
                                             <h5 class="modal-title" id="modal-title">USUARIOS ASIGNADOS</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body px-4 pb-4 pt-0">
-                                            <div class="row">
-                                                
-                                                <div class="col-12">
-                                                    <div class="mb-3">
-                                                    <table class="table table-striped table-centered mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Nombre del usuario</th>
-                                                    <th>Rol del usuario</th>
-                                                    <th>Fecha de asignacion</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Ejemplo</td>
-                                                    <td>Ejemplo</td>
-                                                    <td>Ejemplo</td>
-                                                    
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                                    </div>
-                                                </div>
-
-                                              
-
-                                            </div>
+                                        <div class="modal-body px-4 pb-4 pt-0" id="modal-body-users">
                                             <div class="row">
                                                 <div class="col-6">
                                                 </div>
-                                                <div class="col-6 text-end">
-                                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
-                                                </div>
+
                                             </div>
                                         </div>
-                                </form>
+                                        <div class="modal-footer px-4 pb-4 pt-0" id="modal-body-users">
+                                            <div class="col-6 text-end">
+                                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
                             </div> <!-- end modal-content-->
                         </div> <!-- end modal dialog-->
                     </div>
-
 
 
 
@@ -483,6 +462,7 @@
     <script src="assets/js/pages/demo.flatpickr.js"></script>
 
     <script>
+        
         flatpickr("#start-datepicker", {
             dateFormat: "Y-m-d",
         });

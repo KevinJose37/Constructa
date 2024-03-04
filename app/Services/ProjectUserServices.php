@@ -28,17 +28,23 @@ class ProjectUserServices implements IService{
         return $this->projectUserRepository->getAll();
     }
 
-    public function getAllPaginate()
+    public function getAllPaginate($filter = '')
     {
         $projectUsersQuery = $this->projectUserRepository->ProjectUserQuery();
         return $this->paginationService->filter($projectUsersQuery);
 
     }
 
+    public function getNotAssignedUsers(int $id){
+        return $this->projectUserRepository->notAssignedUsers($id);   
+    }
+
     public function getById(int $id)
     {
         return $this->projectUserRepository->FindById($id);
     }
+
+    
 
 
     public function Add(array $data)

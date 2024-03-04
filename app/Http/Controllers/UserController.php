@@ -24,10 +24,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::with('rol')->paginate(10); // Pagina los usuarios, mostrando 10 por página
-        $user = Auth::user();
+        
+        $filter = $request->input('filter');
+        $users = $this->userService->getAllPaginate($filter);
 
-        return view('Usuarios', compact('users', 'user')); // Pasar el usuario a la vista
+        return view('Usuarios', compact('users', 'filter')); // Pasar el usuario a la vista
     }
 
 

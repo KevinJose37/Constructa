@@ -37,7 +37,7 @@ class ProjectRepository implements IRepository{
                          ->orWhere('project_estimated_end', 'like', "%$value%")
                          ->orWhereHas('projectStatus', function ($statusQuery) use ($value) {
                             $statusQuery->where('status_name', 'like', "%$value%");
-                        });;
+                        });
         });
     }
 

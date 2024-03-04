@@ -23,8 +23,14 @@ class UserServices implements IService{
 
     public function getAllPaginate($filter = '')
     {
-        $usersQuery = $this->userRepository->UserQuery();
-        return $this->paginationService->filter($usersQuery, $filter);
+        $projectQuery = $this->userRepository->UserQuery();
+        if($filter != ""){
+            $filter = htmlspecialchars(trim($filter));
+            $projectQuery = $this->userRepository->filterLike($filter);
+
+        }
+
+        return $this->paginationService->filter($projectQuery);
     }
     
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\ProjectUserServices;
 use App\Validators\ProjectUserValidator;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class ProjectUserController extends Controller
         $validator = ProjectUserValidator::validateInsert($data);
         if($validator->fails()){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => "Bad request",
                 'errors' => $validator->errors()
             ], 400);
@@ -53,14 +54,15 @@ class ProjectUserController extends Controller
 
         if(isset($assignUser['success']) && $assignUser['success'] === false){
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => "Ocurrió un error en la asignación",
                 'errors' => $assignUser['message']
             ], 500);
         }
 
+        // return redirect()->route('projects.index')->with('success', '¡Proyecto creado exitosamente!');
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => "Se asignó correctamente el usuario",
         ], 200);
 
@@ -74,22 +76,23 @@ class ProjectUserController extends Controller
         $validator = ProjectUserValidator::validateId(['idProject' => $idProject]);
         if($validator->fails()){
             return response()->json([
-                'status' => false,
-                'message' => "Bad request",
-                'errors' => $validator->errors()
+                'success' => false,
+                'message' => $validator->errors()
             ], 400);
         }
 
         $userInfo = $this->projectUserServices->getById($idProject);
         if($userInfo === null){
             return response()->json([
-                'status' => false,
-                'message' => 'El proyecto no existe',
-                'errors' => ''
+                'success' => false,
+                'message' => 'El proyecto no existe'
             ], 404);
         }
+        // $usersNotAssigned = User::pluck('name', 'id');
+        $usersNotAssigned = $this->projectUserServices->getNotAssignedUsers($idProject)->pluck('name', 'id');
 
-        return response()->json($this->projectUserServices->getById($idProject));
+        $html = view('modals.ProjectUser', ['project' => $userInfo, 'userInfo' => $usersNotAssigned])->render();
+        return  response()->json(['html' => $html]);
     }
 
     /**
