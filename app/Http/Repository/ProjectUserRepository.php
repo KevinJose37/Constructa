@@ -32,6 +32,13 @@ class ProjectUserRepository implements IRepository{
         return $user->toArray();
     }
 
+    public function notAssignedUsers(int $idProject){
+        $usersNotAssigned = User::whereDoesntHave('projects', function ($query) use ($idProject) {
+            $query->where('projects.id', $idProject);
+        })->get();
+        return $usersNotAssigned;
+    }
+
     public function Create(array $data) {
         try {
             $projectId = $data["idProject"];
@@ -60,6 +67,7 @@ class ProjectUserRepository implements IRepository{
     public function ProjectUserQuery(){
         return Project::with('users');
     }
+
 
 
 

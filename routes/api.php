@@ -17,9 +17,36 @@ use App\Http\Controllers\ProjectUserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('v1')->group(function (){
+    
+        // Users 
+        Route::get('users', [UserController::class, 'index']);
+        Route::post('users', [UserController::class, 'store']);
+        // Route::get('users/{id}', [UserController::class, 'show']);
+        // Route::put('users/{id}', [UserController::class, 'update']);
+        // Route::delete('users/{id}', [UserController::class, 'destroy']);
+    
+        // // Projects
+        Route::get('projects/users', [ProjectUserController::class, 'index']);
+        Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
+        
+    
+        // Route::get('projects', [ProjectController::class, 'index']);
+        // Route::post('projects', [ProjectController::class, 'store']);
+        // Route::get('projects/{id}', [ProjectController::class, 'show']);
+        // Route::put('projects/{id}', [ProjectController::class, 'update']);
+        // Route::delete('projects/{id}', [ProjectController::class, 'destroy']);
+    
+    });
+
+});
+
+
 
 Route::prefix('v1')->group(function (){
     
@@ -31,9 +58,9 @@ Route::prefix('v1')->group(function (){
     // Route::delete('users/{id}', [UserController::class, 'destroy']);
 
     // // Projects
-    // Route::get('projects/users', [ProjectUserController::class, 'index']);
-    // Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
-    // Route::post('projects/assign', [ProjectUserController::class, 'store']);
+    Route::get('projects/users', [ProjectUserController::class, 'index']);
+    Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
+    Route::post('projects/assign', [ProjectUserController::class, 'store'])->name('projects.assign');
 
     // Route::get('projects', [ProjectController::class, 'index']);
     // Route::post('projects', [ProjectController::class, 'store']);
