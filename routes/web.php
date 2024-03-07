@@ -28,6 +28,9 @@ Route::middleware(['auth'])->group(function () {
         // Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
     });
 
+    Route::get('/ChatProjects', function(){
+        return view('ChatProjects');
+    })->name('chatprojects');
 
     Route::get('/DashboardIndex', function () {
         return view('DashboardIndex');
