@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
-    protected $table = 'users'; 
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -48,10 +49,10 @@ class User extends Authenticatable
     ];
 
     
-    public function rol()
-    {
-        return $this->belongsTo(Rol::class, 'rol_id');
-    }
+    // public function rol()
+    // {
+    //     return $this->belongsTo(Rol::class, 'rol_id');
+    // }
 
     public function projects(){
         return $this->belongsToMany(Project::class, 'participants_project', 'user_id', 'project_id');

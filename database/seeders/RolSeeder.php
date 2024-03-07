@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Rol;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+
 
 class RolSeeder extends Seeder
 {
@@ -14,8 +14,10 @@ class RolSeeder extends Seeder
     public function run(): void
     {
         //
-        Rol::firstOrCreate(['rol_name' => 'Administrador']);
-        Rol::firstOrCreate(['rol_name' => 'Gerente']);
-        Rol::firstOrCreate(['rol_name' => 'Empleado']);
+        $role_admin = Role::create(['name' => 'Administrador']);
+        $role_gerente = Role::create(['name' => 'Gerente']);
+        $role_empleado = Role::create(['name' => 'Empleado']);
+
+        
     }
 }
