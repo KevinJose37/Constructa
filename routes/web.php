@@ -27,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
+    Route::get('/ChatProjects', function(){
+        return view('ChatProjects');
+    })->name('chatprojects');
 
     
     Route::get('/dashboard', function () {
