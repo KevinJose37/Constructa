@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProjectUserController;
+use App\Http\Controllers\ChatProjectController;
+
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -27,9 +29,9 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-    Route::get('/ChatProjects', function(){
-        return view('ChatProjects');
-    })->name('chatprojects');
+
+    Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
+    
 
     
     Route::get('/dashboard', function () {
