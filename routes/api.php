@@ -61,6 +61,7 @@ Route::prefix('v1')->group(function (){
     Route::get('projects/users', [ProjectUserController::class, 'index']);
     Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
     Route::post('projects/assign', [ProjectUserController::class, 'store'])->name('projects.assign');
+    Route::post('projects/unassigned', [ProjectUserController::class, 'destroy'])->name('projects.unassigned');
 
     // Route::get('projects', [ProjectController::class, 'index']);
     // Route::post('projects', [ProjectController::class, 'store']);

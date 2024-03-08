@@ -36,7 +36,7 @@ class ProjectUserServices implements IService{
     }
 
     public function getNotAssignedUsers(int $id){
-        return $this->projectUserRepository->notAssignedUsers($id);   
+        return $this->projectUserRepository->notAssignedUsers($id);
     }
 
     public function getById(int $id)
@@ -77,7 +77,30 @@ class ProjectUserServices implements IService{
 
     public function Update(int $id, array $data)
     {
-        
+        // Validamos la existencia del usuario
+        $userId = $this->userRepository->FindById($data["idUser"]);
+        if($userId === null){
+            return ['success' => false, 'message' => 'El usuario no existe'];
+        }
+
+        // Validamos la existencia del proyecto
+        $projectId = $this->projectRepository->FindById($data["idProject"]);
+        if($projectId === null){
+            return ['success' => false, 'message' => 'El proyecto no existe'];
+        }
+
+        try {
+            // Validamos la existencia del usuario en el proyecto
+            $validAssign = $this->projectUserRepository->FindUserByProject($data["idUser"],$data["idProject"]);
+            if(is_null($validAssign)){
+                return ['success' => false, 'message' => 'El usuario no está asignado al proyecto'];
+            }
+            
+            return $this->projectUserRepository->Update($data["idUser"], $data);
+        } catch (Exception $e) {
+            return ['success' => false, 'message' => $e];
+        }
+   
     }
 
     public function Delete(int $id, )

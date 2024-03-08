@@ -19,25 +19,25 @@ Route::middleware(['auth'])->group(function () {
     
     // Rutas relacionadas con proyectos
     Route::namespace('App\Http\Controllers')->group(function () {
-        Route::get('/Proyectos', [ProjectController::class, 'index'])->name('projects.index');
-        Route::post('/Proyectos/store', [ProjectController::class, 'store'])->name('projects.store');
-        Route::put('/Proyectos/{id}', [ProjectController::class, 'update'])->name('projects.update');
-        Route::delete('/Proyectos/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
-        // Route::post('projects/assign', [ProjectUserController::class, 'store'])->name('projects.assign');
+        Route::get('/proyectos', [ProjectController::class, 'index'])->name('projects.index');
+        Route::get('/proyectos/chat', function(){ return view('ChatProjects');})->name('project.chat');
+        Route::post('/proyectos/store', [ProjectController::class, 'store'])->name('projects.store');
+        Route::put('/proyectos/{id}', [ProjectController::class, 'update'])->name('projects.update');
+        Route::delete('/proyectos/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 
-        // Route::get('projects/{idProject}/users', [ProjectUserController::class, 'show']);
     });
 
 
-    Route::get('/DashboardIndex', function () {
+    
+    Route::get('/dashboard', function () {
         return view('DashboardIndex');
     })->name('dashboardindex');
 
         // Rutas relacionadas con usuarios
-    Route::get('/Usuarios', [UserController::class, 'index'])->name('usuarios.index');
-    Route::post('/Usuarios', [UserController::class, 'store'])->name('usuarios.store');
-    Route::delete('/Usuarios/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
-    Route::put('/Usuarios/{id}', [UserController::class, 'update'])->name('usuarios.update');
+    Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
+    Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
+    Route::delete('/usuarios/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    Route::put('/usuarios/{id}', [UserController::class, 'update'])->name('usuarios.update');
 
 });
 

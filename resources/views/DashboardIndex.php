@@ -1,24 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
-
     <head>
         <meta charset="utf-8" />
         <title>Dashboard Principal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Constructa ERP Gestion de recursos para constructoras." name="description" />
         <meta content="Coderthemes" name="author" />
-
         <!-- App favicon -->
         <link rel="shortcut icon" href="assets/images/prueba.png">
-
         <!-- Theme Config Js -->
         <script src="assets/js/config.js"></script>
-
         <!-- App css -->
         <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
-
         <!-- Icons css -->
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     </head>

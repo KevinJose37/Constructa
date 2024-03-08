@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>Proyectos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Constructa ERP Gestion de recursos para constructoras." name="description" />
-    <meta content="Coderthemes" name="author" />
+    <meta content="Constructa ERP Gestion de recursos para constructoras." name="description">
+    <meta content="Coderthemes" name="author">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-    <!-- Theme Config Js -->
-    <script src="assets/js/config.js"></script>
-    
     <!-- App css -->
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet">
 
     <!-- Icons css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    @vite(['resources\js\Proyectos\projects.js'])
-</head>
+    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet">
 
+    <!-- Theme Config Js -->
+    <script src="{{ asset('assets/js/config.js') }}"></script>
+
+    <!-- Dynamic JavaScript resources -->
+    @vite(['resources/js/Proyectos/projects.js'])
+</head>
 <body class="show">
     <!-- Begin page -->
     <div class="wrapper">
-
-
 
         <!-- Topbar -->
         @include('Templates.topbar')
@@ -40,18 +38,6 @@
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
 
-
-        @if(session('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ session('error') }}
-            </div>
-        @endif
         <div class="content-page">
             <div class="content">
 

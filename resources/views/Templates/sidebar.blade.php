@@ -1,23 +1,19 @@
 <!-- ========== Left Sidebar Start ========== -->
 <div class="leftside-menu">
-
     <!-- Brand Logo Light -->
     <a href="index.html" class="logo logo-light">
         <span class="logo-lg">
             <img src="assets/images/constructa.png" alt="logo" width="200">
         </span>
-
     </a>
-
     <!-- Brand Logo Dark -->
     <a href="index.html" class="logo logo-dark">
         <span class="logo-lg">
-            <img src="assets/images/constructa.png" alt="logo" style="width: 200px;  height: 70px;"> <!-- Ajusta los valores según necesites -->
+            <img src="assets/images/constructa.png" alt="logo" style="width: 200px;  height: 70px;">
+            <!-- Ajusta los valores según necesites -->
 
         </span>
-
     </a>
-
     <!-- Sidebar Hover Menu Toggle Button -->
     <div class="button-sm-hover" data-bs-toggle="tooltip" data-bs-placement="right" title="Show Full Sidebar">
         <i class="ri-checkbox-blank-circle-line align-middle"></i>
@@ -32,16 +28,17 @@
     <div class="h-100" id="leftside-menu-container" data-simplebar>
         <!-- Leftbar User -->
         <div class="leftbar-user p-3 text-white">
-    <a href="#" class="d-flex align-items-center text-reset">
-        <div class="flex-shrink-0">
-            <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow">
+            <a href="#" class="d-flex align-items-center text-reset">
+                <div class="flex-shrink-0">
+                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42"
+                        class="rounded-circle shadow">
+                </div>
+                <div class="flex-grow-1 ms-2">
+                    <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
+                    <span class="fs-13">{{ Auth::user()->rol->name }}</span>
+                </div>
+            </a>
         </div>
-        <div class="flex-grow-1 ms-2">
-        <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
-<span class="fs-13">{{ Auth::user()->rol->rol_name }}</span>
-        </div>
-    </a>
-</div>
 
 
 
@@ -51,7 +48,7 @@
             <li class="side-nav-title mt-1"> Principal</li>
 
             <li class="side-nav-item">
-                <a href="/DashboardIndex" class="side-nav-link">
+                <a href="{{ route('dashboardindex')}}" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
                     <span> Dashboard </span>
                 </a>
@@ -60,14 +57,14 @@
             <li class="side-nav-title mt-1">Gestion</li>
 
             <li class="side-nav-item">
-                <a href="/Proyectos" class="side-nav-link">
+                <a href="{{ route('projects.index')}}"  class="side-nav-link">
                     <i class="ri-stack-fill"></i>
-                    <span class="side-nav-item"> Proyectos </span>
+                    <span class="side-nav-item"> Proyectos</span>
                 </a>
             </li>
 
             <li class="side-nav-item">
-                <a href="/Usuarios" class="side-nav-link">
+                <a href="{{ route('usuarios.index')}}"  class="side-nav-link">
                     <i class="ri-user-fill"></i>
                     <span> Usuarios </span>
                 </a>

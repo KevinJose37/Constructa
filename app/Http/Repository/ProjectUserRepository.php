@@ -57,7 +57,26 @@ class ProjectUserRepository implements IRepository{
     }
 
     public function Update($id, array $data){
-
+        try {
+            $projectId = $data["idProject"];
+            $userId = $data["idUser"];
+    
+            $user = User::find($userId);
+            $projects = Project::find($projectId);
+            if(!$projects){
+                throw new Exception("Fail to find the Project", 1);
+            }
+    
+            if(!$user){
+                throw new Exception("Fail to find the user", 1);
+            }
+    
+            $user->projects()->detach($projects->id);
+            return true;
+    
+        } catch (QueryException $e) {
+            return false;
+        }
     }
 
     public function Delete($id){

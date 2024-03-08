@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\ProjectUserServices;
+use App\Services\UserServices;
 use App\Validators\ProjectUserValidator;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class ProjectUserController extends Controller
 
     public function __construct(ProjectUserServices $projectUserService) {
         $this->projectUserServices = $projectUserService;
+
     }
 
     /**
@@ -60,7 +62,6 @@ class ProjectUserController extends Controller
             ], 500);
         }
 
-        // return redirect()->route('projects.index')->with('success', '¡Proyecto creado exitosamente!');
         return response()->json([
             'success' => true,
             'message' => "Se asignó correctamente el usuario",
@@ -88,7 +89,6 @@ class ProjectUserController extends Controller
                 'message' => 'El proyecto no existe'
             ], 404);
         }
-        // $usersNotAssigned = User::pluck('name', 'id');
         $usersNotAssigned = $this->projectUserServices->getNotAssignedUsers($idProject)->pluck('name', 'id');
 
         $html = view('modals.ProjectUser', ['project' => $userInfo, 'userInfo' => $usersNotAssigned])->render();
@@ -106,16 +106,44 @@ class ProjectUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update()
     {
-        //
+
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $data = $request->json()->all();
+        $validator = ProjectUserValidator::validateInsert($data);
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'message' => "Bad request",
+                'errors' => $validator->errors()
+            ], 400);
+        }
+        $userId = $request->input('idUser');
+        $projectId = $request->input('idProject');
+
+
+        $updateUnassigned = $this->projectUserServices->Update($projectId, ["idProject" => $projectId, "idUser" => $userId]);
+        if(isset($updateUnassigned['success']) && $updateUnassigned['success'] === false){
+            return response()->json([
+                'success' => false,
+                'message' => "Ocurrió un error en la asignación",
+                'errors' => $updateUnassigned['message']
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Se eliminó correctamente el usuario del proyecto",
+        ], 200);
+
     }
 }

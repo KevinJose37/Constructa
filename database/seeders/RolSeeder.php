@@ -19,5 +19,7 @@ class RolSeeder extends Seeder
         $role_empleado = Role::create(['name' => 'Empleado']);
 
         
+
+        
     }
 }

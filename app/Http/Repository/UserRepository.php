@@ -34,7 +34,7 @@ class UserRepository implements IRepository{
             $queryBuilder->where('name', 'like', "%$value%")
                          ->orWhere('email', 'like', "%$value%")
                          ->orWhereHas('rol', function ($statusQuery) use ($value) {
-                            $statusQuery->where('rol_name', 'like', "%$value%");
+                            $statusQuery->where('name', 'like', "%$value%");
                         });
         });
     }
