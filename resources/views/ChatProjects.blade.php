@@ -64,6 +64,7 @@
                                 <div class="card-body">
                                     <div class="float-end">
                                         <select class="form-select form-select-sm" id="projectSelect">
+                                            <option selected="">Seleccionar proyecto</option>
                                             @foreach($projects as $project)
                                             <option value="{{ $project->id }}">{{ $project->project_name }}</option>
                                             @endforeach
@@ -74,34 +75,31 @@
 
                                     <div class="clerfix"></div>
                                     @if(isset($messages) && count($messages) > 0)
-@foreach($messages as $message)
-<div class="d-flex align-items-start">
-    <!-- Puedes mostrar la imagen del usuario si está disponible -->
-    <div class="w-100">
-        <h5 class="mt-0">{{ $message->user->name }} <small class="text-muted float-end">{{ $message->created_at }}</small></h5>
-        {{ $message->message }}
-        <br />
-    </div>
-</div>
-@endforeach
-@else
-<p>No hay mensajes disponibles para este proyecto.</p>
-@endif
-
-
-                                </div>
-
-
-
-                                <div class="border rounded mt-4">
-                                    <form action="#" class="comment-area-box">
-                                        <textarea rows="3" class="form-control border-0 resize-none" placeholder="Agregar comentario"></textarea>
-                                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-
-                                            <button type="submit" class="btn btn-sm btn-success"><i class="ri-send-plane-2 me-1"></i>ENVIAR</button>
+                                    @foreach($messages as $message)
+                                    <div class="d-flex align-items-start">
+                                        <!-- Puedes mostrar la imagen del usuario si está disponible -->
+                                        <div class="w-100">
+                                            <h5 class="mt-0">{{ $message->user->name }} <small class="text-muted float-end">{{ $message->created_at }}</small></h5>
+                                            {{ $message->message }}
+                                            <br />
                                         </div>
-                                    </form>
+                                    </div>
+                                    @endforeach
+                                    @else
+                                    <p>No hay mensajes disponibles para este proyecto.</p>
+                                    @endif
+
+
                                 </div>
+                                <form action="{{ route('chatprojects.save') }}" method="POST" class="comment-area-box">
+                                    @csrf
+                                    <input type="hidden" name="project_id" id="project_id" value="">
+                                    <textarea name="message" rows="3" class="form-control border-0 resize-none" placeholder="Agregar comentario"></textarea>
+                                    <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                        <button type="submit" class="btn btn-sm btn-success"><i class="ri-send-plane-2 me-1"></i>ENVIAR</button>
+                                    </div>
+                                </form>
+
                                 <!-- end .border-->
                             </div>
                             <!-- end card-body-->
@@ -230,6 +228,21 @@
 
     <!-- Vendor js -->
     <script src="assets/js/vendor.min.js"></script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var projectSelect = document.getElementById('projectSelect');
+
+    projectSelect.addEventListener('change', function() {
+        var selectedProjectId = projectSelect.value;
+        console.log('ID del proyecto seleccionado:', selectedProjectId); 
+        var projectInput = document.getElementById('project_id');
+        projectInput.value = selectedProjectId;
+    });
+});
+
+
+</script>
 
     <!-- App js -->
     <script src="assets/js/app.min.js"></script>

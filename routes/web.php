@@ -15,6 +15,8 @@ Route::post('/login', [LoginController::class, 'login']);
 
 // Grupo de rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
+
+
     Route::get('/BlankPage', function () {
         return view('BlankPage');
     })->name('blankpage');
@@ -31,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
+    Route::post('/chatprojects', [ChatProjectController::class, 'saveMessageInProject'])->name('chatprojects.save');
+
     
 
     
