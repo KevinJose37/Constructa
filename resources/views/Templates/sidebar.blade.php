@@ -30,8 +30,7 @@
         <div class="leftbar-user p-3 text-white">
             <a href="#" class="d-flex align-items-center text-reset">
                 <div class="flex-shrink-0">
-                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42"
-                        class="rounded-circle shadow">
+                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow">
                 </div>
                 <div class="flex-grow-1 ms-2">
                     <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
@@ -48,7 +47,7 @@
             <li class="side-nav-title mt-1"> Principal</li>
 
             <li class="side-nav-item">
-                <a href="{{ route('dashboardindex')}}" class="side-nav-link">
+                <a href="" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
                     <span> Dashboard </span>
                 </a>
@@ -57,16 +56,25 @@
             <li class="side-nav-title mt-1">Gestion</li>
 
             <li class="side-nav-item">
-                <a href="{{ route('projects.index')}}"  class="side-nav-link">
+                <a href="{{ route('projects.index')}}" class="side-nav-link">
                     <i class="ri-stack-fill"></i>
-                    <span class="side-nav-item"> Proyectos</span>
+                    <span> Proyectos</span>
                 </a>
             </li>
 
             <li class="side-nav-item">
-                <a href="{{ route('usuarios.index')}}"  class="side-nav-link">
+                <a href="{{ route('usuarios.index')}}" class="side-nav-link">
                     <i class="ri-user-fill"></i>
                     <span> Usuarios </span>
+                </a>
+            </li>
+
+            <li class="side-nav-title mt-1"> Comunicacion</li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('chatprojects')}}" class="side-nav-link">
+                    <i class="ri-chat-voice-fill"></i>
+                    <span> Chat </span>
                 </a>
             </li>
 
