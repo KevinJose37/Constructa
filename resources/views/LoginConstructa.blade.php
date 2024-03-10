@@ -63,21 +63,20 @@
                         </div>
 
                         <div class="card-body p-4">
-
                             <div class="text-center w-75 m-auto">
                                 <h4 class="text-dark-50 text-center pb-0">Iniciar sesión</h4>
                                 <p class="text-muted mb-4">Ingresa usuario y contraseña</p>
                             </div>
 
-                            <form action="" method="">
-
+                       
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Usuario</label>
-                                    <input class="form-control" type="text" id="username" required="" placeholder="Ingresa el usuario" name="username">
+                                    <input class="form-control" type="text" id="name" required="" placeholder="Ingresa el usuario" name="name">
                                 </div>
 
                                 <div class="mb-3">
-                                    <!-- <a href="auth-recoverpw.html" class="text-muted float-end fs-12">¿Olvidaste tu contraseña?</a> -->
                                     <label for="password" class="form-label">Contraseña</label>
                                     <div class="input-group input-group-merge">
                                         <input type="password" id="password" class="form-control" placeholder="Ingresa la contraseña" name="password">
@@ -86,12 +85,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(session('message'))
+    <div class="alert alert-danger text-center">
+        {{ session('message') }}
+    </div>
+@endif
+             
                                 <div class="mb-3 mb-0 text-center">
                                     <button class="btn btn-primary" type="submit" name="btnlogin"> Iniciar sesión</button>
                                 </div>
-
                             </form>
-                        </div> <!-- end card-body -->
+                                       </div> <!-- end card-body -->
+
                     </div>
                     <!-- end card -->
 

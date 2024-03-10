@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Services\UserServices;
 use App\Validators\UserValidator;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -21,8 +24,14 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json($this->userService->getAll($request), 200);
+        
+        $filter = $request->input('filter');
+        $users = $this->userService->getAllPaginate($filter);
+
+        return view('Usuarios', compact('users', 'filter')); // Pasar el usuario a la vista
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,8 +46,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+            'email' => 'required|email|unique:users,email',
+            'rol_id' => 'required|exists:roles,id' // Asegúrate de que existe el rol en la tabla 'roles'
+        ]);
+
+        try {
+            // Crear un nuevo usuario con los datos validados
+            $user = new User();
+            $user->name = $validatedData['name'];
+            $user->password = bcrypt($validatedData['password']);
+            $user->email = $validatedData['email'];
+            $user->rol_id = $validatedData['rol_id']; // Asignar el rol_id del formulario al modelo User
+            $user->save();
+
+            // Redirigir a alguna parte o devolver una respuesta
+            return redirect()->route('usuarios.index')->with('success', 'Usuario creado exitosamente');
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que ocurra durante la creación
+            return back()->withInput()->withErrors(['error' => 'Ocurrió un error al crear el usuario: ' . $e->getMessage()]);
+        }
     }
+
+
 
     /**
      * Display the specified resource.
@@ -46,7 +79,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $validator = UserValidator::validateId(['id' => $id]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'status' => false,
                 'message' => "Bad request",
@@ -55,10 +88,10 @@ class UserController extends Controller
         }
 
         $userInfo = $this->userService->getById($id);
-        if($userInfo === null){
+        if ($userInfo === null) {
             return response()->json([
                 'status' => false,
-                'message' => 'Not found',
+                'message' => 'Usuario no encontrado',
                 'errors' => ''
             ], 404);
         }
@@ -71,7 +104,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**
@@ -79,14 +112,41 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Validar los datos del formulario de edición
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'user_password' => 'nullable|string|min:8',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'rol_id' => 'required|exists:roles,id'
+        ]);
+
+         // Obtener el proyecto a actualizar
+         $user = User::findOrFail($request->input('user_id'));
+
+         // Actualizar los datos del proyecto
+         $user->name = $request->input('name');
+         $user->password = $request->input('user_password');
+         $user->email = $request->input('email');
+         $user->rol_id = $request->input('rol_id');
+ 
+         // Guardar los cambios
+         $user->save();
+ 
+         // Redireccionar a la página de proyectos u otra acción deseada
+         return redirect()->route('usuarios.index')->with('success', '¡Proyecto actualizado exitosamente!');
+
+        
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('usuarios.index')->with('success', 'Usuario eliminado exitosamente');
     }
 }
