@@ -61,35 +61,20 @@
                         <div class="col-xl-8 col-lg-7">
                             <!-- project card -->
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="float-end">
-                                        <select class="form-select form-select-sm" id="projectSelect">
-                                            <option selected="">Seleccionar proyecto</option>
-                                            @foreach($projects as $project)
-                                            <option value="{{ $project->id }}">{{ $project->project_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <h4 class="mb-4 mt-0 fs-16">Proyecto ejemplo</h4>
-
-                                    <div class="clerfix"></div>
-                                    @if(isset($messages) && count($messages) > 0)
-                                    @foreach($messages as $message)
-                                    <div class="d-flex align-items-start">
-                                        <!-- Puedes mostrar la imagen del usuario si está disponible -->
-                                        <div class="w-100">
-                                            <h5 class="mt-0">{{ $message->user->name }} <small class="text-muted float-end">{{ $message->created_at }}</small></h5>
-                                            {{ $message->message }}
-                                            <br />
+                                    <div class="card-body">
+                                        <div class="float-end">
+                                            <select class="form-select form-select-sm" id="projectSelect">
+                                                <option selected="">Seleccionar proyecto</option>
+                                                @foreach($projects as $project)
+                                                <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
+
+                                        <h4 class="mb-4 mt-0 fs-16">Proyecto ejemplo</h4>
+                                        <div id="messages-container">
+                                        @include('partials.messages')
                                     </div>
-                                    @endforeach
-                                    @else
-                                    <p>No hay mensajes disponibles para este proyecto.</p>
-                                    @endif
-
-
                                 </div>
                                 <form action="{{ route('chatprojects.save') }}" method="POST" class="comment-area-box">
                                     @csrf
@@ -230,19 +215,35 @@
     <script src="assets/js/vendor.min.js"></script>
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var projectSelect = document.getElementById('projectSelect');
+    document.addEventListener('DOMContentLoaded', function() {
+        var projectSelect = document.getElementById('projectSelect');
 
-    projectSelect.addEventListener('change', function() {
-        var selectedProjectId = projectSelect.value;
-        console.log('ID del proyecto seleccionado:', selectedProjectId); 
-        var projectInput = document.getElementById('project_id');
-        projectInput.value = selectedProjectId;
+        projectSelect.addEventListener('change', function() {
+            var selectedProjectId = projectSelect.value;
+            console.log('ID del proyecto seleccionado:', selectedProjectId);
+
+            // Actualizar el campo oculto con el ID del proyecto seleccionado
+            var projectInput = document.getElementById('project_id');
+            projectInput.value = selectedProjectId;
+
+            // Crear la solicitud AJAX al servidor
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/getMessagesByProject?project_id=' + selectedProjectId, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    // Actualizar el contenido del contenedor de mensajes
+                    document.getElementById('messages-container').innerHTML = xhr.responseText;
+                } else {
+                    console.error('Error al cargar los mensajes: ' + xhr.statusText);
+                }
+            };
+            xhr.send(); // Envía la solicitud AJAX
+        });
     });
-});
-
-
 </script>
+
+
+
 
     <!-- App js -->
     <script src="assets/js/app.min.js"></script>
