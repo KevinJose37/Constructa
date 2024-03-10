@@ -42,7 +42,7 @@ class ProjectServices implements IService{
 
     public function Add(array $data)
     {
-        
+        return $this->projectRepository->Create($data);
     }
 
     public function Update(int $id, array $data)
