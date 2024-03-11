@@ -84,11 +84,7 @@
 
                                                 <br />
 
-<<<<<<< HEAD
-
-=======
                                                 
->>>>>>> 219a7eb581b30706575c2e78798c6fda7baf8699
                                             </div>
                                         </div>
 
@@ -119,22 +115,14 @@
                                 </div>
                                 <!-- end card-->
 
-<<<<<<< HEAD
-
-=======
                                 
->>>>>>> 219a7eb581b30706575c2e78798c6fda7baf8699
                             </div>
                             <!-- end col -->
 
                             <div class="col-xl-4 col-lg-5">
                                 <div class="card">
                                     <div class="card-body">
-<<<<<<< HEAD
-
-=======
                                         
->>>>>>> 219a7eb581b30706575c2e78798c6fda7baf8699
 
                                         <h5 class="card-title fs-16 mb-3">ADJUNTOS</h5>
 

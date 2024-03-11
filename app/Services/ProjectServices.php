@@ -55,4 +55,8 @@ class ProjectServices implements IService{
         
     }
 
+    public function getStatusProjects(){
+        return $this->projectRepository->getAllStatusProject();
+    }
+
 }
