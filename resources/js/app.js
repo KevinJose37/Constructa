@@ -23,7 +23,7 @@ document.addEventListener("livewire:init", function () {
             confirmButtonText: "Sí",
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.dispatch(data.emit, {id: data.id});
+                Livewire.dispatch(data.emit, {id: data.id, secondparameters: data.secondparameters});
             }
         });
     });

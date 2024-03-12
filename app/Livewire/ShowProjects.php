@@ -30,14 +30,13 @@ class ShowProjects extends Component
             return;
         }
 
-        $message = $deleteProject['message'];
+        $message = $deleteProject['message']; 
         $this->dispatch('alert', type: 'error', title: 'Proyectos',message: $message);
     }
 
-    public function viewUsersProject($id){
-        Log::info("aaaa");
-        $this->dispatch('loadForm', $id)->to(ViewUsersProject::class);
-    }
+    // public function viewUsersProject($id){
+    //     $this->dispatch('loadForm', $id)->to(ViewUsersProject::class);
+    // }
 
     public function destroyAlert($id, $name){
         $this->dispatch('alertConfirmation',

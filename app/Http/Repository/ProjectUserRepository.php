@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 
 class ProjectUserRepository implements IRepository
@@ -93,6 +94,27 @@ class ProjectUserRepository implements IRepository
             }
             $projects->users()->detach();
             $projects->delete();
+            return true;
+        } catch (QueryException $e) {
+            throw new Exception($e->getMessage(), 1);
+        }
+    }
+
+    public function DeleteUserByProject($idProject, $idUser){
+        try {
+            $projects = Project::find($idProject);
+            if (!$projects) {
+                throw new Exception("Fail to find the Project", 1);
+            }
+
+
+            $user = User::find($idUser);
+            if (!$user) {
+                throw new Exception("Fail to find the user", 1);
+            }
+
+            $projects->users()->detach($user);
+
             return true;
         } catch (QueryException $e) {
             throw new Exception($e->getMessage(), 1);

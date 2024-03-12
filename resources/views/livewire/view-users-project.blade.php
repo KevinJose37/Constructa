@@ -2,7 +2,7 @@
     <a href="javascript:void(0);" class="text-reset fs-19 px-1 view-users" id="view-users"
         wire:click="$set('formUsers.open', true)"> <i class="ri-presentation-line"></i></a>
 
-    <x-dialog-modal wire:model="formUsers.open" maxWidth="md" id="{{$project->id}}">
+    <x-dialog-modal wire:model="formUsers.open" maxWidth="md" id="{{ $project->id }}">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
             <div class="row">
@@ -28,10 +28,11 @@
                                         <button type="button" id="event-assign-project" wire:click="toggleSelect"
                                             class="btn btn-primary w-100">Asignar nueva persona</button>
                                     </div>
-                                    @if($openSelect)
+                                    @if ($openSelect)
                                         <div class="row mt-2">
                                             <div class="col">
-                                                <select name="idUser" id="all-users-assign" class="form-select" wire:model="formUsers.user_select">
+                                                <select name="idUser" id="all-users-assign" class="form-select"
+                                                    wire:model="formUsers.user_select">
                                                     <option value="-" disabled selected>Seleccione una opción...
                                                     </option>
                                                     @foreach ($usersNotAssigned as $user)
@@ -49,31 +50,33 @@
                             @endif
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <input type="hidden" name="idProject" id="idProject" value="{{ $project->id }}">
-                        <h3>Usuarios Asociados</h3>
-                        <table class="table table-striped table-centered mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Nombre del Usuario</th>
-                                    <th>Email</th>
-                                    <th>Rol</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($project->users as $user)
+                    @if (!$project->users->isEmpty())
+                        <div class="mb-3">
+                            <input type="hidden" name="idProject" id="idProject" value="{{ $project->id }}">
+                            <h3>Usuarios Asociados</h3>
+                            <table class="table table-striped table-centered mb-0">
+                                <thead>
                                     <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->rol->name }}</td>
-                                        <td><a class="text-reset fs-19 px-1 delete-user-project-btn"
-                                                data-id-user="{{ $user->id }}"> <i
-                                                    class="ri-delete-bin-2-line"></i></a></td>
+                                        <th>Nombre del Usuario</th>
+                                        <th>Email</th>
+                                        <th>Rol</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    @foreach ($project->users as $user)
+                                        <tr>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->rol->name }}</td>
+                                            <td><a class="text-reset fs-19 px-1 delete-user-project-btn" data-id-user="{{ $user->id }}"
+                                                wire:click="destroyAlert({{ $user->id }}, '{{ $user->name }}')">
+                                                <i class="ri-delete-bin-2-line"></i></a></td>
+                                            </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
 

@@ -10,7 +10,6 @@ class projectCreateForm extends Form
 {
     public $open = false;
 
-
     #[Validate('required', message: 'Ingrese un valor para el nombre del proyecto')]
     #[Validate('min:3', message: 'El nombre es demasiado corto')]
     public $name_project = "";
