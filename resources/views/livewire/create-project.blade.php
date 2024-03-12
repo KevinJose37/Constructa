@@ -1,10 +1,14 @@
 <div>
-    <div class="col-lg-6 text-end w-25">
+    
+<ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item">
         <!-- Div a la derecha -->
         <button type="button" class="btn btn-primary" wire:click="$set('form.open', true)">
             Crear un nuevo proyecto
         </button>
-    </div>
+        </li>
+
+</ol>
     <x-dialog-modal wire:model="form.open" maxWidth="md">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
