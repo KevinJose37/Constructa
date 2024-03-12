@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Http\Repository\IRepository;
 use App\Http\Repository\ProjectRepository;
 use App\Http\Repository\UserRepository;
+use App\Services\PaginationServices;
+use App\Services\ProjectServices;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         //
         $this->app->bind(IRepository::class, UserRepository::class);
         $this->app->bind(IRepository::class, ProjectRepository::class);
+
     }
 
     /**
@@ -25,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+
     }
 }

@@ -42,7 +42,7 @@ class ProjectServices implements IService{
 
     public function Add(array $data)
     {
-        
+        return $this->projectRepository->Create($data);
     }
 
     public function Update(int $id, array $data)
@@ -53,6 +53,10 @@ class ProjectServices implements IService{
     public function Delete(int $id)
     {
         
+    }
+
+    public function getStatusProjects(){
+        return $this->projectRepository->getAllStatusProject();
     }
 
 }

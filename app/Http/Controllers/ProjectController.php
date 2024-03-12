@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Services\ProjectServices;
+use App\Validators\ProjectValidator;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -42,27 +43,35 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         // Validar los datos del formulario
-        $validatedData = $request->validate([
-            'project_name' => 'required|string',
-            'project_description' => 'required|string',
-            'project_status_id' => 'required|integer',
-            'project_start_date' => 'required|date',
-            'project_estimated_end' => 'required|date',
-        ]);
+        $data = $request->json()->all();
+        $validator = ProjectValidator::validateStore($data);
+        if($validator->fails()){
+            return response()->json([
+                'success' => false,
+                'message' => "Bad request",
+                'errors' => $validator->errors()->toArray()
+            ], 400);
+        }
 
-        // Crear un nuevo proyecto
-        $project = new Project();
-        $project->project_name = $request->input('project_name');
-        $project->project_description = $request->input('project_description');
-        $project->project_status_id = $request->input('project_status_id');
-        $project->project_start_date = $request->input('project_start_date');
-        $project->project_estimated_end = $request->input('project_estimated_end');
+        $data['project_name'] = $request->input('project_name');
+        $data['project_description'] = $request->input('project_description');
+        $data['project_status_id'] = $request->input('project_status_id');
+        $data['project_start_date'] = $request->input('project_start_date');
+        $data['project_estimated_end'] = $request->input('project_estimated_end');
+        $responseSave = $this->projectService->Add($data);
+        if($responseSave){
+            return response()->json([
+                'success' => true,
+                'message' => "Se creó correctamente el proyecto {$data['project_name']}",
+            ], 200);
+        }
 
-        // Guardar el proyecto
-        $project->save();
+        return response()->json([
+            'success' => true,
+            'message' => "Ocurrió un error al crear el proyecto {$data['project_name']}",
+        ], 500);
 
-        // Redireccionar a la página de proyectos u otra acción deseada
-        return redirect()->route('projects.index')->with('success', '¡Proyecto creado exitosamente!');
+
     }
 
     /**
@@ -116,14 +125,14 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id)
-{
-    // Buscar el proyecto por su ID
-    $project = Project::findOrFail($id);
+    {
+        // Buscar el proyecto por su ID
+        $project = Project::findOrFail($id);
 
-    // Eliminar el proyecto
-    $project->delete();
+        // Eliminar el proyecto
+        $project->delete();
 
-    // Redireccionar a la página de proyectos u otra acción deseada
-    return redirect()->route('projects.index')->with('success', '¡Proyecto eliminado exitosamente!');
-}
+        // Redireccionar a la página de proyectos u otra acción deseada
+        return redirect()->route('projects.index')->with('success', '¡Proyecto eliminado exitosamente!');
+    }
 }

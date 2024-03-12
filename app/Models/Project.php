@@ -17,7 +17,7 @@ class Project extends Model
         'project_description',
         'project_status_id',
         'project_start_date',
-        'project_estimated_end',
+        'project_estimated_end'
     ];
 
     public function projectStatus()

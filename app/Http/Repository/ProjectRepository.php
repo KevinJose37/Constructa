@@ -2,6 +2,7 @@
 namespace App\Http\Repository;
 
 use App\Models\Project;
+use App\Models\ProjectStatus;
 
 class ProjectRepository implements IRepository{
 
@@ -14,7 +15,13 @@ class ProjectRepository implements IRepository{
     }
 
     public function Create(array $data){
-
+        $project = new Project();
+        $project->project_name = $data['project_name'];
+        $project->project_description = $data['project_description'];
+        $project->project_status_id = $data['project_status_id'];
+        $project->project_start_date = $data['project_start_date'];
+        $project->project_estimated_end = $data['project_estimated_end'];
+        return $project->save();
     }
 
     public function Update($id, array $data){
@@ -39,6 +46,10 @@ class ProjectRepository implements IRepository{
                             $statusQuery->where('status_name', 'like', "%$value%");
                         });
         });
+    }
+
+    public function getAllStatusProject(){
+        return ProjectStatus::get();
     }
 
 }

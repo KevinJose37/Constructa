@@ -30,7 +30,7 @@
         <div class="leftbar-user p-3 text-white">
             <a href="#" class="d-flex align-items-center text-reset">
                 <div class="flex-shrink-0">
-                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow">
+                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42" class="rounded-circle shadow" width="50px">
                 </div>
                 <div class="flex-grow-1 ms-2">
                     <span class="fw-semibold fs-15 d-block">{{ Auth::user()->name }}</span>
@@ -38,9 +38,6 @@
                 </div>
             </a>
         </div>
-
-
-
         <!--- Sidemenu -->
         <ul class="side-nav">
 
