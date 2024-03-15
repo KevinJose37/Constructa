@@ -17,9 +17,9 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::middleware(['auth'])->group(function () {
 
 
-    Route::get('/BlankPage', function () {
-        return view('BlankPage');
-    })->name('blankpage');
+    Route::get('/purchaseorder', function () {
+        return view('PurchaseOrder');
+    })->name('purchaseorder');
     
     // Rutas relacionadas con proyectos
     Route::namespace('App\Http\Controllers')->group(function () {
@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
     Route::post('/chatprojects', [ChatProjectController::class, 'saveMessageInProject'])->name('chatprojects.save');
     Route::get('/getMessagesByProject', [ChatProjectController::class, 'getMessagesByProject'])->name('chatprojects.messages');
+
+
 
 
 
