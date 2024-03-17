@@ -33,8 +33,6 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
-    Route::post('/chatprojects', [ChatProjectController::class, 'saveMessageInProject'])->name('chatprojects.save');
-    Route::get('/getMessagesByProject', [ChatProjectController::class, 'getMessagesByProject'])->name('chatprojects.messages');
 
 
 

@@ -19,20 +19,6 @@ class ChatProjectController extends Controller
     }
 }
 
-public function saveMessage(Request $request)
-    {
-        $request->validate([
-            'selectedProjectId' => 'required',
-            'newMessage' => 'required',
-        ]);
 
-        $message = new Chat();
-        $message->project_id = $request->input('selectedProjectId');
-        $message->user_id = Auth::id();
-        $message->message = $request->input('newMessage');
-        $message->save();
-
-        return redirect()->route('chatprojects')->with('success', 'Mensaje guardado exitosamente.');
-    }
 
 }
