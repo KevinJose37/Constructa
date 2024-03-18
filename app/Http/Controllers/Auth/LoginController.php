@@ -31,6 +31,7 @@ class LoginController extends Controller
             return back()->withInput()->with('message', 'Credenciales inválidas');
         }
     }
+    
     public function showLoginForm()
     {
         return view('LoginConstructa');

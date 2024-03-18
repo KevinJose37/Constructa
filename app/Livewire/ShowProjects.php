@@ -4,20 +4,27 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
-use Illuminate\Http\Request;
+use Livewire\WithPagination;
 use App\Services\ProjectServices;
+use Illuminate\Support\Facades\Auth;
 use App\Services\ProjectUserServices;
-use Illuminate\Support\Facades\Log;
 
 class ShowProjects extends Component
 {
-
+    use WithPagination;
     public $search = "";
 
     #[On('projectRefresh')]
-    public function render(ProjectServices $projectServices)
+    public function render(ProjectServices $projectServices, ProjectUserServices $projectUserServices)
     {
-        $projects = $projectServices->getAllPaginate($this->search);
+        // $this->resetPage();
+        $user = Auth::user();
+        if($user->hasRole('Empleado')){
+            $projects = $projectUserServices->getProjectsByUserId($user->id);
+        } else {
+            $projects = $projectServices->getAllPaginate($this->search);
+        }
+
         return view('livewire.show-projects',  compact('projects'));
     }
 
@@ -30,13 +37,9 @@ class ShowProjects extends Component
             return;
         }
 
-        $message = $deleteProject['message']; 
+        $message = $deleteProject['message'];
         $this->dispatch('alert', type: 'error', title: 'Proyectos',message: $message);
     }
-
-    // public function viewUsersProject($id){
-    //     $this->dispatch('loadForm', $id)->to(ViewUsersProject::class);
-    // }
 
     public function destroyAlert($id, $name){
         $this->dispatch('alertConfirmation',

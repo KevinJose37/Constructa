@@ -66,7 +66,7 @@
                                         </ol>
                                     </div>
                                     <div class="table-responsive-sm">
-                                        <form class="needs-validation" name="event-form-search" id="form-event-search" action="{{ route('usuarios.index') }}" method="GET" novalidate>
+                                        {{-- <form class="needs-validation" name="event-form-search" id="form-event-search" action="{{ route('usuarios.index') }}" method="GET" novalidate>
                                             @csrf
                                             <div class="col-lg-3 col-md-6 ">
                                                 <div class="input-group">
@@ -75,7 +75,7 @@
                                                     <button class="btn" id="clear-filter"><i class="ri-close-line"></i></button>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </form> --}}
 
                                         <table class="table table-striped table-centered mb-0">
                                             <thead>
@@ -108,13 +108,13 @@
                                                                 <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#event-modal-gestionar"> Gestionar proyectos al usuario</a>
                                                             </div>
                                                         </div>
-                                                        <form action="{{ route('usuarios.destroy', $user->id) }}" method="POST" class="delete-form">
+                                                        {{-- <form action="{{ route('usuarios.destroy', $user->id) }}" method="POST" class="delete-form">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="button" class="btn btn-link text-reset fs-19 px-1 delete-project-btn" onclick="confirmDelete('{{ $user->name }}', event)">
                                                                 <i class="ri-delete-bin-2-line"></i>
                                                             </button>
-                                                        </form>
+                                                        </form> --}}
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -143,7 +143,7 @@
                         <div class="modal fade" id="event-modal" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form class="needs-validation" name="event-form" id="form-event" action="{{ route('usuarios.store') }}" method="POST" novalidate>
+                                    {{-- <form class="needs-validation" name="event-form" id="form-event" action="{{ route('usuarios.store') }}" method="POST" novalidate>
                                         @csrf
                                         <div class="modal-header py-3 px-4 border-bottom-0">
                                             <h5 class="modal-title" id="modal-title">Crear nuevo usuario</h5>
@@ -194,7 +194,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> --}}
                                 </div> <!-- end modal-content-->
                             </div> <!-- end modal dialog-->
                         </div>
@@ -215,7 +215,7 @@
                         <div class="modal fade" id="event-modal-editar" tabindex="-1">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    <form class="needs-validation" name="event-form-editar" id="event-form-editar" action="{{ route('usuarios.update', ['id' => $user->id]) }}" method="POST" novalidate>
+                                    {{-- <form class="needs-validation" name="event-form-editar" id="event-form-editar" action="{{ route('usuarios.update', ['id' => $user->id]) }}" method="POST" novalidate>
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-header py-3 px-4 border-bottom-0">
@@ -268,7 +268,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </form> --}}
                                 </div> <!-- end modal-content-->
                             </div> <!-- end modal dialog-->
                         </div>

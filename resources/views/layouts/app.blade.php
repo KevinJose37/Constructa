@@ -35,8 +35,6 @@
     <!-- Sidebar -->
     @include('Templates.sidebar')
     <!-- Sidebar -->
-
-
     <!-- Page Heading -->
 
     <!-- Page Content -->

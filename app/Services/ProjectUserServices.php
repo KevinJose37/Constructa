@@ -36,6 +36,12 @@ class ProjectUserServices implements IService
         return $this->paginationService->filter($projectUsersQuery);
     }
 
+    public function getProjectsByUserId(int $idUser){
+        $projectUsersQuery = $this->projectUserRepository->getAssignProject($idUser);
+        return $this->paginationService->filter($projectUsersQuery);
+    }
+
+
     public function getNotAssignedUsers(int $id)
     {
         return $this->projectUserRepository->notAssignedUsers($id);

@@ -76,6 +76,7 @@
                     </span>
                     <span class="d-lg-flex flex-column gap-1 d-none">
                         <h5 class="my-0">{{ Auth::user()->name }}</h5>
+                        {{-- @dd(Auth::user()->rol) --}}
                         <h6 class="my-0 fw-normal">{{ Auth::user()->rol->name }}</h6>
                     </span>
                 </a>
@@ -84,9 +85,6 @@
                     <div class=" dropdown-header noti-title">
                         <h6 class="text-overflow m-0">¡Bienvenido!</h6>
                     </div>
-
-
-
                     <!-- item-->
                     <a href="pages-faq.html" class="dropdown-item">
                         <i class="ri-customer-service-2-fill align-middle me-1"></i>

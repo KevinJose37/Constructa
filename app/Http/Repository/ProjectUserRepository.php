@@ -37,6 +37,18 @@ class ProjectUserRepository implements IRepository
         return $user->toArray();
     }
 
+    public function getAssignProject(int $idUser){
+        $user = User::find($idUser);
+
+        if (!$user) {
+            throw new Exception("Fail to find the Project", 1);
+        }
+    
+        // Utiliza la relación 'projects' para obtener los proyectos del usuario
+        $projects = $user->projects();
+        return $projects;
+    }
+
     public function notAssignedUsers(int $idProject)
     {
         $usersNotAssigned = User::whereDoesntHave('projects', function ($query) use ($idProject) {
