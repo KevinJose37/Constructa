@@ -40,7 +40,6 @@ class ViewUsersProject extends Component
     #[On('destroy-user-project')] 
     public function destroy($id, ProjectUserServices $projectUserServices){
         $assignUser = $projectUserServices->DeleteUserByProject($this->project->id, $id );
-        Log::info($assignUser);
         if(isset($assignUser['success']) && $assignUser['success'] === false){
             $this->dispatch('alert', type: 'error', title: 'Ocurrió un error en la acción',message: $assignUser['message']);
             return;

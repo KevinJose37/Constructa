@@ -47,7 +47,11 @@ class ProjectServices implements IService{
 
     public function Update(int $id, array $data)
     {
-        
+        $resultUpdate = $this->projectRepository->Update($id, $data);
+        if(!$resultUpdate){
+            return ['success' => false, 'message' => 'El proyecto no existe']; 
+        }
+        return true;
     }
 
     public function Delete(int $id)

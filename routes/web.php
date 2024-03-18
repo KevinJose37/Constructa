@@ -22,24 +22,11 @@ Route::middleware(['auth'])->group(function () {
     })->name('purchaseorder');
     
     // Rutas relacionadas con proyectos
-    Route::namespace('App\Http\Controllers')->group(function () {
-        Route::get('/proyectos', [ProjectController::class, 'index'])->name('projects.index');
-        Route::get('/proyectos/chat', function(){ return view('ChatProjects');})->name('project.chat');
-        Route::post('/proyectos/store', [ProjectController::class, 'store'])->name('projects.store');
-        Route::put('/proyectos/{id}', [ProjectController::class, 'update'])->name('projects.update');
-        Route::delete('/proyectos/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
-
-    });
-
+    Route::get('/proyectos', [ProjectController::class, 'index'])->name('projects.index');
 
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
-
-
-
-
-
-    
-
+    Route::post('/chatprojects', [ChatProjectController::class, 'saveMessageInProject'])->name('chatprojects.save');
+    Route::get('/getMessagesByProject', [ChatProjectController::class, 'getMessagesByProject'])->name('chatprojects.messages');
     
     Route::get('/dashboard', function () {
         return view('DashboardIndex');
@@ -47,9 +34,6 @@ Route::middleware(['auth'])->group(function () {
 
         // Rutas relacionadas con usuarios
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
-    Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
-    Route::delete('/usuarios/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
-    Route::put('/usuarios/{id}', [UserController::class, 'update'])->name('usuarios.update');
 
 });
 
