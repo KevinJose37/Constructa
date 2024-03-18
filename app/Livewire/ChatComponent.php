@@ -49,7 +49,7 @@ class ChatComponent extends Component
         try {
             
             $this->messages = $this->getMessagesByProject();
-
+            
         } catch (\Exception $e) {
             // Manejar la excepción
             $this->addError('error', 'Error al cargar los mensajes: ' . $e->getMessage());
@@ -64,9 +64,8 @@ class ChatComponent extends Component
                 $message->user_id = Auth::id();
                 $message->message = $this->newMessage;
                 $message->save();
-
                 $this->newMessage = '';
-                $this->loadMessages(); 
+                $this->loadMessages();
 
             } else {
                 // Manejar el caso en el que no se ha seleccionado un proyecto

@@ -4,10 +4,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="float-end">
-                        <select wire:model="selectedProjectId" wire:change="loadMessages" class="form-select form-select-sm">
+                        <select wire:model="selectedProjectId" wire:change="loadMessages"
+                            class="form-select form-select-sm">
                             <option value="">Seleccionar proyecto</option>
-                            @foreach($projects as $project)
-                            <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+                            @foreach ($projects as $project)
+                                <option value="{{ $project->id }}">{{ $project->project_name }}</option>
                             @endforeach
                         </select>
 
@@ -15,28 +16,33 @@
 
                     <h4 class="mb-4 mt-0 fs-16">Chat</h4>
 
-                    <div id="messages-container" class="card-body py-0 mb-3 overflow-auto" data-simplebar style="max-height: 250px;">
-                        @if($messages)
-                        @foreach($messages as $message)
-                        <div class="d-flex align-items-start mt-3">
-                            <img class="me-2 rounded-circle" src="assets/images/users/avatar-5.jpg" alt="Generic placeholder image" height="32" />
-                            <div class="w-100">
-                                <h5 class="mt-0">{{ $message->user->name }} <small class="text-muted float-end">{{ $message->created_at }}</small></h5>
-                                {{ $message->message }}
-                                <br />
-                            </div>
-                        </div>
-                        @endforeach
+                    <div id="messages-container" class="card-body py-0 mb-3 overflow-auto" data-simplebar
+                        style="max-height: 250px;">
+                        @if ($messages)
+                            @foreach ($messages as $message)
+                                <div class="d-flex align-items-start mt-3">
+                                    <img class="me-2 rounded-circle" src="assets/images/users/avatar-5.jpg"
+                                        alt="Generic placeholder image" height="32" />
+                                    <div class="w-100">
+                                        <h5 class="mt-0">{{ $message->user->name }} <small
+                                                class="text-muted float-end">{{ $message->created_at }}</small></h5>
+                                        {{ $message->message }}
+                                        <br />
+                                    </div>
+                                </div>
+                            @endforeach
                         @else
-                        <p>Seleccione un proyecto que tenga mensajes o envíe uno.</p>
+                            <p>Seleccione un proyecto que tenga mensajes o envíe uno.</p>
                         @endif
                     </div>
 
                     <form wire:submit.prevent="saveMessage" class="comment-area-box">
                         <input type="hidden" wire:model="selectedProjectId" name="projectId">
-                        <textarea wire:model="newMessage" rows="3" class="form-control border-0 resize-none mt-3 " placeholder="Agregar comentario"></textarea>
+                        <textarea wire:model="newMessage" rows="3" class="form-control border-0 resize-none mt-3 "
+                            placeholder="Agregar comentario"></textarea>
                         <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                            <button type="submit" class="btn btn-sm btn-success"><i class="ri-send-plane-2 me-1"></i>ENVIAR</button>
+                            <button type="submit" class="btn btn-sm btn-success"><i
+                                    class="ri-send-plane-2 me-1"></i>ENVIAR</button>
                         </div>
                     </form>
 
@@ -50,7 +56,8 @@
 
                     <h5 class="card-title fs-16 mb-3">ADJUNTOS</h5>
 
-                    <form action="/" method="post" class="dropzone" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
+                    <form action="/" method="post" class="dropzone" id="myAwesomeDropzone" data-plugin="dropzone"
+                        data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
                         <div class="fallback">
                             <input name="file" type="file" />
                         </div>
@@ -70,7 +77,8 @@
                             <div class="p-2">
                                 <div class="row align-items-center">
                                     <div class="col-auto">
-                                        <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light" alt="" />
+                                        <img data-dz-thumbnail src="#" class="avatar-sm rounded bg-light"
+                                            alt="" />
                                     </div>
                                     <div class="col ps-0">
                                         <a href="javascript:void(0);" class="text-muted fw-bold" data-dz-name></a>
@@ -136,6 +144,8 @@
 
 
 </div>
-<script src="assets/vendor/dropzone/min/dropzone.min.js"></script>
-<!-- init js -->
-<script src="assets/js/pages/component.fileupload.js"></script>
+@script
+    <script src="assets/vendor/dropzone/min/dropzone.min.js"></script>
+    <!-- init js -->
+    <script src="assets/js/pages/component.fileupload.js"></script>
+@endscript
