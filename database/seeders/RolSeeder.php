@@ -26,10 +26,24 @@ class RolSeeder extends Seeder
         $update_project = Permission::firstOrCreate(['name' => 'update.project']);
         $delete_project = Permission::firstOrCreate(['name' => 'delete.project']);
         $view_project = Permission::firstOrCreate(['name' => 'view.project']);
+        $assign_user_project = Permission::firstOrCreate(['name' => 'assign.user.project']);
+        $unassign_user_project = Permission::firstOrCreate(['name' => 'unassign.user.project']);
+
+        // Usuarios
+        $store_users = Permission::firstOrCreate(['name' => 'store.users']);
+        $update_users = Permission::firstOrCreate(['name' => 'update.users']);
+        $delete_users = Permission::firstOrCreate(['name' => 'delete.users']);
+        $view_users = Permission::firstOrCreate(['name' => 'view.users']);
+        $change_rol_users = Permission::firstOrCreate(['name' => 'change.rol.users']);
+
 
         // Asignar permisos a roles
-        $role_admin->syncPermissions($store_project, $update_project, $delete_project, $view_project);
-        $role_gerente->syncPermissions($store_project, $update_project, $view_project);
-        $role_empleado->syncPermissions($view_project);
+        $role_admin->syncPermissions($store_project, $update_project, $delete_project, $view_project, $assign_user_project, $unassign_user_project,
+                                        $store_users, $update_users, $delete_users, $view_users, $change_rol_users);
+
+        $role_gerente->syncPermissions($store_project, $update_project, $view_project, $assign_user_project, $unassign_user_project,
+                                        $store_users, $update_users, $view_users);
+
+        $role_empleado->syncPermissions($view_project, $view_users, $update_users);
     }
 }

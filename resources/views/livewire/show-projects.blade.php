@@ -20,26 +20,29 @@
                     <livewire:create-project></livewire:create-project>
                 @endcan
             </div>
-            <table class="table table-striped table-centered mb-0">
+            <div class="table-responsive">
+                
+            </div>
+            <table class="table table-striped table-centered mb-0 ">
                 <thead>
-                    <tr>
-                        <th>Nombre del proyecto</th>
-                        <th>Descripción del proyecto</th>
-                        <th>Estado</th>
-                        <th>Fecha inicio</th>
-                        <th>Fecha estimada fin</th>
-                        <th>Acciones</th>
+                    <tr class="d-flex">
+                        <th class="col-md-2">Nombre del proyecto</th>
+                        <th class="col-md-3">Descripción del proyecto</th>
+                        <th class="col-md-2">Estado</th>
+                        <th class="col-md-2">Fecha inicio</th>
+                        <th class="col-md-2">Fecha estimada fin</th>
+                        <th class="col-md-1">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($projects as $project)
-                        <tr id="projectRow_{{ $project->id }}">
-                            <td>{{ $project->project_name }}</td>
-                            <td>{{ $project->project_description }}</td>
-                            <td>{{ $project->projectStatus->status_name }}</td>
-                            <td>{{ $project->project_start_date }}</td>
-                            <td>{{ $project->project_estimated_end }}</td>
-                            <td style="display: flex; align-items: center;">
+                        <tr id="projectRow_{{ $project->id }}" class="d-flex">
+                            <td class="col-md-2">{{ $project->project_name }}</td>
+                            <td class="col-md-3">{{ $project->project_description }}</td>
+                            <td class="col-md-2">{{ $project->projectStatus->status_name }}</td>
+                            <td class="col-md-2">{{ $project->project_start_date }}</td>
+                            <td class="col-md-2">{{ $project->project_estimated_end }}</td>
+                            <td style="display: flex; align-items: center;" class="col-md-1">
                                 <div class="dropdown">
 
                                     <a href="#" class="dropdown-toggle arrow-none card-drop"

@@ -3,6 +3,7 @@
 namespace App\Http\Repository;
 
 use Exception;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Project;
 use Illuminate\Support\Facades\DB;
@@ -37,16 +38,14 @@ class ProjectUserRepository implements IRepository
         return $user->toArray();
     }
 
-    public function getAssignProject(int $idUser){
+    public function getAssignProject(int $idUser)
+    {
         $user = User::find($idUser);
 
         if (!$user) {
             throw new Exception("Fail to find the Project", 1);
         }
-    
-        // Utiliza la relación 'projects' para obtener los proyectos del usuario
-        $projects = $user->projects();
-        return $projects;
+        return $user->projects()->with('projectStatus');
     }
 
     public function notAssignedUsers(int $idProject)
@@ -57,18 +56,26 @@ class ProjectUserRepository implements IRepository
         return $usersNotAssigned;
     }
 
+    public function notAssignedProjects(int $idUser)
+    {
+        $projectsNotAssigned = Project::whereDoesntHave('users', function ($query) use ($idUser) {
+            $query->where('users.id', $idUser);
+        })->get();
+
+        return $projectsNotAssigned;
+    }
+
     public function Create(array $data)
     {
         try {
             $projectId = $data["idProject"];
             $userId = $data["idUser"];
+            $project = Project::findOrFail($projectId);
+            $user = User::findOrFail($userId);
 
-            $success = DB::table('participants_project')->insert([
-                'project_id' => $projectId,
-                'user_id' => $userId
-            ]);
+            $project->users()->attach($user->id, ['created_at' => now(), 'updated_at' => now()]);
 
-            return $success;
+            return true;
         } catch (QueryException $e) {
             return false;
         }
@@ -112,7 +119,8 @@ class ProjectUserRepository implements IRepository
         }
     }
 
-    public function DeleteUserByProject($idProject, $idUser){
+    public function DeleteUserByProject($idProject, $idUser)
+    {
         try {
             $projects = Project::find($idProject);
             if (!$projects) {

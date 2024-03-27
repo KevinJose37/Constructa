@@ -13,16 +13,16 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
+
 // Grupo de rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
+    Route::get('/purchaseorder', function () { return view('PurchaseOrder'); })->name('purchaseorder');
+    Route::get('/dashboard', function () { return view('DashboardIndex'); })->name('dashboard.index');
 
-
-    Route::get('/purchaseorder', function () {
-        return view('PurchaseOrder');
-    })->name('purchaseorder');
-    
     // Rutas relacionadas con proyectos
     Route::get('/proyectos', [ProjectController::class, 'index'])->name('projects.index');
+
+    // Rutas relacionadas con chats
 
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
 
@@ -32,16 +32,9 @@ Route::middleware(['auth'])->group(function () {
 
     
 
-    
-    Route::get('/dashboard', function () {
-        return view('DashboardIndex');
-    })->name('dashboardindex');
 
-        // Rutas relacionadas con usuarios
+
+
+    // Rutas relacionadas con usuarios
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
-
 });
-
-Route::get('/LoginConstructa', function () {
-    return view('LoginConstructa');
-})->name('loginconstructa');

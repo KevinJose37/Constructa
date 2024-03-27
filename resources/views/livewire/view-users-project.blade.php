@@ -24,10 +24,12 @@
                             </div>
                             @if (!$usersNotAssigned->isEmpty())
                                 <div class="row">
-                                    <div class="col">
-                                        <button type="button" id="event-assign-project" wire:click="toggleSelect"
-                                            class="btn btn-primary w-100">Asignar nueva persona</button>
-                                    </div>
+                                    @can('assign.user.project')
+                                        <div class="col">
+                                            <button type="button" id="event-assign-project" wire:click="toggleSelect"
+                                                class="btn btn-primary w-100">Asignar nueva persona</button>
+                                        </div>
+                                    @endcan
                                     @if ($openSelect)
                                         <div class="row mt-2">
                                             <div class="col">
@@ -36,7 +38,8 @@
                                                     <option value="-" disabled selected>Seleccione una opción...
                                                     </option>
                                                     @foreach ($usersNotAssigned as $user)
-                                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                        <option value="{{ $user->id }}">{{ $user->fullname }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -65,13 +68,17 @@
                                 <tbody>
                                     @foreach ($project->users as $user)
                                         <tr>
-                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->fullname }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->rol->name }}</td>
-                                            <td><a class="text-reset fs-19 px-1 delete-user-project-btn" data-id-user="{{ $user->id }}"
-                                                wire:click="destroyAlert({{ $user->id }}, '{{ $user->name }}')">
-                                                <i class="ri-delete-bin-2-line"></i></a></td>
-                                            </tr>
+                                            @can('unassign.user.project')
+                                                <td><a class="text-reset fs-19 px-1 delete-user-project-btn"
+                                                        data-id-user="{{ $user->id }}"
+                                                        wire:click="destroyAlert({{ $user->id }}, '{{ $user->fullname }}')">
+                                                        <i class="ri-delete-bin-2-line"></i></a></td>
+                                            @endcan
+
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>

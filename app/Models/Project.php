@@ -26,6 +26,6 @@ class Project extends Model
     }
 
     public function users(){
-        return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id');
+        return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id')->withTimestamps();
     }
 }

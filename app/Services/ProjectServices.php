@@ -49,7 +49,7 @@ class ProjectServices implements IService{
     {
         $resultUpdate = $this->projectRepository->Update($id, $data);
         if(!$resultUpdate){
-            return ['success' => false, 'message' => 'El proyecto no existe']; 
+            return ['success' => false, 'message' => 'El proyecto no existe'];
         }
         return true;
     }
