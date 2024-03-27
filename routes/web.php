@@ -26,15 +26,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
 
-
-
-
-
-    
-
-
-
-
     // Rutas relacionadas con usuarios
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
 });
