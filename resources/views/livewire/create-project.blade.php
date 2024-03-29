@@ -1,14 +1,14 @@
 <div>
-
-    <ol class="breadcrumb m-0">
-        <li class="breadcrumb-item">
-            <!-- Div a la derecha -->
-            <button type="button" class="btn btn-primary" wire:click="$set('form.open', true)">
-                Crear un nuevo proyecto
-            </button>
+    
+<ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item">
+        <!-- Div a la derecha -->
+        <button type="button" class="btn btn-primary" wire:click="$set('form.open', true)">
+            Crear un nuevo proyecto
+        </button>
         </li>
 
-    </ol>
+</ol>
     <x-dialog-modal wire:model="form.open" maxWidth="md">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
@@ -98,7 +98,7 @@
             <div class="row w-100">
                 <div class="col-6 ">
                     <button type="button" class="btn btn-light me-1"
-                        wire:click="$set('form.open', false)">Cancelar</button>
+                        wire:click="$set('form.open', false)" >Cancelar</button>
                     <button type="submit" class="btn btn-success" id="btn-save-event"
                         wire:click="save">Guardar</button>
                 </div>
@@ -109,5 +109,7 @@
 
 
 @push('js')
-    <script></script>
+    <script>
+    </script>
 @endpush
+

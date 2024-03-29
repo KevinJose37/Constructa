@@ -25,6 +25,12 @@ Route::middleware(['auth'])->group(function () {
     // Rutas relacionadas con chats
 
     Route::get('/chatprojects', [ChatProjectController::class, 'show'])->name('chatprojects');
+    Route::post('/chatprojects', [ChatProjectController::class, 'saveMessageInProject'])->name('chatprojects.save');
+    Route::get('/getMessagesByProject', [ChatProjectController::class, 'getMessagesByProject'])->name('chatprojects.messages');
+    
+    Route::get('/dashboard', function () {
+        return view('DashboardIndex');
+    })->name('dashboardindex');
 
     // Rutas relacionadas con usuarios
     Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
