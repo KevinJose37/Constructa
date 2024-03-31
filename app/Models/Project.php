@@ -28,4 +28,10 @@ class Project extends Model
     public function users(){
         return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id')->withTimestamps();
     }
+
+    
+    public function purchaseOrders()
+    {
+        return $this->hasMany(Project::class, 'id_project');
+    }
 }

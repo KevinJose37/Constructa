@@ -52,6 +52,7 @@
                                     <div class="dropdown-menu dropdown-menu-animated">
                                         <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                         <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
+                                        <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}" class="dropdown-item">Crear órdenes de compra</a>
                                     </div>
                                 </div>
                                 <livewire:view-users-project :$project :wire:key="'view-' . $project->id"></livewire:view-users-project>

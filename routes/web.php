@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\ProjectUserController;
 use App\Http\Controllers\ChatProjectController;
-
+use App\Http\Controllers\ProjectUserController;
+use App\Livewire\CreatePurchaseOrder;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -17,6 +17,9 @@ Route::post('/login', [LoginController::class, 'login']);
 // Grupo de rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
     Route::get('/purchaseorder', function () { return view('PurchaseOrder'); })->name('purchaseorder');
+    Route::get('/purchaseorder/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
+
+    
     Route::get('/dashboard', function () { return view('DashboardIndex'); })->name('dashboard.index');
 
     // Rutas relacionadas con proyectos

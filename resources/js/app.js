@@ -1,5 +1,15 @@
 import "./bootstrap";
 import Swal from "sweetalert2";
+//-- Select2
+import "/node_modules/select2/dist/css/select2.css";
+//--
+import '../css/app.css';
+
+import jQuery from 'jquery';
+window.$ = jQuery;
+
+import select2 from 'select2';
+select2();
 
 window.addEventListener("alert", (event) => {
     let data = event.detail;
@@ -8,6 +18,12 @@ window.addEventListener("alert", (event) => {
         text: data.message,
         icon: data.type,
     });
+});
+
+window.addEventListener("resetSelect", (event) => {
+    let data = event.detail;
+
+    $(`#${data.id}`).val(null).trigger('change');
 });
 
 document.addEventListener("livewire:init", function () {

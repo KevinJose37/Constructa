@@ -8,7 +8,7 @@
 
     <title>{{ $title ?? config('app.name') }}</title>
 
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}">
 
     <!-- App css -->
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet">
@@ -48,14 +48,12 @@
         </div>
     </main>
 
-    @stack('modals')
-
-    
-    <script src="assets/js/vendor.min.js"></script>
+    <script src="{{asset('assets/js/vendor.min.js')}}"></script>
     <!-- Flatpickr Timepicker Plugin js -->
-    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="{{asset('assets/vendor/flatpickr/flatpickr.min.js')}}"></script>
     <!-- Timepicker Demo js -->
-    <script src="assets/js/pages/demo.flatpickr.js"></script>
+    <script src="{{asset('assets/js/pages/demo.flatpickr.js')}}"></script>
+    @stack('scripts')
 
 </body>
 

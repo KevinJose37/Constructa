@@ -3,13 +3,13 @@
     <!-- Brand Logo Light -->
     <a href="index.html" class="logo logo-light">
         <span class="logo-lg">
-            <img src="assets/images/constructa.png" alt="logo" width="200">
+            <img src="{{ asset('assets/images/constructa.png')}}" alt="logo" width="200">
         </span>
     </a>
     <!-- Brand Logo Dark -->
     <a href="index.html" class="logo logo-dark">
         <span class="logo-lg">
-            <img src="assets/images/constructa.png" alt="logo" style="width: 200px;  height: 70px;">
+            <img src="{{ asset('assets/images/constructa.png')}}" alt="logo" style="width: 200px;  height: 70px;">
             <!-- Ajusta los valores según necesites -->
 
         </span>
@@ -30,7 +30,7 @@
         <div class="leftbar-user p-3 text-white">
             <a href="#" class="d-flex align-items-center text-reset">
                 <div class="flex-shrink-0">
-                    <img src="assets/images/users/avatar-1.jpg" alt="user-image" height="42"
+                    <img src="{{ asset('assets/images/users/avatar-1.jpg')}}" alt="user-image" height="42"
                         class="rounded-circle shadow" width="50px">
                 </div>
                 <div class="flex-grow-1 ms-2">
