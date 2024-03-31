@@ -49,7 +49,7 @@
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="ri-settings-3-line"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-animated">
+                                    <div class="dropdown-menu dropdown-menu-animated dropdown-menu-end" >
                                         <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                         <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
                                         <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}" class="dropdown-item">Crear órdenes de compra</a>

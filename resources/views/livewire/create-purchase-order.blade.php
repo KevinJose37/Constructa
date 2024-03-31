@@ -83,7 +83,7 @@
                                     pago</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="inputType">
-                                        <option selected disabled>Ingrese la forma de pago</option>
+                                        <option selected disabled>Forma de pago</option>
                                         @foreach ($paymentMethods as $method)
                                             <option value="{{ $method->id }}">{{ $method->payment_name }}</option>
                                         @endforeach
@@ -91,19 +91,28 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputBankAccount" class="col-sm-2 col-form-label col-form-label-sm">Cuenta
-                                    bancaria</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-sm" id="inputBankAccount"
-                                        placeholder="Ingrese la cuenta bancaria">
-                                </div>
-                            </div>
+    <label class="col-sm-2 col-form-label col-form-label-sm">Cuenta bancaria</label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control form-control-sm" id="inputBank" placeholder="Banco">
+    </div>
+    <div class="col-sm-2">
+        <input type="text" class="form-control form-control-sm" id="inputAccountType" placeholder="Tipo">
+    </div>
+    <div class="col-sm-4">
+        <input type="text" class="form-control form-control-sm" id="inputAccountNumber" placeholder="Número de Cuenta">
+    </div>
+</div>
+
                             <div class="row mb-3">
                                 <label for="inputSupport" class="col-sm-2 col-form-label col-form-label-sm">Tipo
                                     soporte</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-sm" id="inputSupport"
-                                        placeholder="Ingrese el tipo de soporte">
+                                    <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="inputType">
+                                        <option selected disabled>Tipo de soporte</option>
+                                        @foreach ($paymentSupport as $method)
+                                            <option value="{{ $method->id }}">{{ $method->support_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -241,7 +250,7 @@
         $(document).ready(function() {
             $('#item-select').select2();
             $('#item-select').on('change', function(e) {
-                @this.set('currentSelect', e.target.value);
+                this.set('currentSelect', e.target.value);
             });
 
         });

@@ -16,6 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('payment_name');
         });
+        Schema::create('payment_support', function (Blueprint $table) {
+            $table->id();
+            $table->string('support_name');
+        });
 
         Schema::create('purchase_order', function (Blueprint $table) {
             $table->id();
