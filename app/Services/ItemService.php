@@ -5,56 +5,60 @@ namespace App\Services;
 use Exception;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use App\Http\Repository\UserRepository;
+use App\Http\Repository\ItemRepository;
 
-class UserServices implements IService
+class ItemService implements IService
 {
 
     protected $paginationService;
-    protected $userRepository;
+    protected $itemRepository;
 
-    public function __construct(PaginationServices $paginationService, UserRepository $userRepo)
+    public function __construct(PaginationServices $paginationService, ItemRepository $itemRepo)
     {
         $this->paginationService = $paginationService;
-        $this->userRepository = $userRepo;
+        $this->itemRepository = $itemRepo;
     }
 
 
     public function getAll()
     {
-        return $this->userRepository->getAll();
+        return $this->itemRepository->getAll();
     }
 
     public function getAllPaginate($filter = '')
     {
-        $projectQuery = $this->userRepository->UserQuery();
+        $projectQuery = $this->itemRepository->UserQuery();
         if ($filter != "") {
             $filter = htmlspecialchars(trim($filter));
-            $projectQuery = $this->userRepository->filterLike($filter);
+            $projectQuery = $this->itemRepository->filterLike($filter);
         }
-
         return $this->paginationService->filter($projectQuery);
+    }
+
+    public function getAllFilter($filter, $limit = null){
+        $filter = htmlspecialchars(trim($filter));
+        return $this->itemRepository->filterLike($filter, $limit);
     }
 
     public function getRolesUsers()
     {
-        return $this->userRepository->getRolUsers();
+        return $this->itemRepository->getRolUsers();
     }
 
     public function getById(int $id)
     {
-        return $this->userRepository->FindById($id);
+        return $this->itemRepository->FindById($id);
     }
 
     public function Add(array $data)
     {
         // Valid e-mail
-        if ($this->userRepository->validUserByColumn("email", $data["email"]) !== null) {
+        if ($this->itemRepository->validUserByColumn("email", $data["email"]) !== null) {
             return ['success' => false, 'message' => 'Ya existe un usuario con este email'];
         }
 
         // Valid e-mail
-        if ($this->userRepository->validUserByColumn("name", $data["name"]) !== null) {
+        if ($this->itemRepository->validUserByColumn("name", $data["name"]) !== null) {
             return ['success' => false, 'message' => 'Ya existe un usuario con este nombre'];
         }
 
@@ -62,7 +66,7 @@ class UserServices implements IService
             return ['success' => false, 'message' => 'Rol no válido'];
         }
         try {
-            return $this->userRepository->Create($data);
+            return $this->itemRepository->Create($data);
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -71,12 +75,12 @@ class UserServices implements IService
     public function Update(int $id, array $data)
     {
         // Valid e-mail
-        if ($this->userRepository->validUserByColumn("email", $data["email"], $id) !== null) {
+        if ($this->itemRepository->validUserByColumn("email", $data["email"], $id) !== null) {
             return ['success' => false, 'message' => 'Ya existe un usuario con este email'];
         }
 
         // Valid e-mail
-        if ($this->userRepository->validUserByColumn("name", $data["name"], $id) !== null) {
+        if ($this->itemRepository->validUserByColumn("name", $data["name"], $id) !== null) {
             return ['success' => false, 'message' => 'Ya existe un usuario con este nombre'];
         }
 
@@ -84,7 +88,7 @@ class UserServices implements IService
             return ['success' => false, 'message' => 'Rol no válido'];
         }
         try {
-            return $this->userRepository->Update($id, $data);
+            return $this->itemRepository->Update($id, $data);
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -94,7 +98,7 @@ class UserServices implements IService
     {
         try {
             // Validamos la existencia del usuario en el proyecto
-            $validDelete = $this->userRepository->Delete($id);
+            $validDelete = $this->itemRepository->Delete($id);
             return true;
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];

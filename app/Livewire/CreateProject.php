@@ -18,14 +18,13 @@ class CreateProject extends Component
         $data['project_start_date'] = $this->form->date_start_project;
         $data['project_estimated_end'] = $this->form->date_end_project;
         $responseSave = $projectServices->Add($data);
-        if($responseSave){
-            $this->form->reset();
+        if(!is_array($responseSave) && !isset($responseSave['success'])){
             $this->dispatch('projectRefresh')->to(ShowProjects::class);
             $this->dispatch('alert', type: 'success', title: 'Proyectos',message: "Se creó correctamente el proyecto {$this->form->name_project}");
+            $this->form->reset();
             return;
         }
         $this->dispatch('alert', type: 'error', title: 'Proyectos',message: "Ocurrió un error al crear el proyecto {$this->form->name_project}");
-        
     }
 
     public function render(ProjectServices $projectServices)

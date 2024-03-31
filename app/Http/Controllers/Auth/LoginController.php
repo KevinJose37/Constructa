@@ -26,7 +26,8 @@ class LoginController extends Controller
 
         // Intentar autenticar al usuario
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/DashboardIndex');
+            $request->session()->regenerate();
+            return redirect()->intended('/proyectos');
         } else {
             return back()->withInput()->with('message', 'Credenciales inválidas');
         }

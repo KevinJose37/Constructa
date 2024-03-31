@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use Livewire\Attributes\Title;
 use App\Services\ProjectServices;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ProjectUserServices;
@@ -17,7 +18,6 @@ class ShowProjects extends Component
     #[On('projectRefresh')]
     public function render(ProjectServices $projectServices, ProjectUserServices $projectUserServices)
     {
-        // $this->resetPage();
         $user = Auth::user();
         if($user->hasRole('Empleado')){
             $projects = $projectUserServices->getProjectsByUserId($user->id);

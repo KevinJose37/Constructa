@@ -1,54 +1,39 @@
 @props(['id', 'maxWidth'])
 
 @php
-$id = $id ?? md5($attributes->wire('model'));
+    $id = $id ?? md5($attributes->wire('model'));
 
-$maxWidth = [
-    'sm' => ' modal-sm',
-    'md' => '',
-    'lg' => ' modal-lg',
-    'xl' => ' modal-xl',
-][$maxWidth ?? 'md'];
+    $maxWidth = [
+        'sm' => ' modal-sm',
+        'md' => '',
+        'lg' => ' modal-lg',
+        'xl' => ' modal-xl',
+    ][$maxWidth ?? 'md'];
 @endphp
 
 <!-- Modal -->
-<div
+<div wire:ignore.self x-init="() => {
 
-    wire:ignore.self
+    let el = document.querySelector('#modal-id-{{ $id }}')
+    let modal = new bootstrap.Modal(el);
 
-    x-init="() => {
+    $watch('show', value => {
+        if (value) {
+            modal.show()
+        } else {
+            modal.hide()
+        }
+    });
 
-        let el = document.querySelector('#modal-id-{{ $id }}')
-
-        let modal = new bootstrap.Modal(el);
+    el.addEventListener('hide.bs.modal', function(event) {
+        show = false
         
-        $watch('show', value => {
-            if (value) {
-                modal.show()
-            } else {
-                modal.hide()
-            }
-        });
+    })
 
-        el.addEventListener('hide.bs.modal', function (event) {
-          show = false
-        })
-    }"
-
-    x-data="{ show: @entangle($attributes->wire('model')) }"
-    x-on:close.stop="show = false"
-    x-on:keydown.escape.window="show = false"
-    x-show="show"
-
-    id="modal-id-{{ $id }}"
-    class="modal fade"
-    style="display: none;"
-    tabindex="-1" 
-    aria-hidden="true"
-
-    aria-labelledby="modal-id-{{ $id }}"
-    x-ref="modal-id-{{ $id }}"
->
+}" x-data="{ show: @entangle($attributes->wire('model')) }" x-on:close.stop="show = false"
+    x-on:keydown.escape.window="show = false" x-show="show" id="modal-id-{{ $id }}" class="modal fade"
+    style="display: none;" tabindex="-1" aria-hidden="true" aria-labelledby="modal-id-{{ $id }}"
+    x-ref="modal-id-{{ $id }}">
     <div class="modal-dialog {{ $maxWidth }}">
         {{ $slot }}
     </div>

@@ -16,7 +16,3 @@ use App\Http\Controllers\ProjectUserController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware(['auth'])->get('/user', function (Request $request) {
-    return $request->user();
-});

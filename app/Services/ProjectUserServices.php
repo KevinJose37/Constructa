@@ -47,6 +47,10 @@ class ProjectUserServices implements IService
         return $this->projectUserRepository->notAssignedUsers($id);
     }
 
+    public function getNotAssignedProjects(int $id){
+        return $this->projectUserRepository->notAssignedProjects($id);
+    }
+
     public function getById(int $id)
     {
         return $this->projectUserRepository->FindById($id);

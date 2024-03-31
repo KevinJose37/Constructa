@@ -1,14 +1,14 @@
+@props(['title'])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $title ?? config('app.name') }}</title>
 
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}">
 
     <!-- App css -->
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet">
@@ -48,14 +48,12 @@
         </div>
     </main>
 
-    @stack('modals')
-
-    
-    <script src="assets/js/vendor.min.js"></script>
+    <script src="{{asset('assets/js/vendor.min.js')}}"></script>
     <!-- Flatpickr Timepicker Plugin js -->
-    <script src="assets/vendor/flatpickr/flatpickr.min.js"></script>
+    <script src="{{asset('assets/vendor/flatpickr/flatpickr.min.js')}}"></script>
     <!-- Timepicker Demo js -->
-    <script src="assets/js/pages/demo.flatpickr.js"></script>
+    <script src="{{asset('assets/js/pages/demo.flatpickr.js')}}"></script>
+    @stack('scripts')
 
 </body>
 

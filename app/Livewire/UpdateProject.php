@@ -32,6 +32,7 @@ class UpdateProject extends Component
         $responseSave = $projectServices->Update($this->projectUpdate->id, $data);
         if($responseSave){
             $this->formup->reset();
+            $this->mount($projectServices->getById($this->projectUpdate->id));
             $this->dispatch('projectRefresh')->to(ShowProjects::class);
             $this->dispatch('alert', type: 'success', title: 'Proyectos',message: "Se editó correctamente el proyecto {$this->formup->name_project}");
             return;

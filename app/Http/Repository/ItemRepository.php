@@ -2,22 +2,23 @@
 
 namespace App\Http\Repository;
 
+use App\Models\Item;
 use Exception;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Database\QueryException;
 
-class UserRepository implements IRepository
+class ItemRepository implements IRepository
 {
 
     public function getAll()
     {
-        return User::with('rol')->get();
+        return Item::get();
     }
 
     public function FindById($id)
     {
-        return User::with('rol')->find($id);
+        return Item::find($id);
     }
 
     public function Create(array $data)
@@ -104,15 +105,17 @@ class UserRepository implements IRepository
         return Role::all(['id', 'name']);
     }
 
-    public function filterLike($value)
+    public function filterLike($value, $limit = null)
     {
-        return User::with('rol')->where(function ($queryBuilder) use ($value) {
+        $query = Item::where(function ($queryBuilder) use ($value) {
             $queryBuilder->where('name', 'like', "%$value%")
-                ->orWhere('email', 'like', "%$value%")
-                ->orWhere('fullname', 'like', "%$value%")
-                ->orWhereHas('rol', function ($statusQuery) use ($value) {
-                    $statusQuery->where('name', 'like', "%$value%");
-                });
+                ->orWhere('description', 'like', "%$value%")
+                ->orWhere('price', 'like', "%$value%");
         });
+        if ($limit !== null) {
+            $query->limit($limit);
+        }
+    
+        return $query->get();
     }
 }
