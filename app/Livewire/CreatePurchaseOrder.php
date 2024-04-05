@@ -7,8 +7,8 @@ use Livewire\Component;
 use App\Helpers\Helpers;
 use Livewire\Attributes\On;
 use App\Models\PaymentMethod;
-use App\Models\PaymentSupport;
 use App\Services\ItemService;
+use App\Models\PaymentSupport;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\PurchaseOrderForm;
@@ -19,6 +19,7 @@ class CreatePurchaseOrder extends Component
     public $currentSelect;
     public $currentDate;
     public $selectedItems = [];
+    public $totalPurchaseIva;
     public PurchaseOrderForm $formPurchase;
 
     public function mount($id)
@@ -36,7 +37,7 @@ class CreatePurchaseOrder extends Component
         $paymentSupport = PaymentSupport::all();
         $items = $itemService->getAll();
 
-        return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport','items'));
+        return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport', 'items'));
     }
 
     public function store(ItemService $itemService)
@@ -65,16 +66,17 @@ class CreatePurchaseOrder extends Component
         if ($existingItemIndex !== false) {
             $this->selectedItems[$existingItemIndex]["quantity"] += $this->formPurchase->quantityItem; // Utilizando el mutador
             $this->selectedItems[$existingItemIndex]["totalPrice"] = $this->selectedItems[$existingItemIndex]["price"] * $this->selectedItems[$existingItemIndex]["quantity"];
-            $this->selectedItems[$existingItemIndex]["iva"] = number_format(Helpers::calculateIva($currentItem["price"]), 2, '.', ',');
-            $this->selectedItems[$existingItemIndex]["priceIva"] = number_format(Helpers::calculateTotalIva($currentItem["price"]), 2, '.', ',');
-            $this->selectedItems[$existingItemIndex]["totalPriceIva"] = number_format(Helpers::calculateTotalIva($currentItem["totalPrice"]), 2, '.', ',');
-
+            $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($currentItem["price"]));
+            $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["price"]));
+            $this->selectedItems[$existingItemIndex]["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["totalPrice"]));
+            $this->totalPurchaseIva += str_replace(',', '', $this->selectedItems[$existingItemIndex]["totalPriceIva"]);
         } else {
             $currentItem["quantity"] = $this->formPurchase->quantityItem;
-            $currentItem["totalPrice"] = number_format($currentItem["price"] * $currentItem["quantity"], 2, '.', ',');
-            $currentItem["iva"] = number_format(Helpers::calculateIva($currentItem["price"]), 2, '.', ',');
-            $currentItem["priceIva"] = number_format(Helpers::calculateTotalIva($currentItem["price"]), 2, '.', ',');
-            $currentItem["totalPriceIva"] = number_format(Helpers::calculateTotalIva($currentItem["totalPrice"]), 2, '.', ',');
+            $currentItem["totalPrice"] = $this->formatCurrency($currentItem["price"] * $currentItem["quantity"]);
+            $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($currentItem["price"]));
+            $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["price"]));
+            $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["totalPrice"]));
+            $this->totalPurchaseIva += str_replace(',', '', $currentItem["totalPriceIva"]);
             array_push($this->selectedItems, $currentItem);
         }
 
@@ -83,6 +85,7 @@ class CreatePurchaseOrder extends Component
             id: 'item-select',
         );
         $this->formPurchase->quantityItem = null;
+        $this->totalPurchaseIva = $this->formatCurrency($this->totalPurchaseIva);
     }
 
     #[On('destroy-item')]
@@ -97,9 +100,21 @@ class CreatePurchaseOrder extends Component
 
         $existingItemIndex = array_search($id, array_column($this->selectedItems, 'id'));
         if ($existingItemIndex !== false) {
+            $this->totalPurchaseIva -= str_replace(',', '', $this->selectedItems[$existingItemIndex]["totalPriceIva"]);
             unset($this->selectedItems[$existingItemIndex]);
             $this->selectedItems = array_values($this->selectedItems);
+            // Recalculamos para evitar errores
+            $this->totalPurchaseIva = 0;
+            foreach ($this->selectedItems as $item) {
+                $this->totalPurchaseIva += str_replace(',', '', $item["totalPriceIva"]);
+            }
         }
+
+        if (count($this->selectedItems) === 0) {
+            $this->totalPurchaseIva = 0;
+        }
+
+        $this->totalPurchaseIva = $this->formatCurrency($this->totalPurchaseIva);
     }
 
     public function destroyAlertPurchase($id, $name)
@@ -113,4 +128,10 @@ class CreatePurchaseOrder extends Component
             emit: 'destroy-item',
         );
     }
+
+    protected function formatCurrency($value)
+    {
+        return number_format($value, 2, '.', ',');
+    }
+
 }

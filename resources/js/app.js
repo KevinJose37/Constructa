@@ -3,10 +3,10 @@ import Swal from "sweetalert2";
 //-- Select2
 import "/node_modules/select2/dist/css/select2.css";
 //--
-import '../css/app.css';
+// import '../css/app.css';
 
 import jQuery from 'jquery';
-window.$ = jQuery;
+window.$ = window.jQuery = jQuery;
 
 import select2 from 'select2';
 select2();
@@ -22,7 +22,6 @@ window.addEventListener("alert", (event) => {
 
 window.addEventListener("resetSelect", (event) => {
     let data = event.detail;
-
     $(`#${data.id}`).val(null).trigger('change');
 });
 

@@ -222,9 +222,9 @@
         // hide on other click
         $(document).on('click', function (e) {
             if (e.target.id == "top-search" || e.target.closest('#search-dropdown')) {
-                $('#search-dropdown').addClass('show');
+                $('#search-dropdown').addClass('d-block');
             } else {
-                $('#search-dropdown').removeClass('show');
+                $('#search-dropdown').removeClass('d-block');
             }
             return true;
         });
@@ -233,13 +233,13 @@
         $('#top-search').on('focus', function (e) {
             e.preventDefault();
             navDropdowns.children('.dropdown-menu.show').removeClass('show');
-            $('#search-dropdown').addClass('show');
+            $('#search-dropdown').addClass('d-block');
             return false;
         });
 
         // hide search on opening other dropdown
         navDropdowns.on('show.bs.dropdown', function () {
-            $('#search-dropdown').removeClass('show');
+            $('#search-dropdown').removeClass('d-block');
         });
     }
 
@@ -321,6 +321,62 @@
                     $(obj).mask(maskFormat, { 'reverse': reverse });
                 else
                     $(obj).mask(maskFormat);
+            });
+        }
+
+        // Date-Range-Picker
+        if (jQuery().daterangepicker) {
+            //date pickers ranges only
+            var start = moment().subtract(29, 'days');
+            var end = moment();
+            var defaultRangeOptions = {
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            };
+
+            $('[data-toggle="date-picker-range"]').each(function (idx, obj) {
+                var objOptions = $.extend({}, defaultRangeOptions, $(obj).data());
+                var target = objOptions["targetDisplay"];
+                //rendering
+                $(obj).daterangepicker(objOptions, function (start, end) {
+                    if (target)
+                        $(target).html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                });
+            });
+
+            // Datetime and date range picker
+            var defaultOptions = {
+                "cancelClass": "btn-light",
+                "applyButtonClasses": "btn-success"
+            };
+
+            $('[data-toggle="date-picker"]').each(function (idx, obj) {
+                var objOptions = $.extend({}, defaultOptions, $(obj).data());
+                $(obj).daterangepicker(objOptions);
+            });
+        }
+
+        // Bootstrap Timepicker
+        if (jQuery().timepicker) {
+            var defaultOptions = {
+                "showSeconds": true,
+                "icons": {
+                    "up": "mdi mdi-chevron-up",
+                    "down": "mdi mdi-chevron-down"
+                }
+            };
+
+            $('[data-toggle="timepicker"]').each(function (idx, obj) {
+                var objOptions = $.extend({}, defaultOptions, $(obj).data());
+                $(obj).timepicker(objOptions);
             });
         }
 

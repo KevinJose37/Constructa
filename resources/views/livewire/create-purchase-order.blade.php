@@ -166,24 +166,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($selectedItems as $index => $currentItem)
+                                        @foreach ($selectedItems as $index => $current)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>
-                                                    <b>{{ $currentItem['name'] }}</b> <br />
-                                                    {{ $currentItem['description'] }}
+                                                    <b>{{ $current['name'] }}</b> <br />
+                                                    {{ $current['description'] }}
                                                 </td>
-                                                <td>{{ $currentItem['quantity'] }}</td>
-                                                <td>${{ $currentItem['price'] }}</td>
-                                                <td>${{ $currentItem['price'] }}</td>
-                                                <td>${{ $currentItem['totalPrice'] }}</td>
-                                                <td>${{ $currentItem['iva'] }}</td>
-                                                <td>${{ $currentItem['priceIva'] }}</td>
-                                                <td>${{ $currentItem['totalPriceIva'] }}</td>
+                                                <td>{{ $current['quantity'] }}</td>
+                                                <td>${{ $current['price'] }}</td>
+                                                <td>${{ $current['price'] }}</td>
+                                                <td>${{ $current['totalPrice'] }}</td>
+                                                <td>${{ $current['iva'] }}</td>
+                                                <td>${{ $current['priceIva'] }}</td>
+                                                <td>${{ $current['totalPriceIva'] }}</td>
                                                 <td class="text-end">$1799.00</td>
                                                 <td> <a href="#"
                                                         class="text-reset fs-19 px-1 delete-project-btn"
-                                                        wire:click.prevent="destroyAlertPurchase({{ $currentItem['id'] }}, '{{ $currentItem['name'] }}')">
+                                                        wire:click.prevent="destroyAlertPurchase({{ $current['id'] }}, '{{ $current['name'] }}')">
                                                         <i class="ri-delete-bin-2-line"></i></a></td>
 
                                             </tr>
@@ -224,7 +224,7 @@
 
                             <p><b>Sub-total:</b> <span class="float-end">$4120.00</span></p>
                             <p><b>VAT (12.5):</b> <span class="float-end">$515.00</span></p>
-                            <h3>$4635.00 USD</h3>
+                            <h3>{{$totalPurchaseIva}} USD</h3>
 
                         </div>
                     </div> <!-- end col-->
@@ -250,7 +250,7 @@
         $(document).ready(function() {
             $('#item-select').select2();
             $('#item-select').on('change', function(e) {
-                this.set('currentSelect', e.target.value);
+                @this.set('currentSelect', e.target.value);
             });
 
         });
