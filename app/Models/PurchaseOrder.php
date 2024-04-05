@@ -15,6 +15,7 @@ class PurchaseOrder extends Model
         'date_order',
         'id_project',
         'payment_id',
+        'support_id'
     ];
 
     public function project()
@@ -25,6 +26,10 @@ class PurchaseOrder extends Model
     public function paymentMethods()
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_id');
+    }
+    public function paymentSupport()
+    {
+        return $this->belongsTo(PaymentSupport::class, 'support_id');
     }
 
     public function purchaseOrderDetails()

@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Helpers\Helpers;
 use Livewire\Attributes\On;
 use App\Models\PaymentMethod;
+use App\Models\PaymentSupport;
 use App\Services\ItemService;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
@@ -32,9 +33,10 @@ class CreatePurchaseOrder extends Component
     public function render(ItemService $itemService)
     {
         $paymentMethods = PaymentMethod::all();
+        $paymentSupport = PaymentSupport::all();
         $items = $itemService->getAll();
 
-        return view('livewire.create-purchase-order', compact('paymentMethods', 'items'));
+        return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport','items'));
     }
 
     public function store(ItemService $itemService)
