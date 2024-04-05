@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class InvoiceHeader extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'date',
+        'contractor_name',
+        'contractor_nit',
+        'responsible_name',
+        'company_name',
+        'company_nit',
+        'phone',
+        'material_destination',
+        'payment_method_id',
+        'bank_name',
+        'account_type',
+        'account_number',
+        'support_type_id',
+    ];
+
+    // Definir relaciones si es necesario
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function supportType()
+    {
+        return $this->belongsTo(PaymentSupport::class, 'support_type_id');
+    }
+}
