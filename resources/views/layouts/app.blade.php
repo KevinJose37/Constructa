@@ -1,6 +1,7 @@
 @props(['title'])
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-menu-color="light">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,38 +9,37 @@
 
     <title>{{ $title ?? config('app.name') }}</title>
 
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico')}}">
-
-    <!-- App css -->
-    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet">
-
-    <!-- Icons css -->
-    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
     <!-- Theme Config Js -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- App css -->
+    <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" id="app-style">
 
+    <!-- Icons css -->
+    <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet">
+
+    <!-- Scripts -->
+    @vite(['resources/js/app.js'])
     <!-- Styles -->
     @livewireStyles
 </head>
 
 <body class="show">
     @livewireScripts
-    <!-- Topbar -->
-    @include('Templates.topbar')
-    <!-- Topbar -->
-
-    <!-- Sidebar -->
-    @include('Templates.sidebar')
-    <!-- Sidebar -->
     <!-- Page Heading -->
 
     <!-- Page Content -->
     <main>
         <div class="wrapper">
+            <!-- Topbar -->
+            @include('Templates.topbar')
+            <!-- Topbar -->
+
+            <!-- Sidebar -->
+            @include('Templates.sidebar')
+            <!-- Sidebar -->
             <div class="content-page">
                 <div class="content">
                     {{ $slot }}
@@ -48,11 +48,13 @@
         </div>
     </main>
 
-    <script src="{{asset('assets/js/vendor.min.js')}}"></script>
+    <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <!-- Flatpickr Timepicker Plugin js -->
-    <script src="{{asset('assets/vendor/flatpickr/flatpickr.min.js')}}"></script>
+    <script src="{{ asset('assets/vendor/flatpickr/flatpickr.min.js') }}"></script>
     <!-- Timepicker Demo js -->
-    <script src="{{asset('assets/js/pages/demo.flatpickr.js')}}"></script>
+    <script src="{{ asset('assets/js/pages/demo.flatpickr.js') }}"></script>
+    {{-- App script --}}
+    <script src="{{ asset('assets/js/app.min.js') }}"></script>
     @stack('scripts')
 
 </body>

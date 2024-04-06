@@ -16,7 +16,6 @@ class Helpers {
         self::loadIvaRate();
         return $amount * self::$ivaRate;
     }
-
     
     public static function calculateTotalIva($amount) {
         self::loadIvaRate();

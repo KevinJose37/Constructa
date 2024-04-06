@@ -208,7 +208,7 @@
 
                             <p><b>Sub-total:</b> <span class="float-end">$4120.00</span></p>
                             <p><b>VAT (12.5):</b> <span class="float-end">$515.00</span></p>
-                            <h3>$4635.00 USD</h3>
+                            <h3>{{$totalPurchaseIva}} USD</h3>
 
                         </div>
                     </div> <!-- end col-->

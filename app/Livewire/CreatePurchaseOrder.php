@@ -7,8 +7,8 @@ use Livewire\Component;
 use App\Helpers\Helpers;
 use Livewire\Attributes\On;
 use App\Models\PaymentMethod;
-use App\Models\PaymentSupport;
 use App\Services\ItemService;
+use App\Models\PaymentSupport;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\PurchaseOrderForm;
@@ -21,6 +21,7 @@ class CreatePurchaseOrder extends Component
 
     public $currentSelect;
     public $selectedItems = [];
+    public $totalPurchaseIva;
     public PurchaseOrderForm $formPurchase;
     public $currentDate;
     public $contractor_name;
@@ -58,7 +59,7 @@ class CreatePurchaseOrder extends Component
         $paymentSupport = PaymentSupport::all();
         $items = $itemService->getAll();
 
-        return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport','items'));
+        return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport', 'items'));
     }
 
     public function store(ItemService $itemService)
@@ -87,15 +88,17 @@ class CreatePurchaseOrder extends Component
         if ($existingItemIndex !== false) {
             $this->selectedItems[$existingItemIndex]["quantity"] += $this->formPurchase->quantityItem; // Utilizando el mutador
             $this->selectedItems[$existingItemIndex]["totalPrice"] = $this->selectedItems[$existingItemIndex]["price"] * $this->selectedItems[$existingItemIndex]["quantity"];
-            $this->selectedItems[$existingItemIndex]["iva"] = number_format(Helpers::calculateIva($currentItem["price"]), 2, '.', ',');
-            $this->selectedItems[$existingItemIndex]["priceIva"] = number_format(Helpers::calculateTotalIva($currentItem["price"]), 2, '.', ',');
-            $this->selectedItems[$existingItemIndex]["totalPriceIva"] = number_format(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["totalPrice"]), 2, '.', ',');
+            $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($currentItem["price"]));
+            $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["price"]));
+            $this->selectedItems[$existingItemIndex]["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["totalPrice"]));
+            $this->totalPurchaseIva += str_replace(',', '', $this->selectedItems[$existingItemIndex]["totalPriceIva"]);
         } else {
             $currentItem["quantity"] = $this->formPurchase->quantityItem;
-            $currentItem["totalPrice"] = number_format($currentItem["price"] * $currentItem["quantity"], 2, '.', ',');
-            $currentItem["iva"] = number_format(Helpers::calculateIva($currentItem["price"]), 2, '.', ',');
-            $currentItem["priceIva"] = number_format(Helpers::calculateTotalIva($currentItem["price"]), 2, '.', ',');
-            $currentItem["totalPriceIva"] = number_format(Helpers::calculateTotalIva($currentItem["totalPrice"]), 2, '.', ',');
+            $currentItem["totalPrice"] = $this->formatCurrency($currentItem["price"] * $currentItem["quantity"]);
+            $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($currentItem["price"]));
+            $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["price"]));
+            $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["totalPrice"]));
+            $this->totalPurchaseIva += str_replace(',', '', $currentItem["totalPriceIva"]);
             array_push($this->selectedItems, $currentItem);
         }
 
@@ -104,6 +107,7 @@ class CreatePurchaseOrder extends Component
             id: 'item-select',
         );
         $this->formPurchase->quantityItem = null;
+        $this->totalPurchaseIva = $this->formatCurrency($this->totalPurchaseIva);
     }
 
     #[On('destroy-item')]
@@ -118,9 +122,21 @@ class CreatePurchaseOrder extends Component
 
         $existingItemIndex = array_search($id, array_column($this->selectedItems, 'id'));
         if ($existingItemIndex !== false) {
+            $this->totalPurchaseIva -= str_replace(',', '', $this->selectedItems[$existingItemIndex]["totalPriceIva"]);
             unset($this->selectedItems[$existingItemIndex]);
             $this->selectedItems = array_values($this->selectedItems);
+            // Recalculamos para evitar errores
+            $this->totalPurchaseIva = 0;
+            foreach ($this->selectedItems as $item) {
+                $this->totalPurchaseIva += str_replace(',', '', $item["totalPriceIva"]);
+            }
         }
+
+        if (count($this->selectedItems) === 0) {
+            $this->totalPurchaseIva = 0;
+        }
+
+        $this->totalPurchaseIva = $this->formatCurrency($this->totalPurchaseIva);
     }
 
     public function destroyAlertPurchase($id, $name)
@@ -135,59 +151,9 @@ class CreatePurchaseOrder extends Component
         );
     }
 
-    public function storeHeader()
+    protected function formatCurrency($value)
     {
-        try {
-            // Validar los campos de la cabecera
-            $this->validate([
-                'currentDate' => 'required|date',
-                'contractor_name' => 'required|string',
-                'contractor_nit' => 'required|string',
-                'responsible_name' => 'required|string',
-                'company_name' => 'required|string',
-                'company_nit' => 'required|string',
-                'phone' => 'required|string',
-                'material_destination' => 'required|string',
-                'payment_method_id' => 'required|exists:payment_methods,id',
-                'bank_name' => 'required|string',
-                'account_type' => 'required|string',
-                'account_number' => 'required|string',
-                'support_type_id' => 'required|exists:payment_support,id',
-            ]);
-    
-            InvoiceHeader::create([
-                'date' => $this->currentDate,
-                'contractor_name' => $this->contractor_name,
-                'contractor_nit' => $this->contractor_nit,
-                'responsible_name' => $this->responsible_name,
-                'company_name' => $this->company_name,
-                'company_nit' => $this->company_nit,
-                'phone' => $this->phone,
-                'material_destination' => $this->material_destination,
-                'payment_method_id' => $this->payment_method_id,
-                'bank_name' => $this->bank_name,
-                'account_type' => $this->account_type,
-                'account_number' => $this->account_number,
-                'support_type_id' => $this->support_type_id,
-            ]);
-    
-            // Limpiar los campos después de guardar
-            $this->reset([
-                'currentDate', 'contractor_name', 'contractor_nit', 'responsible_name', 
-                'company_name', 'company_nit', 'phone', 'material_destination', 
-                'payment_method_id', 'bank_name', 'account_type', 'account_number', 'support_type_id'
-            ]);
-    
-            session()->flash('message', 'La cabecera se ha almacenado exitosamente.');
-    
-        } catch (\Exception $e) {
-            // Capturar cualquier excepción y registrarla
-            Log::error('Error al guardar la cabecera: ' . $e->getMessage());
-    
-            session()->flash('error', 'Ocurrió un error al guardar la cabecera.');
-        }
+        return number_format($value, 2, '.', ',');
     }
-    
-
 
 }
