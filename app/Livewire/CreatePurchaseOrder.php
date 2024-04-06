@@ -12,19 +12,41 @@ use App\Models\PaymentSupport;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\PurchaseOrderForm;
+use App\Models\InvoiceHeader;
+
+use Illuminate\Support\Facades\Log;
 
 class CreatePurchaseOrder extends Component
 {
 
     public $currentSelect;
-    public $currentDate;
     public $selectedItems = [];
     public $totalPurchaseIva;
     public PurchaseOrderForm $formPurchase;
+    public $currentDate;
+    public $contractor_name;
+    public $contractor_nit;
+    public $responsible_name;
+    public $company_name;
+    public $company_nit;
+    public $phone;
+    public $material_destination;
+    public $payment_method_id;
+    public $bank_name;
+    public $account_type;
+    public $account_number;
+    public $support_type_id;
+
+    public $lastInvoiceId;
+
+
+
 
     public function mount($id)
     {
         $this->currentDate = now()->format('d/m/y');
+        $this->lastInvoiceId = InvoiceHeader::max('id');
+
     }
 
 
