@@ -13,8 +13,8 @@ class Item extends Model
 
     protected $fillable = [
         'name',
-        'description',
-        'price',
+        'cod',
+        'unit_measurement'
     ];
     public function purchaseOrderDetails()
     {

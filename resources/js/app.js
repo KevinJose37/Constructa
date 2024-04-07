@@ -25,6 +25,7 @@ window.addEventListener("resetSelect", (event) => {
     $(`#${data.id}`).val(null).trigger('change');
 });
 
+
 document.addEventListener("livewire:init", function () {
     window.addEventListener("alertConfirmation", (event) => {
         let data = event.detail;
@@ -38,7 +39,7 @@ document.addEventListener("livewire:init", function () {
             confirmButtonText: "Sí",
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.dispatch(data.emit, {id: data.id, secondparameters: data.secondparameters});
+                Livewire.dispatch(data.emit, { id: data.id, secondparameters: data.secondparameters });
             }
         });
     });

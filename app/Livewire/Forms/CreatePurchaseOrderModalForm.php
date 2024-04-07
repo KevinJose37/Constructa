@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Livewire\Forms;
+
+use App\Models\Item;
+use Livewire\Attributes\Validate;
+use Livewire\Form;
+
+class CreatePurchaseOrderModalForm extends Form
+{
+    public $open = false;
+    public $currentSelect;
+
+    public $unit;
+    public $code;
+
+    #[Validate('required', message: 'La cantidad es requerida')]
+    #[Validate('min:1', message: 'El valor mínimo es 1')]
+    #[Validate('numeric', message: 'Debe ser un valor numérico')]
+    public $quantityItem;
+
+    #[Validate('required', message: 'El precio unitario es requerido')]
+    #[Validate('numeric', message: 'Debe ser un valor numérico')]
+    #[Validate('min:1', message: 'El valor mínimo es 1')]
+    public $priceUnit;
+    
+    public $totalPrice;
+
+    public ?Item $itemSelect;
+}

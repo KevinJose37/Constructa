@@ -13,6 +13,7 @@ class ItemRepository implements IRepository
 
     public function getAll()
     {
+        // return Item::limit(3)->get();]
         return Item::get();
     }
 
