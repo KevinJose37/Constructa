@@ -7,6 +7,5 @@ use Livewire\Form;
 
 class PurchaseOrderForm extends Form
 {
-    //
-    public $quantityItem;
+    
 }
