@@ -9,79 +9,78 @@
                     </div>
 
                 </div>
-                <div class="row mt-4">
-                    <div class="col">
-                        <div class="row mb-3 align-items-center">
-                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Fecha</label>
-                            <div class="col-sm-6 d-flex align-items-center">
-                                <input type="text" class="form-control form-control-sm" id="inputFecha"
-                                    placeholder="Fecha" wire:model="currentDate">
+                <div class="container-fluid">
+                    <div class="form-group row row-cols-3">
+                        <div class="col">
+                            <div class="row">
+                                <label for="inputFecha" class="form-label">Fecha</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputFecha"
+                                        placeholder="Fecha" wire:model="currentDate" @disabled(true)>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="inputContratista" class="form-label">Contratista</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputContratista"
+                                        placeholder="Ingrese el nombre del contratista" wire:model="contractor_name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="inputNitOne" class="form-label">NIT</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputNitOne"
+                                        placeholder="Ingrese el NIT" wire:model="contractor_nit">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="inputResponsable" class="form-label">Responsable</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputResponsable"
+                                        placeholder="Ingrese el nombre del responsable" wire:model="responsible_name">
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <label for="inputContratista"
-                                class="col-sm-2 col-form-label col-form-label-sm">Contratista</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-sm" id="inputContratista"
-                                    placeholder="Ingrese el nombre del contratista" wire:model="contractor_name">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputNitOne" class="col-sm-2 col-form-label col-form-label-sm">NIT</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-sm" id="inputNitOne"
-                                    placeholder="Ingrese el NIT" wire:model="contractor_nit">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputResponsable"
-                                class="col-sm-2 col-form-label col-form-label-sm">Responsable</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-sm" id="inputResponsable"
-                                    placeholder="Ingrese el nombre del responsable" wire:model="responsible_name">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end col-->
+                        <!-- end col-->
 
-                    <div class="col">
-                        <div class="row mb-3">
-                            <label for="inputEmpresa" class="col-sm-2 col-form-label col-form-label-sm">Empresa</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-sm" id="inputEmpresa"
-                                    placeholder="Ingrese el nombre de la empresa" wire:model="company_name">
+                        <div class="col">
+                            <div class="row">
+                                <label for="inputEmpresa" class="form-label">Empresa</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputEmpresa"
+                                        placeholder="Ingrese el nombre de la empresa" wire:model="company_name">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputSNit" class="col-sm-2 col-form-label col-form-label-sm">NIT</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-sm" id="inputSNit"
-                                    placeholder="Ingrese el NIT" wire:model="company_nit">
+                            <div class="row">
+                                <label for="inputSNit" class="form-label">NIT</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputSNit"
+                                        placeholder="Ingrese el NIT" wire:model="company_nit">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputTele" class="col-sm-2 col-form-label col-form-label-sm">Teléfono</label>
-                            <div class="col-sm-6">
-                                <input type="tel" class="form-control form-control-sm" id="inputTele"
-                                    placeholder="Ingrese el teléfono" wire:model="phone">
+                            <div class="row">
+                                <label for="inputTele" class="form-label">Teléfono</label>
+                                <div class="col-sm-6">
+                                    <input type="tel" class="form-control form-control-sm" id="inputTele"
+                                        placeholder="Ingrese el teléfono" wire:model="phone">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="inputDestin" class="col-sm-2 col-form-label col-form-label-sm">Destino
-                                material</label>
-                            <div class="col-sm-6">
-                                <input type="text" class="form-control form-control-sm" id="inputDestin"
-                                    placeholder="Ingrese el destino del material" wire:model="material_destination">
+                            <div class="row">
+                                <label for="inputDestin" class="form-label">Destino
+                                    material</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" id="inputDestin"
+                                        placeholder="Ingrese el destino del material" wire:model="material_destination">
+                                </div>
                             </div>
-                        </div>
-                    </div> <!-- end col-->
-                    <div class="col">
-                        <div class="text-sm-end">
-                            <div class="row mb-3">
-                                <label for="inputType" class="col-sm-2 col-form-label col-form-label-sm">Forma de
+                        </div> <!-- end col-->
+                        <div class="col">
+
+                            <div class="row">
+                                <label for="inputTypePay" class="form-label">Forma de
                                     pago</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control form-control-sm" id="inputType"
+                                    <select class="form-control form-control-sm" id="inputTypePay"
                                         wire:model="payment_method_id">
                                         <option selected>Forma de pago</option>
                                         @foreach ($paymentMethods as $method)
@@ -90,8 +89,8 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label col-form-label-sm">Cuenta bancaria</label>
+                            <div class="row">
+                                <label class="form-label">Cuenta bancaria</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control form-control-sm" id="inputBank"
                                         placeholder="Banco" wire:model="bank_name">
@@ -107,22 +106,25 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3">
-                                <label for="inputSupport" class="col-sm-2 col-form-label col-form-label-sm">Tipo
+                            <div class="row">
+                                <label for="inputType" class="form-label">Tipo
                                     soporte</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="inputType"
                                         wire:model="support_type_id">
                                         <option selected>Tipo de soporte</option>
                                         @foreach ($paymentSupport as $method)
-                                            <option value="{{ $method->id }}">{{ $method->support_name }}</option>
+                                            <option value="{{ $method->id }}">{{ $method->support_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                    </div> <!-- end col-->
+
+                        </div> <!-- end col-->
+                    </div>
                 </div>
+
                 <div>
                     <livewire:create-purchase-order-modal></livewire:create-purchase-order-modal>
                 </div>
@@ -167,7 +169,7 @@
                                                 <td class="text-end">$1799.00</td>
                                                 <td> <a href="#"
                                                         class="text-reset fs-19 px-1 delete-project-btn"
-                                                        wire:click.prevent="destroyAlertPurchase({{ $currentItem['id'] }}, '{{ $currentItem['name'] }}', '{{$index}}')">
+                                                        wire:click.prevent="destroyAlertPurchase({{ $currentItem['id'] }}, '{{ $currentItem['name'] }}', '{{ $index }}')">
                                                         <i class="ri-delete-bin-2-line"></i></a></td>
 
                                             </tr>
@@ -184,7 +186,7 @@
                 <div class="row mt-4">
                     <div class="col-4">
                         <div class="form-floating">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                            <textarea class="form-control form-control-sm" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
                             <label for="floatingTextarea">Observaciones Generales</label>
                         </div>
                     </div> <!-- end col-->
@@ -228,5 +230,3 @@
     </div> <!-- end col-->
 </div>
 <!-- end row -->
-
-

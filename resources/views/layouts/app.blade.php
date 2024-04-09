@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-menu-color="light">
 
-<head>
+<head data-menu-color="light">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -26,12 +26,11 @@
     @livewireStyles
 </head>
 
-<body class="show">
+<body>
     @livewireScripts
     <!-- Page Heading -->
 
     <!-- Page Content -->
-    <main>
         <div class="wrapper">
             <!-- Topbar -->
             @include('Templates.topbar')
@@ -46,7 +45,7 @@
                 </div>
             </div>
         </div>
-    </main>
+
 
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <!-- Flatpickr Timepicker Plugin js -->

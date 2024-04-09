@@ -17,6 +17,7 @@ class RolSeeder extends Seeder
         // Roles
         $role_admin = Role::firstOrCreate(['name' => 'Administrador']);
         $role_gerente = Role::firstOrCreate(['name' => 'Gerente']);
+        $role_contador = Role::firstOrCreate(['name' => 'Contador']);
         $role_empleado = Role::firstOrCreate(['name' => 'Empleado']);
 
         // Permisos
@@ -36,13 +37,47 @@ class RolSeeder extends Seeder
         $view_users = Permission::firstOrCreate(['name' => 'view.users']);
         $change_rol_users = Permission::firstOrCreate(['name' => 'change.rol.users']);
 
+        // Órdenes de compra
+        $store_purchase_order = Permission::firstOrCreate(['name' => 'store.purchase']);
+        $view_purchase_order = Permission::firstOrCreate(['name' => 'view.purchase']);
+
 
         // Asignar permisos a roles
-        $role_admin->syncPermissions($store_project, $update_project, $delete_project, $view_project, $assign_user_project, $unassign_user_project,
-                                        $store_users, $update_users, $delete_users, $view_users, $change_rol_users);
+        $role_admin->syncPermissions(
+            $store_project,
+            $update_project,
+            $delete_project,
+            $view_project,
+            $assign_user_project,
+            $unassign_user_project,
+            $store_users,
+            $update_users,
+            $delete_users,
+            $view_users,
+            $change_rol_users,
+            $store_purchase_order,
+            $view_purchase_order
+        );
 
-        $role_gerente->syncPermissions($store_project, $update_project, $view_project, $assign_user_project, $unassign_user_project,
-                                        $store_users, $update_users, $view_users);
+        $role_gerente->syncPermissions(
+            $store_project,
+            $update_project,
+            $view_project,
+            $assign_user_project,
+            $unassign_user_project,
+            $store_users,
+            $update_users,
+            $view_users,
+            $store_purchase_order,
+            $view_purchase_order
+        );
+
+
+        $role_contador->syncPermissions(
+            $view_project,
+            $view_purchase_order,
+            $store_purchase_order,
+        );
 
         $role_empleado->syncPermissions($view_project, $view_users, $update_users);
     }

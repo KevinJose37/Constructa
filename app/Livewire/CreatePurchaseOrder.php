@@ -42,6 +42,16 @@ class CreatePurchaseOrder extends Component
         return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport'));
     }
 
+    protected function calculateTotal()
+    {
+        $this->totalPurchaseIva = 0;
+        $tempSum = 0;
+        foreach ($this->selectedItems as $item) {
+            $tempSum += str_replace(',', '', $item["totalPriceIva"]);
+        }
+        $this->totalPurchaseIva = $tempSum;
+    }
+
 
     #[On('storeItem')]
     public function store(ItemService $itemService, $idItem, $unitPrice, $quantityItem)
@@ -65,14 +75,13 @@ class CreatePurchaseOrder extends Component
                 break;
             }
         }
-        
+
         if ($existingItemIndex !== false) {
-            $this->selectedItems[$existingItemIndex]["quantity"] += $quantityItem; 
+            $this->selectedItems[$existingItemIndex]["quantity"] += $quantityItem;
             $this->selectedItems[$existingItemIndex]["totalPrice"] = $this->selectedItems[$existingItemIndex]["price"] * $this->selectedItems[$existingItemIndex]["quantity"];
             $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($this->selectedItems[$existingItemIndex]["price"]));
             $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["price"]));
             $this->selectedItems[$existingItemIndex]["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["totalPrice"]));
-            $this->totalPurchaseIva += str_replace(',', '', $this->selectedItems[$existingItemIndex]["totalPriceIva"]);
         } else {
             $currentItem["quantity"] = $quantityItem;
             $currentItem["price"] = $unitPrice;
@@ -80,11 +89,11 @@ class CreatePurchaseOrder extends Component
             $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($unitPrice));
             $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($unitPrice));
             $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["totalPrice"]));
-            $this->totalPurchaseIva += str_replace(',', '', $currentItem["totalPriceIva"]);
+
             array_push($this->selectedItems, $currentItem);
         }
 
-        $this->totalPurchaseIva = $this->formatCurrency($this->totalPurchaseIva);
+        $this->calculateTotal();
     }
 
     #[On('destroy-item')]
@@ -99,14 +108,10 @@ class CreatePurchaseOrder extends Component
         $existingItemIndex = $secondparameters;
 
         if ($existingItemIndex !== false) {
-            $this->totalPurchaseIva -= str_replace(',', '', $this->selectedItems[$existingItemIndex]["totalPriceIva"]);
             unset($this->selectedItems[$existingItemIndex]);
             $this->selectedItems = array_values($this->selectedItems);
             // Recalculamos para evitar errores
-            $this->totalPurchaseIva = 0;
-            foreach ($this->selectedItems as $item) {
-                $this->totalPurchaseIva += str_replace(',', '', $item["totalPriceIva"]);
-            }
+            $this->calculateTotal();
         } else {
             $this->dispatch('alert', type: 'error', title: 'Órdenes de compra', message: 'Ocurrió un error encontrando el índice del elemento');
             return;
