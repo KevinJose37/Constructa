@@ -10,19 +10,10 @@ class InvoiceHeader extends Model
     use HasFactory;
 
     protected $fillable = [
-        'date',
-        'contractor_name',
-        'contractor_nit',
-        'responsible_name',
-        'company_name',
-        'company_nit',
-        'phone',
-        'material_destination',
-        'payment_method_id',
-        'bank_name',
-        'account_type',
-        'account_number',
-        'support_type_id',
+        'date', 'contractor_name', 'contractor_nit', 'responsible_name', 'company_name', 'company_nit',
+        'phone', 'material_destination', 'payment_method_id', 'bank_name', 'account_type', 'account_number',
+        'support_type_id', 'project_id', 'general_observations', 'subtotal_before_iva', 'total_iva',
+        'total_with_iva', 'retention', 'total_payable'
     ];
 
     // Definir relaciones si es necesario
