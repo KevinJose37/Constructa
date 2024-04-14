@@ -89,7 +89,6 @@ class CreatePurchaseOrder extends Component
             $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($unitPrice));
             $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($unitPrice));
             $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["totalPrice"]));
-
             array_push($this->selectedItems, $currentItem);
         }
 
