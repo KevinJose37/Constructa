@@ -21,19 +21,25 @@ return new class extends Migration
             $table->string('company_nit');
             $table->string('phone');
             $table->string('material_destination');
-            $table->unsignedBigInteger('payment_method_id'); // Asegúrate de que el tipo coincida con el de la columna referenciada.
+            $table->unsignedBigInteger('payment_method_id');
             $table->string('bank_name');
             $table->string('account_type');
             $table->string('account_number');
-            $table->unsignedBigInteger('support_type_id'); // Asegúrate de que el tipo coincida con el de la columna referenciada.
+            $table->unsignedBigInteger('support_type_id');
+            $table->unsignedBigInteger('project_id');
+            $table->text('general_observations')->nullable(); // Observaciones generales
+            $table->decimal('subtotal_before_iva', 10, 2)->default(0); // Subtotal antes de IVA
+            $table->decimal('total_iva', 10, 2)->default(0); // Total de IVA
+            $table->decimal('total_with_iva', 10, 2)->default(0); // Total con IVA
+            $table->decimal('retention', 10, 2)->default(0); // Retención calculada
+            $table->decimal('total_payable', 10, 2)->default(0); // Total a pagar después de retenciones
             $table->timestamps();
-        
-            // Define las claves foráneas
+            
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
             $table->foreign('support_type_id')->references('id')->on('payment_support')->onDelete('cascade');
         });
-        
     }
+    
 
     /**
      * Reverse the migrations.

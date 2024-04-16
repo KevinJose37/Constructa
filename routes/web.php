@@ -22,6 +22,10 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/dashboard', function () { return view('DashboardIndex'); })->name('dashboard.index');
 
+    Route::get('/consultaordenescompra', function () {
+        return view('PurchaseOrderQuery');
+    })->name('consultaordenescompra');
+    
     // Rutas relacionadas con proyectos
     Route::get('/proyectos', [ProjectController::class, 'index'])->name('projects.index');
 
