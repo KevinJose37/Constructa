@@ -1,4 +1,5 @@
 <div>
+    <x-page-title title="Tabla de proyectos"></x-page-title>
     <x-table>
         @if ($projects->isEmpty() && auth()->user()->hasRole('Empleado'))
             <div class="w-100 h-100">

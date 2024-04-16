@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Livewire;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Component;
-use App\Models\Project;
+
 use App\Models\Chat;
+use App\Models\Project;
+use Livewire\Component;
 use App\Models\Attachment;
-use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ChatComponent extends Component
 {
@@ -19,6 +22,9 @@ class ChatComponent extends Component
     use WithFileUploads;
     public $attachments = [];
 
+    
+    #[Layout('layouts.app')]
+    #[Title('Chats')]
     public function render()
     {
         try {
@@ -71,7 +77,6 @@ class ChatComponent extends Component
                 $this->addError('error', 'No se ha seleccionado un proyecto para guardar el mensaje.');
             }
             $this->newMessage = '';
-
         } catch (\Exception $e) {
             // Manejar la excepción
             $this->addError('error', 'Error al guardar el mensaje: ' . $e->getMessage());
@@ -85,21 +90,20 @@ class ChatComponent extends Component
                 foreach ($this->attachments as $attachment) {
                     $originalName = $attachment->getClientOriginalName();
                     $attachmentPath = $attachment->storeAs('attachments', $originalName);
-    
+
                     $messageText = '¡He subido el adjunto "' . $originalName . '"!';
-    
+
                     $chat = Chat::create([
                         'project_id' => $this->selectedProjectId,
                         'user_id' => Auth::id(),
                         'message' => $messageText, // Utiliza el mensaje personalizado aquí
-                        
+
                         'attachments' => $attachmentPath,
                     ]);
                 }
-    
+
                 $this->attachments = [];
                 $this->loadMessages();
-
             } else {
                 $this->addError('error', 'No se ha seleccionado un proyecto para guardar los adjuntos.');
             }
@@ -107,31 +111,31 @@ class ChatComponent extends Component
             $this->addError('error', 'Error al guardar los adjuntos: ' . $e->getMessage());
         }
     }
-    
 
 
 
-public function deleteAttachment($messageId)
-{
-    try {
-        // Buscar el mensaje por ID
-        $message = Chat::findOrFail($messageId);
 
-        // Verificar si hay un archivo adjunto y eliminarlo
-        if ($message->attachments) {
-            Storage::disk('public')->delete($message->attachments);
+    public function deleteAttachment($messageId)
+    {
+        try {
+            // Buscar el mensaje por ID
+            $message = Chat::findOrFail($messageId);
+
+            // Verificar si hay un archivo adjunto y eliminarlo
+            if ($message->attachments) {
+                Storage::disk('public')->delete($message->attachments);
+            }
+
+            // Eliminar el registro del mensaje de la base de datos
+            $message->delete();
+
+            // Actualizar la lista de mensajes para reflejar el cambio
+            $this->loadMessages();
+
+            session()->flash('message', 'Mensaje eliminado con éxito.');
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que ocurra
+            $this->addError('error', 'Error al eliminar el mensaje: ' . $e->getMessage());
         }
-
-        // Eliminar el registro del mensaje de la base de datos
-        $message->delete();
-
-        // Actualizar la lista de mensajes para reflejar el cambio
-        $this->loadMessages();
-
-        session()->flash('message', 'Mensaje eliminado con éxito.');
-    } catch (\Exception $e) {
-        // Manejar cualquier excepción que ocurra
-        $this->addError('error', 'Error al eliminar el mensaje: ' . $e->getMessage());
     }
-}
 }

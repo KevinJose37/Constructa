@@ -1,4 +1,5 @@
 <div>
+    <x-page-title title="Tabla de Usuarios"></x-page-title>
     <x-table>
         <div class="row w-100">
             <div class="col-lg-6 w-25">
@@ -42,9 +43,9 @@
                                     <i class="ri-delete-bin-2-line"></i></a>
                             @endcan
                             @can('update.users')
-                                <livewire:update-user :$user :wire:key="'update-user-' . $user->id"></livewire:update-user>    
+                                <livewire:update-user :$user :wire:key="'update-user-' . $user->id"></livewire:update-user>
                             @endcan
-                            
+
                         </td>
                     </tr>
                 @endforeach
