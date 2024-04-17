@@ -6,13 +6,17 @@ use Livewire\Component;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Services\UserServices;
+use Livewire\Attributes\Title;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 
 class ShowUsers extends Component
 {
     use WithPagination;
     public $search = "";
-
+    
+    #[Layout('layouts.app')]
+    #[Title('Usuarios')]
     #[On('userRefresh')]
     public function render(UserServices $userServices)
     {

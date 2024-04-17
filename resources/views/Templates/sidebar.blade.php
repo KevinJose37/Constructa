@@ -5,13 +5,18 @@
         <span class="logo-lg">
             <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" width="200">
         </span>
+        <span class="logo-sm">
+            <img src="{{ asset('assets/images/constructados.png') }}" alt="small logo">
+        </span>
     </a>
     <!-- Brand Logo Dark -->
     <a href="index.html" class="logo logo-dark">
         <span class="logo-lg">
             <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" style="width: 200px;  height: 70px;">
             <!-- Ajusta los valores según necesites -->
-
+        </span>
+        <span class="logo-sm">
+            <img src="{{ asset('assets/images/constructados.png') }}" alt="small logo">
         </span>
     </a>
     <!-- Sidebar Hover Menu Toggle Button -->
@@ -67,6 +72,12 @@
                     </a>
                 </li>
             @endcan
+            <li class="side-nav-item">
+                <a href="{{ route('purchaseorder.view') }}" class="side-nav-link">
+                    <i class="ri-user-fill"></i>
+                    <span> Órdenes de compra </span>
+                </a>
+            </li>
             <li class="side-nav-title mt-1"> Comunicacion</li>
 
             <li class="side-nav-item">

@@ -37,6 +37,7 @@ return new class extends Migration
             
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
             $table->foreign('support_type_id')->references('id')->on('payment_support')->onDelete('cascade');
+            
         });
     }
     

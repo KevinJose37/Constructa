@@ -11,7 +11,7 @@
                         <img src="{{asset('assets/images/constructa.png')}}" alt="logo">
                     </span>
                     <span class="logo-sm">
-                        <img src="{{asset('assets/images/constructa.png')}}" alt="small logo">
+                        <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
                     </span>
                 </a>
 
@@ -21,7 +21,7 @@
                         <img src="{{asset('assets/images/constructa.png')}}" alt="dark logo">
                     </span>
                     <span class="logo-sm">
-                        <img src="{{asset('assets/images/constructa.png')}}" alt="small logo">
+                        <img src="{{asset('assets/images/logo-sm.png')}}" alt="small logo">
                     </span>
                 </a>
             </div>

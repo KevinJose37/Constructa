@@ -25,13 +25,13 @@ class Project extends Model
         return $this->belongsTo(ProjectStatus::class, 'project_status_id');
     }
 
-    public function users(){
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id')->withTimestamps();
     }
 
-    
-    public function purchaseOrders()
+    public function invoiceHeaders()
     {
-        return $this->hasMany(Project::class, 'id_project');
+        return $this->hasMany(InvoiceHeader::class);
     }
 }

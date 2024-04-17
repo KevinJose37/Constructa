@@ -37,7 +37,7 @@ class ViewUsersProject extends Component
         $this->dispatch('alert', type: 'success', title: 'Okey',message: 'Se asignó correctamente al proyecto');
     }
 
-    #[On('destroy-user-project')] 
+    #[On('destroy-user-project')]
     public function destroy($id, ProjectUserServices $projectUserServices){
         $assignUser = $projectUserServices->DeleteUserByProject($this->project->id, $id );
         if(isset($assignUser['success']) && $assignUser['success'] === false){

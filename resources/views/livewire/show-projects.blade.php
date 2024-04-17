@@ -1,4 +1,5 @@
 <div>
+    <x-page-title title="Tabla de proyectos"></x-page-title>
     <x-table>
         @if ($projects->isEmpty() && auth()->user()->hasRole('Empleado'))
             <div class="w-100 h-100">
@@ -21,7 +22,7 @@
                 @endcan
             </div>
             <div class="table-responsive">
-                
+
             </div>
             <table class="table table-striped table-centered mb-0 ">
                 <thead>
@@ -49,20 +50,25 @@
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="ri-settings-3-line"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-animated dropdown-menu-end" >
+                                    <div class="dropdown-menu dropdown-menu-animated dropdown-menu-end">
                                         <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
                                         <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
-                                        <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}" class="dropdown-item">Crear órdenes de compra</a>
+                                        @can('store.purchase')
+                                            <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}"
+                                                class="dropdown-item">Crear órdenes de compra</a>
+                                        @endcan
                                     </div>
                                 </div>
-                                <livewire:view-users-project :$project :wire:key="'view-' . $project->id"></livewire:view-users-project>
+                                <livewire:view-users-project :$project
+                                    :wire:key="'view-' . $project->id"></livewire:view-users-project>
                                 @can('delete.project')
                                     <a href="#" class="text-reset fs-19 px-1 delete-project-btn"
                                         wire:click.prevent="destroyAlert({{ $project->id }}, '{{ $project->project_name }}')">
                                         <i class="ri-delete-bin-2-line"></i></a>
                                 @endcan
                                 @can('update.project')
-                                    <livewire:update-project :$project :wire:key="'update-' . $project->id"></livewire:update-project>
+                                    <livewire:update-project :$project
+                                        :wire:key="'update-' . $project->id"></livewire:update-project>
                                 @endcan
                             </td>
                         </tr>

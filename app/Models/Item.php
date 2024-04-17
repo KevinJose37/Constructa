@@ -16,9 +16,9 @@ class Item extends Model
         'cod',
         'unit_measurement'
     ];
-    public function purchaseOrderDetails()
+    
+    public function invoiceDetails()
     {
-        return $this->hasMany(PurchaseOrderDetail::class, 'id_item');
+        return $this->hasMany(InvoiceDetail::class, 'id_item');
     }
-
 }
