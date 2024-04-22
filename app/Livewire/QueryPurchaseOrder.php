@@ -8,9 +8,11 @@ use App\Models\InvoiceHeader;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Services\PurchaseOrderServices;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
 class QueryPurchaseOrder extends Component
 {
+
 
     public $search = "";
 
@@ -19,6 +21,7 @@ class QueryPurchaseOrder extends Component
     #[On('purchaseRefresh')]
     public function render(PurchaseOrderServices $purchaseOrderServices)
     {
+
         $purchaseOrder = $purchaseOrderServices->getAllPaginate($this->search);
         return view('livewire.query-purchase-order', compact("purchaseOrder"));
     }
