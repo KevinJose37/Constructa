@@ -97,7 +97,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <label class="form-label">Cuenta bancaria</label>
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Cuenta bancaria</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control form-control-sm" id="inputBank"
                                         placeholder="Banco" value="{{ $currentOrder->bank_name }}"
@@ -117,7 +117,7 @@
                             </div>
 
                             <div class="row">
-                                <label for="inputType" class="form-label">Tipo
+                                <label for="inputType" class="col-sm-2 col-form-label col-form-label-sm">Tipo
                                     soporte</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-sm" id="inputType"
@@ -181,41 +181,40 @@
                         </div>
                     </div> <!-- end col-->
 
-                    {{-- <div class="col-4">
+                    <div class="col-4">
                         <h6 class="text-muted">Valor antes de IVA:</h6>
-                        <p class="fs-13"><strong>Subtotal: </strong> <span> &nbsp;&nbsp;&nbsp;
-                                {{ $totalPurchase }}</span></p>
-                        <p class="fs-13"><strong>IVA: </strong> <span>&nbsp;&nbsp;&nbsp; {{ $totalIVA }}</span>
+                        <p class="fs-13"><strong>Subtotal: </strong> <span> 
+                                {{ $currentOrder->subtotal_before_iva }}</span></p>
+                        <p class="fs-13"><strong>IVA: </strong> <span> {{ $currentOrder->total_iva }}</span>
                         </p>
-                        <p class="fs-13"><strong>Valor total: </strong> <span>&nbsp;&nbsp;&nbsp;
-                                {{ $totalPurchaseIva }}</span></p>
-                        <p class="fs-13"><strong>Retención: </strong> <span>&nbsp;&nbsp;&nbsp;
-                                {{ $retencion }}</span></p>
-                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>&nbsp;&nbsp;&nbsp;
-                                {{ $totalPay }}</span></p>
+                        <p class="fs-13"><strong>Valor total: </strong> <span>
+                                {{ $currentOrder->total_with_iva }}</span></p>
+                        <p class="fs-13"><strong>Retención: </strong> <span>
+                                {{ $currentOrder->retention }}</span></p>
+                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
+                                {{ $currentOrder->total_payable }}</span></p>
                     </div> <!-- end col-->
 
                     <div class="col-4">
                         <div class="text-sm-end">
                             <h6 class="text-muted">Valor después de IVA:</h6>
-                            <p><b>Sub-total:</b> <span class="float-end">{{ $totalPurchaseIva }}</span></p>
-                            <h3>{{ $totalPay }} COP</h3>
+                            <p><b>Sub-total:</b> <span class="float-end">{{ $currentOrder->total_with_iva }}</span></p>
+                            <h3>{{ $currentOrder->total_payable }} COP</h3>
                         </div>
                     </div> <!-- end col-->
-                </div> --}}
-                    <!-- end row-->
+                </div>
+                <!-- end row-->
 
-                    <div class="d-print-none mt-4">
-                        <div class="text-end">
-                            <a href="javascript:window.print()" class="btn btn-primary"><i
-                                    class="ri-printer-line"></i>
-                                Imprimir</a>
-                            <a class="btn btn-info" wire:click="goBack">Atrás</a>
-                        </div>
+                <div class="d-print-none mt-4">
+                    <div class="text-end">
+                        <a href="javascript:window.print()" class="btn btn-primary"><i class="ri-printer-line"></i>
+                            Imprimir</a>
+                        <a class="btn btn-info" wire:click="goBack">Atrás</a>
                     </div>
-                    <!-- end buttons -->
-                </div> <!-- end card-body-->
-            </div> <!-- end card -->
-        </div> <!-- end col-->
-    </div>
-    <!-- end row -->
+                </div>
+                <!-- end buttons -->
+            </div> <!-- end card-body-->
+        </div> <!-- end card -->
+    </div> <!-- end col-->
+</div>
+<!-- end row -->
