@@ -183,7 +183,7 @@
 
                     <div class="col-4">
                         <h6 class="text-muted">Valor antes de IVA:</h6>
-                        <p class="fs-13"><strong>Subtotal: </strong> <span> 
+                        <p class="fs-13"><strong>Subtotal: </strong> <span>
                                 {{ $currentOrder->subtotal_before_iva }}</span></p>
                         <p class="fs-13"><strong>IVA: </strong> <span> {{ $currentOrder->total_iva }}</span>
                         </p>
@@ -198,7 +198,8 @@
                     <div class="col-4">
                         <div class="text-sm-end">
                             <h6 class="text-muted">Valor después de IVA:</h6>
-                            <p><b>Sub-total:</b> <span class="float-end">{{ $currentOrder->total_with_iva }}</span></p>
+                            <p><b>Sub-total:</b> <span class="float-end">{{ $currentOrder->total_with_iva }}</span>
+                            </p>
                             <h3>{{ $currentOrder->total_payable }} COP</h3>
                         </div>
                     </div> <!-- end col-->
