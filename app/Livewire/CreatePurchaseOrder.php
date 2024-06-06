@@ -12,12 +12,9 @@ use App\Services\ItemService;
 use App\Models\PaymentSupport;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Facades\Log;
-
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use App\Livewire\Forms\PurchaseOrderForm;
+use App\Services\ProjectServices;
 
 class CreatePurchaseOrder extends Component
 {
@@ -34,15 +31,20 @@ class CreatePurchaseOrder extends Component
         $this->currentDate = now()->format('d/m/y');
         $this->lastInvoiceId = InvoiceHeader::max('id');
         $this->project_id = $id;
+
     }
 
     #[Layout('layouts.app')]
     #[Title('Crear orden de compra')]
     #[On('itemRefresh')]
-    public function render(ItemService $itemService)
+    public function render(ItemService $itemService, ProjectServices $projectServices)
     {
         $user = Auth::user();
         if (!$user->can('store.purchase')) {
+            $this->redirect('/proyectos');
+        }
+
+        if(!$projectServices->getById($this->project_id) || $projectServices->getById($this->project_id) == null){
             $this->redirect('/proyectos');
         }
 

@@ -57,6 +57,8 @@
                                             <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}"
                                                 class="dropdown-item">Crear órdenes de compra</a>
                                         @endcan
+                                        <a href="{{ route('workprogress.index', ['id' => $project->id]) }}"
+                                            class="dropdown-item">Avance de obra</a>
                                     </div>
                                 </div>
                                 <livewire:view-users-project :$project

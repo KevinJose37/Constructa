@@ -140,8 +140,8 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row">
-                                <label class="form-label">Cuenta bancaria</label>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label col-form-label-sm">Cuenta bancaria</label>
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control form-control-sm" id="inputBank"
                                         placeholder="Banco" wire:model="bank_name">
@@ -174,7 +174,7 @@
                             </div>
 
                             <div class="row">
-                                <label for="inputType" class="form-label">Tipo
+                                <label for="inputType" class="col-sm-2 col-form-label col-form-label-sm">Tipo
                                     soporte</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="inputType"
@@ -264,15 +264,15 @@
 
                     <div class="col-4">
                         <h6 class="text-muted">Valor antes de IVA:</h6>
-                        <p class="fs-13"><strong>Subtotal: </strong> <span> &nbsp;&nbsp;&nbsp;
+                        <p class="fs-13"><strong>Subtotal: </strong> <span> 
                                 {{ $totalPurchase }}</span></p>
-                        <p class="fs-13"><strong>IVA: </strong> <span>&nbsp;&nbsp;&nbsp; {{ $totalIVA }}</span>
+                        <p class="fs-13"><strong>IVA: </strong> <span> {{ $totalIVA }}</span>
                         </p>
-                        <p class="fs-13"><strong>Valor total: </strong> <span>&nbsp;&nbsp;&nbsp;
+                        <p class="fs-13"><strong>Valor total: </strong> <span>
                                 {{ $totalPurchaseIva }}</span></p>
-                        <p class="fs-13"><strong>Retención: </strong> <span>&nbsp;&nbsp;&nbsp;
+                        <p class="fs-13"><strong>Retención: </strong> <span>
                                 {{ $retencion }}</span></p>
-                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>&nbsp;&nbsp;&nbsp;
+                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
                                 {{ $totalPay }}</span></p>
                     </div> <!-- end col-->
 
