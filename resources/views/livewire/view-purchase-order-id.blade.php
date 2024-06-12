@@ -7,7 +7,11 @@
                     <div class="float-start mb-3">
                         <h4 class="m-0 d-print-none">Orden de compra n°{{ $currentOrder->id }}</h4>
                     </div>
+                    <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm" id="inputApodo"
+                                    placeholder="inputApodo" value="{{ $currentOrder->order_name }}" @disabled(true)>
 
+                        </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col">

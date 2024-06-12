@@ -22,7 +22,7 @@ class CreatePurchaseOrder extends Component
     public $selectedItems = [];
     public $totalPurchaseIva, $totalPurchase, $totalIVA, $retencion, $totalPay;
     public PurchaseOrderForm $formPurchase;
-    public $currentDate, $contractor_name, $contractor_nit, $responsible_name, $company_name,
+    public $currentDate, $order_name, $contractor_name, $contractor_nit, $responsible_name, $company_name,
         $company_nit, $phone, $material_destination, $payment_method_id, $bank_name,
         $account_type, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
 
@@ -31,6 +31,7 @@ class CreatePurchaseOrder extends Component
         $this->currentDate = now()->format('d/m/y');
         $this->lastInvoiceId = InvoiceHeader::max('id');
         $this->project_id = $id;
+        $this->responsible_name = Auth::user()->name;
 
     }
 
@@ -195,6 +196,7 @@ class CreatePurchaseOrder extends Component
         return [
             // 'currentDate' => 'required|date',
             'contractor_name' => 'required|string',
+            'order_name' => 'required|string',
             'contractor_nit' => 'required|string',
             'responsible_name' => 'required|string',
             'company_name' => 'required|string',
@@ -237,6 +239,7 @@ class CreatePurchaseOrder extends Component
 
         $invoiceHeader = InvoiceHeader::create([
             'date' => $this->currentDate,
+            'order_name' => $this->order_name,
             'contractor_name' => $this->contractor_name,
             'contractor_nit' => $this->contractor_nit,
             'responsible_name' => $this->responsible_name,
@@ -280,7 +283,7 @@ class CreatePurchaseOrder extends Component
 
 
         $this->reset([
-            'contractor_name', 'contractor_nit', 'responsible_name',
+            'contractor_name', 'order_name','contractor_nit',
             'company_name', 'company_nit', 'phone', 'material_destination',
             'payment_method_id', 'bank_name', 'account_type', 'account_number', 'support_type_id', 'general_observations',
         ]);
