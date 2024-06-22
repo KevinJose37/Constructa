@@ -34,7 +34,7 @@
     x-on:keydown.escape.window="show = false" x-show="show" id="modal-id-{{ $id }}" class="modal fade"
     style="display: none;" tabindex="-1" aria-hidden="true" aria-labelledby="modal-id-{{ $id }}"
     x-ref="modal-id-{{ $id }}">
-    <div class="modal-dialog {{ $maxWidth }}">
+    <div class="modal-dialog modal-dialog-scrollable{{ $maxWidth }}">
         {{ $slot }}
     </div>
 </div>
