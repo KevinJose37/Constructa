@@ -9,7 +9,7 @@
         </li>
 
     </ol>
-    <x-dialog-modal wire:model="orderForm.open" maxWidth="md" id="new-item">
+    <x-dialog-modal wire:model="orderForm.open" maxWidth="md" id="new-item" :scrollable="true">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
             <div class="modal-content">
@@ -88,6 +88,20 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="control-label form-label">IVA</label>
+                                    <input type="number" class="form-control form-control-sm" id="currentIva"
+                                        wire:model.live="orderForm.currentIva" placeholder="Ingrese la cantidad"
+                                        wire:keydown="setTotal" min="1" step="1">
+                                    @error('orderForm.currentIva')
+                                        <div
+                                            class="invalid-feedback {{ $errors->has('orderForm.currentIva') ? 'd-block' : '' }}">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
                         @endif
                         @if (!is_null($orderForm->totalPrice) && $orderForm->totalPrice != 0)
                             <div class="col-12">
@@ -98,6 +112,19 @@
                                     @error('orderForm.totalPrice')
                                         <div
                                             class="invalid-feedback {{ $errors->has('orderForm.totalPrice') ? 'd-block' : '' }}">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="control-label form-label">Precio calculado con IVA</label>
+                                    <input class="form-control" type="text" name="totalPriceIva" id="totalPriceIva"
+                                        disabled wire:model.live="orderForm.totalPriceIva" />
+                                    @error('orderForm.totalPriceIva')
+                                        <div
+                                            class="invalid-feedback {{ $errors->has('orderForm.totalPriceIva') ? 'd-block' : '' }}">
                                             {{ $message }}
                                         </div>
                                     @enderror

@@ -70,8 +70,6 @@ class PurchaseOrderServices implements IService
 
     public function UpdateCreatePaid(array $data, int $id)
     {
-
-
         // Orden de compra header
         $currentPurchaseOrder = $this->getById($id);
 
@@ -90,4 +88,11 @@ class PurchaseOrderServices implements IService
         $currentPurchaseOrder->save();
         $currentPurchaseOrder->refresh();
     }
+
+    public function getByProject(int $id, $searchValue = null)
+    {
+        return $this->purchaseOrderRepository->PurchaseOrderByProject($id, $searchValue);
+    }
+
+    
 }

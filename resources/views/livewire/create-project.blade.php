@@ -47,6 +47,34 @@
                         </div>
                         <div class="col-12">
                             <div class="mb-3">
+                                <label class="control-label form-label">NIT</label>
+                                <input class="form-control" placeholder="Ingrese el NIT"
+                                    type="text" name="nit-project" id="project-nit" required
+                                    wire:model.live="form.nit_project" />
+                                @error('form.nit_project')
+                                    <div
+                                        class="invalid-feedback {{ $errors->has('form.nit_project') ? 'd-block' : '' }}">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label class="control-label form-label">Contratista</label>
+                                <input class="form-control" placeholder="Ingrese el contratista"
+                                    type="text" name="contratista_project" id="contratista_project" required
+                                    wire:model.live="form.contratista_project" />
+                                @error('form.contratista_project')
+                                    <div
+                                        class="invalid-feedback {{ $errors->has('form.contratista_project') ? 'd-block' : '' }}">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
                                 <label class="control-label form-label">Estado del proyecto</label>
                                 <select class="form-select" name="project_status_id" id="project-status" required
                                     wire:model.live="form.status_project">

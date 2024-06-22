@@ -57,7 +57,7 @@ class PurchaseOrderRepository implements IRepository
         return InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation');
     }
 
- 
+
     public function filterLike($value, $limit = null)
     {
         return InvoiceHeader::where(function ($queryBuilder) use ($value) {
@@ -73,5 +73,32 @@ class PurchaseOrderRepository implements IRepository
                     $statusQuery->where('project_name', 'like', "%$value%");
                 });
         });
+    }
+
+
+    public function PurchaseOrderByProject($id, $searchValue = null)
+    {
+        $query = InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation')
+            ->where('project_id', $id);
+
+        // Aplicar el filtro si se proporciona un valor de búsqueda
+        if ($searchValue) {
+            $query->where(function ($queryBuilder) use ($searchValue) {
+                $queryBuilder->where('date', 'like', "%$searchValue%")
+                    ->orWhere('contractor_name', 'like', "%$searchValue%")
+                    ->orWhere('contractor_nit', 'like', "%$searchValue%")
+                    ->orWhere('responsible_name', 'like', "%$searchValue%")
+                    ->orWhere('company_name', 'like', "%$searchValue%")
+                    ->orWhere('company_nit', 'like', "%$searchValue%")
+                    ->orWhere('phone', 'like', "%$searchValue%")
+                    ->orWhere('material_destination', 'like', "%$searchValue%")
+                    ->orWhereHas('project', function ($statusQuery) use ($searchValue) {
+                        $statusQuery->where('project_name', 'like', "%$searchValue%");
+                    });
+            });
+        }
+
+        // Aplicar paginación y devolver los resultados
+        return $query->paginate(10);
     }
 }

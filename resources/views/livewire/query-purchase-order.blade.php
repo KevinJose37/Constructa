@@ -15,9 +15,6 @@
             </div>
         </div>
         <div class="table-responsive">
-
-
-
             <table class="table table-striped table-centered mb-0">
                 <thead>
                     <tr class="d-flex">

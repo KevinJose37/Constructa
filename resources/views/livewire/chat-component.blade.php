@@ -1,20 +1,22 @@
 <div>
-    <x-page-title title="Chat por proyectos"></x-page-title>
+    <x-page-title title="{{ $project ? 'Chat del proyecto ' . $project->project_name : 'Chat por proyectos' }}"></x-page-title>
+
     <div class="row">
         <div class="col-xl-8 col-lg-7">
             <div class="card">
                 <div class="card-body">
-                    <div class="float-end">
-                        <select wire:model="selectedProjectId" wire:change="loadMessages"
-                            class="form-select form-select-sm">
-                            <option value="">Seleccionar proyecto</option>
-                            @foreach ($projects as $project)
-                                <option value="{{ $project->id }}">{{ $project->project_name }}</option>
-                            @endforeach
-                        </select>
+                    @if (!$project)
+                        <div class="float-end">
+                            <select wire:model="selectedProjectId" wire:change="loadMessages"
+                                class="form-select form-select-sm">
+                                <option value="">Seleccionar proyecto</option>
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+                                @endforeach
+                            </select>
 
-                    </div>
-
+                        </div>
+                    @endif
                     <h4 class="mb-4 mt-0 fs-16">Chat</h4>
 
                     <div id="messages-container" class="card-body py-0 mb-3 overflow-auto" data-simplebar
@@ -22,7 +24,8 @@
                         @if ($messages)
                             @foreach ($messages as $message)
                                 <div class="d-flex align-items-start mt-3">
-                                    <img class="me-2 rounded-circle" src="assets/images/users/avatar-5.jpg"
+                                    <img class="me-2 rounded-circle"
+                                        src="{{ asset('assets/images/users/avatar-5.jpg') }}"
                                         alt="Generic placeholder image" height="32" />
                                     <div class="w-100">
                                         <h5 class="mt-0">{{ $message->user->name }} <small

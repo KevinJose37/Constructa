@@ -16,8 +16,6 @@ class PurchaseOrderPaidInformation extends Component
 
     public function mount(InvoiceHeader $order)
     {
-        Log::info('Order Loaded:', ['order' => $order->toArray()]);
-        Log::info('Order Loaded:', [$this->order->paidInformation != null]);
         $this->order = $order;
         if($this->order->paidInformation != null){
             $this->form->name = $this->order->paidInformation->payment_person;
