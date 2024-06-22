@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('invoice_headers', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->string('order_name');
             $table->string('contractor_name');
             $table->string('contractor_nit');
             $table->string('responsible_name');
