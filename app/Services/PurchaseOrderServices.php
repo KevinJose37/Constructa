@@ -4,9 +4,10 @@ namespace App\Services;
 
 use Exception;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use App\Http\Repository\PurchaseOrderRepository;
 use App\Models\PaidInformation;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Repository\PurchaseOrderRepository;
 
 class PurchaseOrderServices implements IService
 {
@@ -88,11 +89,64 @@ class PurchaseOrderServices implements IService
         $currentPurchaseOrder->save();
         $currentPurchaseOrder->refresh();
     }
+    public function updateTechDecision(bool $decision, int $id)
+    {
+        $currentPurchaseOrder = $this->getById($id);
+
+        // Verificar si el usuario tiene el rol adecuado
+        if (Auth::user()->hasRole('Empleado') || Auth::user()->hasRole('Contador')) {
+            abort(403, 'No autorizado.');
+        }
+
+        // Verificar si existe PaidInformation asociado a la orden de compra
+        if ($currentPurchaseOrder->paidInformation()->exists()) {
+            // Actualizar la decisión del técnico en PaidInformation existente
+            $currentPaidInfo = $currentPurchaseOrder->paidInformation;
+            $currentPaidInfo->approved_tech = $decision;
+            $currentPaidInfo->save();
+            return;
+        } else {
+
+            $newPaidInfo = PaidInformation::create(['approved_tech' => $decision]);
+            // Si no existe PaidInformation, crear uno nuevo
+            $currentPurchaseOrder->paidInformation()->associate($newPaidInfo);
+        }
+
+        // Refrescar la instancia de la orden de compra
+        $currentPurchaseOrder->save();
+        $currentPurchaseOrder->refresh();
+    }
+
+    public function updateAccountDecision(bool $decision, int $id)
+    {
+        $currentPurchaseOrder = $this->getById($id);
+
+        // Verificar si el usuario tiene el rol adecuado
+        if (!Auth::user()->can('approved_account.purchase')) {
+            abort(403, 'No autorizado.');
+        }
+
+        // Verificar si existe PaidInformation asociado a la orden de compra
+        if ($currentPurchaseOrder->paidInformation()->exists()) {
+            // Actualizar la decisión del técnico en PaidInformation existente
+            $currentPaidInfo = $currentPurchaseOrder->paidInformation;
+            $currentPaidInfo->approved_account = $decision;
+            $currentPaidInfo->save();
+            return;
+        } else {
+
+            $newPaidInfo = PaidInformation::create(['approved_account' => $decision]);
+            // Si no existe PaidInformation, crear uno nuevo
+            $currentPurchaseOrder->paidInformation()->associate($newPaidInfo);
+        }
+
+        // Refrescar la instancia de la orden de compra
+        $currentPurchaseOrder->save();
+        $currentPurchaseOrder->refresh();
+    }
 
     public function getByProject(int $id, $searchValue = null)
     {
         return $this->purchaseOrderRepository->PurchaseOrderByProject($id, $searchValue);
     }
-
-    
 }

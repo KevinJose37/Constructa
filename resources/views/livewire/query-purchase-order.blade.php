@@ -37,6 +37,7 @@
                             <td class="col-md-2">{{ $order->company_name }}</td>
                             <td class="col-md-2">{{ $order->total_payable }} COP</td>
                             <td class="col-md-2">{{ $order->date }}</td>
+
                             <td class="col-md-1"><livewire:purchase-order-paid-information :order="$order"
                                     :wire:key="'purchase-order-paid-' . $order->id"></livewire:purchase-order-paid-information>
                             </td>
