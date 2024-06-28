@@ -25,7 +25,7 @@ return new class extends Migration
 
         $table->foreign('id_purchase_order')
               ->references('id')
-              ->on('invoice_headers') // Asegúrate de que este sea el nombre correcto de tu tabla de cabeceras
+              ->on('invoice_headers')
               ->onDelete('restrict')
               ->onUpdate('cascade');
 

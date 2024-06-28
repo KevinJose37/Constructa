@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::table('paid_information', function (Blueprint $table) {
+            $table->boolean('approved_tech')->default(false);
+            $table->boolean('approved_account')->default(false);
+        });
     }
 
     /**

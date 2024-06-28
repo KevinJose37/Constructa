@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+        Schema::table('paid_information', function (Blueprint $table) {
+            $table->date('payment_date')->nullable()->change();
+            $table->string('payment_method')->nullable()->change();
+            $table->string('payment_how')->nullable()->change();
+            $table->string('payment_person')->nullable()->change();
+        });
     }
 
     /**

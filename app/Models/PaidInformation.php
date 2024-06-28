@@ -15,7 +15,9 @@ class PaidInformation extends Model
         'payment_date',
         'payment_method',
         'payment_how',
-        'payment_person'
+        'payment_person',
+        'approved_tech',
+        'approved_account'
     ];
 
     public function invoiceHeader()

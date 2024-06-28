@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Attributes\Validate;
 use Livewire\Form;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseOrderPaidInformationForm extends Form
 {
@@ -25,4 +26,8 @@ class PurchaseOrderPaidInformationForm extends Form
     #[Validate('required', message: 'Ingrese una fecha')]
     #[Validate('date', message: 'Ingrese una fecha váldia')]
     public $date = "";
+
+    public $approved_tech = "0";
+    public $approved_account = "0";
+
 }

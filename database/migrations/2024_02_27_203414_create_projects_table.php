@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date("project_start_date");
             $table->date("project_estimated_end");
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('project_status_id')
                 ->references('id')

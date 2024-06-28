@@ -9,6 +9,7 @@ use App\Livewire\CreatePurchaseOrder;
 use App\Livewire\ViewPurchaseOrderId;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Livewire\PurchaseOrderByproject;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -22,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     // Rutas relacionadas con la orden de compra
     Route::get('/purchaseorder', QueryPurchaseOrder::class)->name('purchaseorder.view');
     Route::get('/purchaseorder/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
+    Route::get('/purchaseorder/project/{id}', PurchaseOrderByproject::class)->name('purchaseorderproject.get');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
 
     
@@ -35,7 +37,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas relacionadas con chats
 
-    Route::get('/chatprojects', ChatComponent::class)->name('chatprojects');
+    Route::get('/chat', ChatComponent::class)->name('chatprojects');
+    Route::get('/chat/project/{id}', ChatComponent::class)->where('id', '[0-9]+')->name('chatbyid.get');
+    
 
     // Rutas relacionadas con usuarios
     Route::get('/usuarios', ShowUsers::class)->name('usuarios.index');

@@ -11,8 +11,14 @@ class CreatePurchaseOrderModalForm extends Form
     public $open = false;
     public $currentSelect;
 
+    #[Validate('required', message: 'La cantidad es requerida')]
+    #[Validate('min:1', message: 'El valor mínimo es 1')]
+    #[Validate('numeric', message: 'Debe ser un valor numérico')]
+    public $currentIva = 19;
+    
     public $unit;
     public $code;
+    public $totalPriceIva;
 
     #[Validate('required', message: 'La cantidad es requerida')]
     #[Validate('min:1', message: 'El valor mínimo es 1')]

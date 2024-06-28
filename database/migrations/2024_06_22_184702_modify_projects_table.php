@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::table('projects', function (Blueprint $table) {
+            // Agregar una nueva columna
+            $table->text('nit')->nullable();
+            $table->text('contratista')->nullable();
+        });
+
     }
 
     /**

@@ -40,6 +40,9 @@ class RolSeeder extends Seeder
         // Órdenes de compra
         $store_purchase_order = Permission::firstOrCreate(['name' => 'store.purchase']);
         $view_purchase_order = Permission::firstOrCreate(['name' => 'view.purchase']);
+        $approved_tech = Permission::firstOrCreate(['name' => 'approved_tech.purchase']);
+        $approved_account = Permission::firstOrCreate(['name' => 'approved_account.purchase']);
+        $paid_account = Permission::firstOrCreate(['name' => 'paid.purchase']);
 
 
         // Asignar permisos a roles
@@ -56,7 +59,10 @@ class RolSeeder extends Seeder
             $view_users,
             $change_rol_users,
             $store_purchase_order,
-            $view_purchase_order
+            $view_purchase_order,
+            $approved_tech,
+            $approved_account,
+            $paid_account
         );
 
         $role_gerente->syncPermissions(
@@ -69,7 +75,9 @@ class RolSeeder extends Seeder
             $update_users,
             $view_users,
             $store_purchase_order,
-            $view_purchase_order
+            $view_purchase_order,
+            $approved_tech,
+            $paid_account
         );
 
 
@@ -77,6 +85,8 @@ class RolSeeder extends Seeder
             $view_project,
             $view_purchase_order,
             $store_purchase_order,
+            $approved_account,
+            $paid_account
         );
 
         $role_empleado->syncPermissions($view_project, $view_users, $update_users);

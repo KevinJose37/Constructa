@@ -8,10 +8,10 @@
                         <h4 class="m-0 d-print-none">Orden de compra n°{{ $currentOrder->id }}</h4>
                     </div>
                     <div class="col-sm-3">
-                                <input type="text" class="form-control form-control-sm" id="inputApodo"
-                                    placeholder="inputApodo" value="{{ $currentOrder->order_name }}" @disabled(true)>
+                        <input type="text" class="form-control form-control-sm" id="inputApodo" placeholder="inputApodo"
+                            value="{{ $currentOrder->order_name }}" @disabled(true)>
 
-                        </div>
+                    </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col">
@@ -214,7 +214,7 @@
                     <div class="text-end">
                         <a href="javascript:window.print()" class="btn btn-primary"><i class="ri-printer-line"></i>
                             Imprimir</a>
-                        <a class="btn btn-info" wire:click="goBack">Atrás</a>
+                        <a class="btn btn-info" href="{{ url()->previous() }}">Atrás</a>
                     </div>
                 </div>
                 <!-- end buttons -->

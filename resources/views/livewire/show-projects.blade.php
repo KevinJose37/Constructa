@@ -29,8 +29,10 @@
                     <tr class="d-flex">
                         <th class="col-md-2">Nombre del proyecto</th>
                         <th class="col-md-3">Descripción del proyecto</th>
-                        <th class="col-md-2">Estado</th>
-                        <th class="col-md-2">Fecha inicio</th>
+                        <th class="col-md-1">Estado</th>
+                        <th class="col-md-1">NIT</th>
+                        <th class="col-md-1">Contratista</th>
+                        <th class="col-md-1">Fecha inicio</th>
                         <th class="col-md-2">Fecha estimada fin</th>
                         <th class="col-md-1">Acciones</th>
                     </tr>
@@ -40,9 +42,12 @@
                         <tr id="projectRow_{{ $project->id }}" class="d-flex">
                             <td class="col-md-2">{{ $project->project_name }}</td>
                             <td class="col-md-3">{{ $project->project_description }}</td>
-                            <td class="col-md-2">{{ $project->projectStatus->status_name }}</td>
-                            <td class="col-md-2">{{ $project->project_start_date }}</td>
+                            <td class="col-md-1">{{ $project->projectStatus->status_name }}</td>
+                            <td class="col-md-1">{{ $project->nit }}</td>
+                            <td class="col-md-1">{{ $project->contratista }}</td>
+                            <td class="col-md-1">{{ $project->project_start_date }}</td>
                             <td class="col-md-2">{{ $project->project_estimated_end }}</td>
+                            
                             <td style="display: flex; align-items: center;" class="col-md-1">
                                 <div class="dropdown">
 
@@ -59,6 +64,10 @@
                                         @endcan
                                         <a href="{{ route('workprogress.index', ['id' => $project->id]) }}"
                                             class="dropdown-item">Avance de obra</a>
+                                        <a href="{{ route('purchaseorderproject.get', ['id' => $project->id]) }}"
+                                            class="dropdown-item">Ver órdenes de compra</a>
+                                        <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}"
+                                            class="dropdown-item">Chat del proyecto</a>
                                     </div>
                                 </div>
                                 <livewire:view-users-project :$project

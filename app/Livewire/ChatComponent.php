@@ -9,6 +9,7 @@ use App\Models\Attachment;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use App\Services\ProjectServices;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,13 +17,36 @@ class ChatComponent extends Component
 {
     public $selectedProjectId;
     public $projectId;
+    public $project;
     public $newMessage;
     public $messages;
 
     use WithFileUploads;
     public $attachments = [];
 
-    
+    public function mount($id = null, ProjectServices $projectServices)
+    {
+
+        if (!is_null($id) && is_object($id)) {
+            return;
+        }
+
+        if (!is_numeric($id)) {
+            return redirect()->route('chatprojects');
+        }
+
+        $id = intval($id);
+
+        $this->project = $projectServices->getById($id);
+
+        if (!$this->project) {
+            return redirect()->route('projects.index');
+        }
+
+        $this->selectedProjectId = $this->project->id;
+        $this->loadMessages();
+    }
+
     #[Layout('layouts.app')]
     #[Title('Chats')]
     public function render()

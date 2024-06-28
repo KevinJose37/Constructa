@@ -17,6 +17,9 @@ class CreateProject extends Component
         $data['project_status_id'] = $this->form->status_project;
         $data['project_start_date'] = $this->form->date_start_project;
         $data['project_estimated_end'] = $this->form->date_end_project;
+        $data['project_nit'] = $this->form->nit_project;
+        $data['project_contratista'] = $this->form->contratista_project;
+        
         $responseSave = $projectServices->Add($data);
         if(!is_array($responseSave) && !isset($responseSave['success'])){
             $this->dispatch('projectRefresh')->to(ShowProjects::class);
