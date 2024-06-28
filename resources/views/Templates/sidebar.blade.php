@@ -74,10 +74,18 @@
             @endcan
             <li class="side-nav-item">
                 <a href="{{ route('purchaseorder.view') }}" class="side-nav-link">
-                    <i class="ri-user-fill"></i>
+                <i class="ri-shopping-cart-2-fill"></i>
                     <span> Órdenes de compra </span>
                 </a>
             </li>
+
+            <li class="side-nav-item">
+                <a href="{{ route('consolidated.view') }}" class="side-nav-link">
+                <i class="ri-calculator-line"></i>
+                    <span> Consolidado </span>
+                </a>
+            </li>
+
             <li class="side-nav-title mt-1"> Comunicacion</li>
 
             <li class="side-nav-item">

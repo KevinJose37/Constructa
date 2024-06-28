@@ -5,6 +5,7 @@ use App\Livewire\ShowProjects;
 use App\Livewire\ChatComponent;
 use App\Livewire\ShowWorkProgress;
 use App\Livewire\QueryPurchaseOrder;
+use App\Livewire\QueryConsolidated;
 use App\Livewire\CreatePurchaseOrder;
 use App\Livewire\ViewPurchaseOrderId;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchaseorder/project/{id}', PurchaseOrderByproject::class)->name('purchaseorderproject.get');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
 
-    
+    Route::get('/consolidated', QueryConsolidated::class)->name('consolidated.view');
+
     Route::get('/dashboard', function () {
         return view('DashboardIndex');
     })->name('dashboard.index');
