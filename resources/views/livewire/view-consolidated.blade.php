@@ -42,20 +42,20 @@
                                 <td>{{ $detail->item->name }}</td>
                                 <td>{{ $detail->item->unit_measurement }}</td>
                                 <td>{{ $detail->quantity }}</td>
-                                <td>{{ $detail->price }}</td>
-                                <td>{{ $detail->total_price }}</td>
+                                <td>${{ number_format($detail->price, 2, '.', ',') }}</td>
+                                <td>${{ number_format($detail->total_price, 2, '.', ',') }}</td>
                                 <td>{{ $detail->iva }}</td>
-                                <td>{{ $detail->price_iva }}</td>
-                                <td>{{ $detail->total_price_iva }}</td>
-                                <td>{{ $order->retention }}</td>
-                                <td>{{ $order->total_payable }}</td>
+                                <td>${{ number_format($detail->price_iva, 2, '.', ',') }}</td>
+                                <td>${{ number_format($detail->total_price_iva, 2, '.', ',') }}</td>
+                                <td>${{ number_format($order->retention, 2, '.', ',') }}</td>
+                                <td>${{ number_format($order->total_payable, 2, '.', ',') }}</td>
                                 <td>{{ $order->company_name }}</td>
                                 <td>{{ $order->company_nit }}</td>
                                 <td>{{ $order->phone }}</td>
                                 <td>{{ $order->material_destination }}</td>
-                                <td>{{ $order->payment_method_id }}</td>
+                                <td>{{ $order->paymentMethod->payment_name }}</td>
                                 <td>{{ $order->bank_name }}</td>
-                                <td>{{ $order->account_type }}</td>
+                                <td>{{ $order->supportType->support_name }}</td>
                             </tr>
                         @endforeach
                     @endforeach

@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="mb-3">
-                        <h3>Detalles del Proyecto #{{ $project->id }}</h3>
+                        <h3>Detalles del Proyecto:</h3>
                         <div class="container">
                             <div class="row">
                                 <div class="col">

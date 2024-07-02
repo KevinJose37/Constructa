@@ -166,6 +166,7 @@
                                             <td>{{ $detail->iva }}</td>
                                             <td>{{ $detail->price_iva }}</td>
                                             <td>{{ $detail->total_price_iva }}</td>
+                                            
                                         </tr>
                                     @endforeach
                                 </tbody>
