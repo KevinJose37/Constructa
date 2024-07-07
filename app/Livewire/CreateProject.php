@@ -12,29 +12,34 @@ class CreateProject extends Component
 
     public function save(ProjectServices $projectServices){
         $this->form->validate();
-        $data['project_name'] = $this->form->name_project;
-        $data['project_description'] = $this->form->description_project;
-        $data['project_status_id'] = $this->form->status_project;
-        $data['project_start_date'] = $this->form->date_start_project;
-        $data['project_estimated_end'] = $this->form->date_end_project;
-        $data['project_nit'] = $this->form->nit_project;
-        $data['project_contratista'] = $this->form->contratista_project;
-        
+
+        $data = [
+            'project_name' => $this->form->name_project,
+            'project_description' => $this->form->description_project,
+            'project_status_id' => $this->form->status_project,
+            'project_start_date' => $this->form->date_start_project,
+            'project_estimated_end' => $this->form->date_end_project,
+            'nit' => $this->form->nit_project,
+            'contratista' => $this->form->contratista_project,
+            'entidad_contratante' => $this->form->entidad_contratante,
+            'contract_number' => $this->form->contract_number
+        ];
+
         $responseSave = $projectServices->Add($data);
-        if(!is_array($responseSave) && !isset($responseSave['success'])){
+
+        if (!is_array($responseSave) && !isset($responseSave['success'])) {
             $this->dispatch('projectRefresh')->to(ShowProjects::class);
-            $this->dispatch('alert', type: 'success', title: 'Proyectos',message: "Se creó correctamente el proyecto {$this->form->name_project}");
+            $this->dispatch('alert', type: 'success', title: 'Proyectos', message: "Se creó correctamente el proyecto {$this->form->name_project}");
             $this->form->reset();
             return;
         }
-        $this->dispatch('alert', type: 'error', title: 'Proyectos',message: "Ocurrió un error al crear el proyecto {$this->form->name_project}");
+
+        $this->dispatch('alert', type: 'error', title: 'Proyectos', message: "Ocurrió un error al crear el proyecto {$this->form->name_project}");
     }
 
     public function render(ProjectServices $projectServices)
     {
         $projectstatus = $projectServices->getStatusProjects();
-        return view('livewire.create-project',  compact('projectstatus'));
+        return view('livewire.create-project', compact('projectstatus'));
     }
-
-
 }

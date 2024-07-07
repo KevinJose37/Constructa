@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +18,9 @@ class Project extends Model
         'project_start_date',
         'project_estimated_end',
         'nit',
-        'contratista'
+        'contratista',
+        'entidad_contratante',  // Nuevo campo
+        'contract_number'      // Nuevo campo
     ];
 
     public function projectStatus()

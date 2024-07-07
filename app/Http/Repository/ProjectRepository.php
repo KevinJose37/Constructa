@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Repository;
 
 use App\Models\Project;
@@ -21,9 +22,10 @@ class ProjectRepository implements IRepository{
         $project->project_status_id = $data['project_status_id'];
         $project->project_start_date = $data['project_start_date'];
         $project->project_estimated_end = $data['project_estimated_end'];
-        $project->contratista = $data['project_contratista'];
-        $project->nit = $data['project_nit'];
-
+        $project->contratista = $data['contratista'];
+        $project->nit = $data['nit'];
+        $project->entidad_contratante = $data['entidad_contratante']; 
+        $project->contract_number = $data['contract_number']; 
         return $project->save();
     }
 
@@ -38,11 +40,13 @@ class ProjectRepository implements IRepository{
         $project->project_status_id = $data['project_status_id'];
         $project->project_start_date = $data['project_start_date'];
         $project->project_estimated_end = $data['project_estimated_end'];
+        $project->entidad_contratante = $data['entidad_contratante']; 
+        $project->contract_number = $data['contract_number'];
+
         return $project->save();
     }
 
     public function Delete($id){
-
     }
 
     public function ProjectQuery(){
@@ -55,16 +59,12 @@ class ProjectRepository implements IRepository{
                          ->orWhere('project_description', 'like', "%$value%")
                          ->orWhere('project_start_date', 'like', "%$value%")
                          ->orWhere('project_estimated_end', 'like', "%$value%")
-                         ->orWhereHas('projectStatus', function ($statusQuery) use ($value) {
-                            $statusQuery->where('status_name', 'like', "%$value%");
-                        });
+                         ->orWhere('entidad_contratante', 'like', "%$value%") 
+                         ->orWhere('contract_number', 'like', "%$value%"); 
         });
     }
 
     public function getAllStatusProject(){
         return ProjectStatus::get();
     }
-
-
-
 }
