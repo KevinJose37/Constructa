@@ -23,7 +23,7 @@
                             <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Fecha</label>
                             <div class="col-sm-6 d-flex align-items-center">
                                 <input type="text" class="form-control form-control-sm" id="inputFecha"
-                                    placeholder="Fecha" wire:model="currentDate">
+                                    placeholder="Fecha" wire:model="currentDate" @disabled(true)>
                             </div>
                             @error('currentDate')
                                 <div class="invalid-feedback {{ $errors->has('currentDate') ? 'd-block' : '' }}">
@@ -37,7 +37,8 @@
                                 class="col-sm-2 col-form-label col-form-label-sm">Contratista</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control form-control-sm" id="inputContratista"
-                                    placeholder="Ingrese el nombre del contratista" wire:model="contractor_name">
+                                    placeholder="Ingrese el nombre del contratista" wire:model="contractor_name"
+                                    @disabled(true)>
                                 @error('contractor_name')
                                     <div class="invalid-feedback {{ $errors->has('contractor_name') ? 'd-block' : '' }}">
                                         {{ $message }}
@@ -50,7 +51,8 @@
                             <label for="inputNitOne" class="col-sm-2 col-form-label col-form-label-sm">NIT</label>
                             <div class="col-sm-6">
                                 <input type="text" class="form-control form-control-sm" id="inputNitOne"
-                                    placeholder="Ingrese el NIT" wire:model="contractor_nit">
+                                    placeholder="Ingrese el NIT" wire:model="contractor_nit"
+                                    @disabled(true)>
                                 @error('contractor_nit')
                                     <div class="invalid-feedback {{ $errors->has('contractor_nit') ? 'd-block' : '' }}">
                                         {{ $message }}
@@ -64,7 +66,7 @@
                             <div class="col-sm-6">
                                 <input type="text" class="form-control form-control-sm" id="inputResponsable"
                                     placeholder="Ingrese el nombre del responsable" wire:model="responsible_name"
-                                    readonly>
+                                    @disabled(true)>
                                 @error('responsible_name')
                                     <div class="invalid-feedback {{ $errors->has('responsible_name') ? 'd-block' : '' }}">
                                         {{ $message }}

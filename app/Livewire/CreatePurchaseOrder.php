@@ -26,27 +26,32 @@ class CreatePurchaseOrder extends Component
         $company_nit, $phone, $material_destination, $payment_method_id, $bank_name,
         $account_type, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
 
-    public function mount($id)
+    public function mount($id, ProjectServices $projectServices)
     {
         $this->currentDate = now()->format('d/m/y');
         $this->lastInvoiceId = InvoiceHeader::max('id');
         $this->project_id = $id;
         $this->responsible_name = Auth::user()->name;
+        $currentProject = $projectServices->getById($this->project_id);
 
+        if (!$currentProject || is_null($currentProject)) {
+            $this->redirect('/proyectos');
+            return;
+        }
+
+        $this->contractor_name = $currentProject->contratista;
+        $this->contractor_nit = $currentProject->nit;
     }
 
     #[Layout('layouts.app')]
     #[Title('Crear orden de compra')]
     #[On('itemRefresh')]
-    public function render(ItemService $itemService, ProjectServices $projectServices)
+    public function render(ItemService $itemService)
     {
         $user = Auth::user();
         if (!$user->can('store.purchase')) {
             $this->redirect('/proyectos');
-        }
-
-        if(!$projectServices->getById($this->project_id) || $projectServices->getById($this->project_id) == null){
-            $this->redirect('/proyectos');
+            return;
         }
 
         $paymentMethods = PaymentMethod::all();
@@ -285,7 +290,7 @@ class CreatePurchaseOrder extends Component
 
 
         $this->reset([
-            'contractor_name', 'order_name','contractor_nit',
+            'contractor_name', 'order_name', 'contractor_nit',
             'company_name', 'company_nit', 'phone', 'material_destination',
             'payment_method_id', 'bank_name', 'account_type', 'account_number', 'support_type_id', 'general_observations',
         ]);

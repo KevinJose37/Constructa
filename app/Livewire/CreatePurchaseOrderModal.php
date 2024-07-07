@@ -30,14 +30,14 @@ class CreatePurchaseOrderModal extends Component
 
     public function setTotal()
     {
+        $this->orderForm->validate();
         $quantityItem = $this->orderForm->quantityItem;
-        $this->orderForm->priceUnit = preg_replace('/[^0-9,.]+/', '', $this->orderForm->priceUnit);
-        $priceUnit =  str_replace(',', '.',  $this->orderForm->priceUnit);
+        $priceUnit = str_replace('.', '', $this->orderForm->priceUnit);
+        $priceUnit = str_replace(',', '.', $priceUnit);
         if (!is_null($quantityItem) && !is_null($priceUnit) && !is_null($this->orderForm->currentIva)) {
-            $total = floatval((float) $priceUnit * (float)$quantityItem);
-            $this->orderForm->totalPrice = $this->formatCurrency($total);
-            $this->orderForm->totalPriceIva = Helpers::calculateTotalIva($total, $this->orderForm->currentIva);
-
+            $total = $priceUnit * $quantityItem;
+            $this->orderForm->totalPrice = number_format($total, 2, ',', '.');
+            $this->orderForm->totalPriceIva = number_format(Helpers::calculateTotalIva($total, $this->orderForm->currentIva), 0, ',', '.');
         }
     }
 
@@ -50,10 +50,5 @@ class CreatePurchaseOrderModal extends Component
             'resetSelect',
             id: 'item-select',
         );
-    }
-
-    protected function formatCurrency($value)
-    {
-        return number_format($value, 2, '.', ',');
     }
 }

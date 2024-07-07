@@ -64,8 +64,8 @@
                                 <div class="mb-3">
                                     <label class="control-label form-label">Precio unitario</label>
                                     <input type="text" class="form-control form-control-sm" id="priceUnit"
-                                        wire:model.live="orderForm.priceUnit" placeholder="Ingrese el precio"
-                                        wire:keydown="setTotal">
+                                        wire:model.debounce.100ms="orderForm.priceUnit" placeholder="Ingrese el precio"
+                                        wire:keydown.debounce.100ms="setTotal">
                                     @error('orderForm.priceUnit')
                                         <div
                                             class="invalid-feedback {{ $errors->has('orderForm.priceUnit') ? 'd-block' : '' }}">
@@ -78,8 +78,8 @@
                                 <div class="mb-3">
                                     <label class="control-label form-label">Cantidad</label>
                                     <input type="number" class="form-control form-control-sm" id="quantityItem"
-                                        wire:model.live="orderForm.quantityItem" placeholder="Ingrese la cantidad"
-                                        wire:keydown="setTotal" min="1" step="1">
+                                        wire:model.debounce.050ms="orderForm.quantityItem"
+                                        placeholder="Ingrese la cantidad" wire:keydown.debounce.050ms="setTotal">
                                     @error('orderForm.quantityItem')
                                         <div
                                             class="invalid-feedback {{ $errors->has('orderForm.quantityItem') ? 'd-block' : '' }}">
@@ -92,8 +92,8 @@
                                 <div class="mb-3">
                                     <label class="control-label form-label">IVA</label>
                                     <input type="number" class="form-control form-control-sm" id="currentIva"
-                                        wire:model.live="orderForm.currentIva" placeholder="Ingrese la cantidad"
-                                        wire:keydown="setTotal" min="1" step="1">
+                                        wire:model.debounce.100ms="orderForm.currentIva"
+                                        placeholder="Ingrese la cantidad" wire:keydown.debounce.100ms="setTotal">
                                     @error('orderForm.currentIva')
                                         <div
                                             class="invalid-feedback {{ $errors->has('orderForm.currentIva') ? 'd-block' : '' }}">
@@ -162,6 +162,15 @@
                 @this.set('orderForm.currentSelect', e.target.value);
                 @this.call('getUnit');
             });
+
+            $(document).on("keyup",`#priceUnit`, (function(e) {
+
+                $(e.target).val(function(index, value) {
+                    return value.replace(/\D/g, "").replace(/^0+/,
+                            "").replace(/^(\d+)(\d{2})$/, "$1,$2").replace(
+                            /\B(?=(\d{3})+(?!\d))/g, ".");
+                });
+            }));
         });
     </script>
 @endpush

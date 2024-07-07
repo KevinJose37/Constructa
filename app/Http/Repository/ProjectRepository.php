@@ -21,6 +21,9 @@ class ProjectRepository implements IRepository{
         $project->project_status_id = $data['project_status_id'];
         $project->project_start_date = $data['project_start_date'];
         $project->project_estimated_end = $data['project_estimated_end'];
+        $project->contratista = $data['project_contratista'];
+        $project->nit = $data['project_nit'];
+
         return $project->save();
     }
 
