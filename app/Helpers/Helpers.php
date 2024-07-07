@@ -19,6 +19,9 @@ class Helpers {
     }
     
     public static function calculateTotalIva($amount, $iva = null) {
+        if($iva == 0){
+            return $amount;
+        }
         self::formatAssignIVA($iva);
         $amount = str_replace(',', '', $amount);
         return round((float)$amount * (self::$ivaRate + 1), 1);

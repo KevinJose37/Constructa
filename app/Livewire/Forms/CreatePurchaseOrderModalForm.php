@@ -12,7 +12,7 @@ class CreatePurchaseOrderModalForm extends Form
     public $currentSelect;
 
     #[Validate('required', message: 'La cantidad es requerida')]
-    #[Validate('min:1', message: 'El valor mínimo es 1')]
+    // #[Validate('min:1', message: 'El valor mínimo es 1')]
     #[Validate('numeric', message: 'Debe ser un valor numérico')]
     public $currentIva = 19;
     
@@ -26,7 +26,7 @@ class CreatePurchaseOrderModalForm extends Form
     public $quantityItem;
 
     #[Validate('required', message: 'El precio unitario es requerido')]
-    #[Validate('numeric', message: 'Debe ser un valor numérico')]
+    #[Validate('regex:/^\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?$/', message: 'Debe ser un valor numérico')]
     #[Validate('min:1', message: 'El valor mínimo es 1')]
     public $priceUnit;
     
