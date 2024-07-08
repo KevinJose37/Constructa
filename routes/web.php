@@ -25,9 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchaseorder', QueryPurchaseOrder::class)->name('purchaseorder.view');
     Route::get('/purchaseorder/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
     Route::get('/purchaseorder/project/{id}', PurchaseOrderByproject::class)->name('purchaseorderproject.get');
+    Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
-
-    Route::get('/consolidated', QueryConsolidated::class)->name('consolidated.view');
 
     Route::get('/dashboard', function () {
         return view('DashboardIndex');

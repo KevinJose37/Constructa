@@ -18,7 +18,6 @@ use App\Services\ProjectServices;
 
 class CreatePurchaseOrder extends Component
 {
-
     public $selectedItems = [];
     public $totalPurchaseIva, $totalPurchase, $totalIVA, $retencion, $totalPay;
     public PurchaseOrderForm $formPurchase;
@@ -29,7 +28,6 @@ class CreatePurchaseOrder extends Component
     public function mount($id, ProjectServices $projectServices)
     {
         $this->currentDate = now()->format('d/m/y');
-        $this->lastInvoiceId = InvoiceHeader::max('id');
         $this->project_id = $id;
         $this->responsible_name = Auth::user()->name;
         $currentProject = $projectServices->getById($this->project_id);
@@ -41,6 +39,9 @@ class CreatePurchaseOrder extends Component
 
         $this->contractor_name = $currentProject->contratista;
         $this->contractor_nit = $currentProject->nit;
+
+        // Obtener el último ID de la orden de compra para el proyecto específico
+        $this->lastInvoiceId = InvoiceHeader::where('project_id', $this->project_id)->max('id');
     }
 
     #[Layout('layouts.app')]
@@ -107,7 +108,6 @@ class CreatePurchaseOrder extends Component
     #[On('storeItem')]
     public function store(ItemService $itemService, $idItem, $unitPrice, $quantityItem, $iva)
     {
-
         if ($idItem === null || empty($idItem)) {
             $this->dispatch('alert', type: 'error', title: 'Órdenes de compra', message: 'Ingrese un valor válido');
             return;
@@ -192,7 +192,6 @@ class CreatePurchaseOrder extends Component
         );
     }
 
-
     protected function formatCurrency($value)
     {
         return number_format($value, 2, '.', ',');
@@ -201,7 +200,6 @@ class CreatePurchaseOrder extends Component
     public function rules()
     {
         return [
-            // 'currentDate' => 'required|date',
             'contractor_name' => 'required|string',
             'order_name' => 'required|string',
             'contractor_nit' => 'required|string',
@@ -233,7 +231,6 @@ class CreatePurchaseOrder extends Component
 
     public function storeHeader()
     {
-
         // Validar los campos de la cabecera
         $this->validate();
 
@@ -282,12 +279,9 @@ class CreatePurchaseOrder extends Component
             ]);
         }
 
-
         // Limpiar los campos después de guardar
-
         $this->selectedItems = [];
         $this->updateTotals();
-
 
         $this->reset([
             'contractor_name', 'order_name', 'contractor_nit',

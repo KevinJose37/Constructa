@@ -30,6 +30,13 @@ class UpdateProjectForm extends Form
     #[Validate('after:date_start_project', message: 'La fecha de finalización debe ser superior a la fecha de inicio')]
     public $date_end_project = "";
 
+    #[Validate('required', message: 'Ingrese un valor para la entidad contratante')]
+    #[Validate('min:3', message: 'El nombre es demasiado corto')]
+    public $entidad_contratante = "";
+
+    #[Validate('required', message: 'Ingrese un valor para el número de contrato')]
+    #[Validate('min:3', message: 'El número de contrato es demasiado corto')]
+    public $contract_number = "";
 
     public function rules()
     {

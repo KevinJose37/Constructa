@@ -21,7 +21,7 @@
                     <livewire:create-project></livewire:create-project>
                 @endcan
             </div>
-            <div class="table-responsive">
+            <div class="table-container">
                 <table class="table table-striped table-centered mb-0">
                     <thead>
                         <tr>
@@ -42,7 +42,7 @@
                             <tr>
                                 <td>{{ $project->project_name }}</td>
                                 <td>{{ $project->contract_number }}</td>
-                                <td>{{ $project->project_description }}</td>
+                                <td class="contract-description">{{ \Illuminate\Support\Str::limit($project->project_description, 100) }}</td>
                                 <td>{{ $project->projectStatus->status_name }}</td>
                                 <td>{{ $project->nit }}</td>
                                 <td>{{ $project->contratista }}</td>
@@ -56,8 +56,7 @@
                                             <i class="ri-settings-3-line"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-animated dropdown-menu-end">
-                                            <a href="javascript:void(0);" class="dropdown-item">Gestionar materiales</a>
-                                            <a href="javascript:void(0);" class="dropdown-item">Gestionar finanzas</a>
+                              
                                             @can('store.purchase')
                                                 <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}"
                                                     class="dropdown-item">Crear órdenes de compra</a>
@@ -68,6 +67,9 @@
                                                 class="dropdown-item">Ver órdenes de compra</a>
                                             <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}"
                                                 class="dropdown-item">Chat del proyecto</a>
+                                                <a href="{{ route('consolidated.view', ['id' => $project->id]) }}"
+                                                 class="dropdown-item">Ver Consolidado</a>
+
                                         </div>
                                     </div>
                                     <livewire:view-users-project :$project :wire:key="'view-' . $project->id"></livewire:view-users-project>
@@ -89,6 +91,3 @@
         @endif
     </x-table>
 </div>
-@push('js')
-    <script></script>
-@endpush

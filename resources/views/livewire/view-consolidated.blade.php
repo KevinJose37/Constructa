@@ -23,11 +23,11 @@
                         <th>IVA (%)</th>
                         <th>VALOR UNITARIO INCLUIDO IVA</th>
                         <th>VALOR PARCIAL INCLUIDO IVA</th>
-                        <th>VALOR RETENCION</th>
-                        <th>VALOR TOTAL INCLUIDO IVA Y RETENCION</th>
+                        <th>VALOR RETENCIÓN</th>
+                        <th>VALOR TOTAL INCLUIDO IVA Y RETENCIÓN</th>
                         <th>EMPRESA</th>
                         <th>NIT</th>
-                        <th>TELEFONO DE CONTACTO</th>
+                        <th>TELÉFONO DE CONTACTO</th>
                         <th>DESTINO DE MATERIAL</th>
                         <th>FORMA DE PAGO</th>
                         <th>CUENTA BANCARIA</th>
@@ -37,6 +37,10 @@
                 <tbody>
                     @foreach ($purchaseOrder as $order)
                         @foreach ($order->invoiceDetails as $detail)
+                            @php
+                                $retention = $detail->total_price_iva * 0.025;
+                                $totalWithRetention = $detail->total_price_iva - $retention;
+                            @endphp
                             <tr>
                                 <td>{{ $detail->id_purchase_order }}</td>
                                 <td>{{ $detail->item->name }}</td>
@@ -47,8 +51,8 @@
                                 <td>{{ $detail->iva }}</td>
                                 <td>${{ number_format($detail->price_iva, 2, '.', ',') }}</td>
                                 <td>${{ number_format($detail->total_price_iva, 2, '.', ',') }}</td>
-                                <td>${{ number_format($order->retention, 2, '.', ',') }}</td>
-                                <td>${{ number_format($order->total_payable, 2, '.', ',') }}</td>
+                                <td>${{ number_format($retention, 2, '.', ',') }}</td>
+                                <td>${{ number_format($totalWithRetention, 2, '.', ',') }}</td>
                                 <td>{{ $order->company_name }}</td>
                                 <td>{{ $order->company_nit }}</td>
                                 <td>{{ $order->phone }}</td>

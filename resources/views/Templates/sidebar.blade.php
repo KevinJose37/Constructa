@@ -79,13 +79,7 @@
                 </a>
             </li>
 
-            <li class="side-nav-item">
-                <a href="{{ route('consolidated.view') }}" class="side-nav-link">
-                <i class="ri-calculator-line"></i>
-                    <span> Consolidado </span>
-                </a>
-            </li>
-
+            
             <li class="side-nav-title mt-1"> Comunicacion</li>
 
             <li class="side-nav-item">

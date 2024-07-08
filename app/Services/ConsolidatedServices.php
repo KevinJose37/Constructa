@@ -38,4 +38,16 @@ class ConsolidatedServices
         })
         ->paginate(10);
     }
+    
+    public function getFilteredDetailsByProject($search, $projectId)
+    {
+        return InvoiceHeader::with('invoiceDetails')
+            ->where('project_id', $projectId)
+            ->whereHas('invoiceDetails', function($query) use ($search) {
+                if ($search) {
+                    $query->where('item.name', 'like', "%{$search}%");
+                }
+            })
+            ->paginate(10);
+    }
 }
