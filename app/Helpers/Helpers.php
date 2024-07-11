@@ -23,7 +23,7 @@ class Helpers {
             return $amount;
         }
         self::formatAssignIVA($iva);
-        $amount = str_replace(',', '', $amount);
+        $amount = str_replace(',', '.', str_replace('.', '', $amount));
         return round((float)$amount * (self::$ivaRate + 1), 1);
     }
 }
