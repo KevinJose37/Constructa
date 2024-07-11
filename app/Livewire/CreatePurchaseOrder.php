@@ -65,7 +65,7 @@ class CreatePurchaseOrder extends Component
         $this->totalPurchaseIva = 0;
         $tempSum = 0;
         foreach ($this->selectedItems as $item) {
-            $tempSum += str_replace(',', '', $item["totalPriceIva"]);
+            $tempSum += $this->clearFormat($item["totalPriceIva"]);
         }
         $this->totalPurchaseIva = $tempSum;
     }
@@ -77,9 +77,9 @@ class CreatePurchaseOrder extends Component
         $this->totalPurchaseIva = 0;
 
         foreach ($this->selectedItems as $item) {
-            $price = floatval(str_replace(',', '', $item['totalPrice']));
-            $iva = floatval(str_replace(',', '', $item['iva']));
-            $totalPriceIva = floatval(str_replace(',', '', $item['totalPriceIva']));
+            $price = floatval($this->clearFormat($item['totalPrice']));
+            $iva = floatval($this->clearFormat($item['iva']));
+            $totalPriceIva = floatval($this->clearFormat($item['totalPriceIva']));
 
             $this->totalPurchase += $price;
             $this->totalIVA += $iva;
@@ -113,6 +113,7 @@ class CreatePurchaseOrder extends Component
             return;
         }
 
+
         $currentItem = $itemService->getById($idItem)->toArray();
         if ($currentItem === null) {
             $this->dispatch('alert', type: 'error', title: 'Órdenes de compra', message: 'No se encontró información del item actual');
@@ -129,20 +130,19 @@ class CreatePurchaseOrder extends Component
 
         if ($existingItemIndex !== false) {
             $this->selectedItems[$existingItemIndex]["quantity"] += $quantityItem;
-            $this->selectedItems[$existingItemIndex]["totalPrice"] = $this->selectedItems[$existingItemIndex]["price"] * $this->selectedItems[$existingItemIndex]["quantity"];
-            $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($this->selectedItems[$existingItemIndex]["price"], $iva));
+            $this->selectedItems[$existingItemIndex]["totalPrice"] = $this->clearFormat($this->selectedItems[$existingItemIndex]["price"]) * $this->selectedItems[$existingItemIndex]["quantity"];
+            $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($this->clearFormat($this->selectedItems[$existingItemIndex]["price"]), $iva));
             $this->selectedItems[$existingItemIndex]["ivaProduct"] = $iva;
-            $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["price"], $iva));
+            $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->clearFormat($this->selectedItems[$existingItemIndex]["price"]), $iva));
             $this->selectedItems[$existingItemIndex]["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["totalPrice"], $iva));
         } else {
             $currentItem["quantity"] = $quantityItem;
             $currentItem["price"] = $unitPrice;
-            $currentItem["totalPrice"] = $this->formatCurrency($unitPrice * $currentItem["quantity"]);
-            $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($unitPrice, $iva));
+            $currentItem["totalPrice"] = $this->formatCurrency($this->clearFormat($unitPrice) * $currentItem["quantity"]);
+            $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($this->clearFormat($unitPrice), $iva));
             $currentItem["ivaProduct"] = $iva;
-            $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($unitPrice, $iva));
+            $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->clearFormat($unitPrice), $iva));
             $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["totalPrice"], $iva));
-
             array_push($this->selectedItems, $currentItem);
         }
 
@@ -194,7 +194,12 @@ class CreatePurchaseOrder extends Component
 
     protected function formatCurrency($value)
     {
-        return number_format($value, 2, '.', ',');
+        return number_format($value, 2, ',', '.');
+    }
+
+    protected function clearFormat($value)
+    {
+        return str_replace(',', '.', str_replace('.', '', $value));
     }
 
     public function rules()
@@ -235,11 +240,11 @@ class CreatePurchaseOrder extends Component
         $this->validate();
 
         $this->updateTotals();
-        $subtotalBeforeIva = floatval(str_replace(',', '', $this->totalPurchase));
-        $totalIva = floatval(str_replace(',', '', $this->totalIVA));
-        $totalWithIva = floatval(str_replace(',', '', $this->totalPurchaseIva));
-        $retention = floatval(str_replace(',', '', $this->retencion));
-        $totalPayable = floatval(str_replace(',', '', $this->totalPay));
+        $subtotalBeforeIva = floatval($this->clearFormat($this->totalPurchase));
+        $totalIva = floatval($this->clearFormat($this->totalIVA));
+        $totalWithIva = floatval($this->clearFormat($this->totalPurchaseIva));
+        $retention = floatval($this->clearFormat($this->retencion));
+        $totalPayable = floatval($this->clearFormat($this->totalPay));
 
         $invoiceHeader = InvoiceHeader::create([
             'date' => $this->currentDate,
@@ -270,11 +275,11 @@ class CreatePurchaseOrder extends Component
                 'id_purchase_order' => $invoiceHeader->id,
                 'id_item' => $item['id'],
                 'quantity' => $item['quantity'],
-                'price' => str_replace(',', '', $item['price']),
-                'total_price' => str_replace(',', '', $item['totalPrice']),
-                'iva' => str_replace(',', '', $item['iva']),
-                'price_iva' => str_replace(',', '', $item['priceIva']),
-                'total_price_iva' => str_replace(',', '', $item['totalPriceIva']),
+                'price' => $this->clearFormat($item['price']),
+                'total_price' => $this->clearFormat($item['totalPrice']),
+                'iva' => $this->clearFormat($item['iva']),
+                'price_iva' => $this->clearFormat($item['priceIva']),
+                'total_price_iva' => $this->clearFormat($item['totalPriceIva']),
                 'project_id' => $this->project_id,
             ]);
         }

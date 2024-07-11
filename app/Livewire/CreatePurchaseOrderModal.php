@@ -32,8 +32,8 @@ class CreatePurchaseOrderModal extends Component
     {
         $this->orderForm->validate();
         $quantityItem = $this->orderForm->quantityItem;
-        $priceUnit = str_replace('.', '', $this->orderForm->priceUnit);
-        $priceUnit = str_replace(',', '.', $priceUnit);
+        $priceUnit = $this->orderForm->priceUnit;
+        $priceUnit = str_replace(',', '.', str_replace('.', '', $priceUnit));
         if (!is_null($quantityItem) && !is_null($priceUnit) && !is_null($this->orderForm->currentIva)) {
             $total = $priceUnit * $quantityItem;
             $this->orderForm->totalPrice = number_format($total, 2, ',', '.');
