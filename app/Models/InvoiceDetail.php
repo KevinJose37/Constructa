@@ -29,6 +29,6 @@ class InvoiceDetail extends Model
     }
     public function item()
     {
-        return $this->belongsTo(Item::class, 'id_item');
+        return $this->belongsTo(Item::class, 'id_item', 'id');
     }
 }

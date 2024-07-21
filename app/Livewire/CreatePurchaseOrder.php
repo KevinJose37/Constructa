@@ -27,7 +27,7 @@ class CreatePurchaseOrder extends Component
 
     public function mount($id, ProjectServices $projectServices)
     {
-        $this->currentDate = now()->format('d/m/y');
+        $this->currentDate = now()->format('y/m/d');
         $this->project_id = $id;
         $this->responsible_name = Auth::user()->name;
         $currentProject = $projectServices->getById($this->project_id);

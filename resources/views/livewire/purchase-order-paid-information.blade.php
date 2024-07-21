@@ -24,7 +24,7 @@
                 $classButton = 'warning';
                 $statusButton = 'Pendiente';
                 // Verificar si es técnico y su decisión ya fue tomada
-                if (!Auth::user()->hasRole('Empleado') && !Auth::user()->hasRole('Contador')) {
+                if (!Auth::user()->hasRole('Residente') && !Auth::user()->hasRole('Contador')) {
                     if ($order->paidInformation->approved_tech) {
                         $clickAction = ''; // Decisión ya tomada
                     } else {

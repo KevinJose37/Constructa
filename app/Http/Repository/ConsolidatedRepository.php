@@ -14,7 +14,7 @@ class PurchaseOrderRepository implements IRepository
 
     public function getAll()
     {
-        return InvoiceHeader::get();
+        return InvoiceHeader::with('project')->get();
     }
 
     public function FindById($id)
@@ -69,8 +69,8 @@ class PurchaseOrderRepository implements IRepository
                 ->orWhere('company_nit', 'like', "%$value%")
                 ->orWhere('phone', 'like', "%$value%")
                 ->orWhere('material_destination', 'like', "%$value%")
-                ->orWhereHas('project', function ($statusQuery) use ($value) {
-                    $statusQuery->where('project_name', 'like', "%$value%");
+                ->orWhereHas('order_name', function ($statusQuery) use ($value) {
+                    $statusQuery->where('order_name', 'like', "%$value%");
                 });
         });
     }
@@ -92,8 +92,8 @@ class PurchaseOrderRepository implements IRepository
                     ->orWhere('company_nit', 'like', "%$searchValue%")
                     ->orWhere('phone', 'like', "%$searchValue%")
                     ->orWhere('material_destination', 'like', "%$searchValue%")
-                    ->orWhereHas('project', function ($statusQuery) use ($searchValue) {
-                        $statusQuery->where('project_name', 'like', "%$searchValue%");
+                    ->orWhereHas('order_name', function ($statusQuery) use ($searchValue) {
+                        $statusQuery->where('order_name', 'like', "%$searchValue%");
                     });
             });
         }

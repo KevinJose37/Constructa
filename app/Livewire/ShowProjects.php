@@ -23,7 +23,7 @@ class ShowProjects extends Component
     {
 
         $user = Auth::user();
-        if($user->hasRole('Empleado')){
+        if($user->hasRole('Residente')){
             $projects = $projectUserServices->getProjectsByUserId($user->id);
         } else {
             $projects = $projectServices->getAllPaginate($this->search);

@@ -80,14 +80,14 @@
             </li>
 
             
-            <li class="side-nav-title mt-1"> Comunicacion</li>
+            <!-- <li class="side-nav-title mt-1"> Comunicacion</li>
 
             <li class="side-nav-item">
                 <a href="{{ route('chatprojects') }}" class="side-nav-link">
                     <i class="ri-chat-voice-fill"></i>
                     <span> Chat </span>
                 </a>
-            </li>
+            </li> -->
 
         </ul>
         <!--- End Sidemenu -->

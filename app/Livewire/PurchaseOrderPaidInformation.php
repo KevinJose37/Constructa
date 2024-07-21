@@ -29,7 +29,7 @@ class PurchaseOrderPaidInformation extends Component
     }
     public function approveTech(PurchaseOrderServices $purchaseService)
     {
-        if (!Auth::user()->hasRole('Empleado') && !Auth::user()->hasRole('Contador')) {
+        if (!Auth::user()->hasRole('Residente') && !Auth::user()->hasRole('Contador')) {
             $this->validate([
                 'form.approved_tech' => 'required', // Asegúrate de que el campo esté presente y válido
             ]);

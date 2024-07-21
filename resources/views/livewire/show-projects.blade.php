@@ -1,7 +1,7 @@
 <div>
     <x-page-title title="Tabla de proyectos"></x-page-title>
     <x-table>
-        @if ($projects->isEmpty() && auth()->user()->hasRole('Empleado'))
+        @if ($projects->isEmpty() && auth()->user()->hasRole('Residente'))
             <div class="w-100 h-100">
                 <h2>¡No tienes ningún proyecto asignado!</h2>
             </div>

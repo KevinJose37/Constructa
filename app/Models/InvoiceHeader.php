@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceHeader extends Model
 {
     use HasFactory;
+    protected $table = 'invoice_headers';
 
     protected $fillable = [
         'date','order_name','contractor_name', 'contractor_nit', 'responsible_name', 'company_name', 'company_nit',

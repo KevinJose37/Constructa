@@ -15,10 +15,10 @@ class RolSeeder extends Seeder
     public function run(): void
     {
         // Roles
-        $role_admin = Role::firstOrCreate(['name' => 'Administrador']);
-        $role_gerente = Role::firstOrCreate(['name' => 'Gerente']);
+        $role_admin = Role::firstOrCreate(['name' => 'Director']);
+        $role_gerente = Role::firstOrCreate(['name' => 'Tesorero']);
         $role_contador = Role::firstOrCreate(['name' => 'Contador']);
-        $role_empleado = Role::firstOrCreate(['name' => 'Empleado']);
+        $role_empleado = Role::firstOrCreate(['name' => 'Residente']);
 
         // Permisos
 

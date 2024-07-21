@@ -39,14 +39,14 @@ class QueryPurchaseOrder extends Component
         $this->dispatch('alert', type: 'error', title: 'Proyectos', message: $message);
     }
 
-    public function destroyAlert($id, $name)
+    public function destroyAlert($id)
     {
         $this->dispatch(
             'alertConfirmation',
             id: $id,
             type: 'warning',
             title: 'Orden de compra',
-            message: "¿estás seguro de eliminar la orden de compra para el proyecto {$name}?",
+            message: "¿estás seguro de eliminar la orden de compra para el proyecto?",
             emit: 'destroy-purchase',
         );
     }

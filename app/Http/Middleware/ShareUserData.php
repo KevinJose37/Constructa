@@ -12,7 +12,7 @@ class ShareUserData
     {
         $users = User::all();
         View::share('users', $users);
-        
+
         return $next($request);
     }
 }
