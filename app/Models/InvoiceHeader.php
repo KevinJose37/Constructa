@@ -42,4 +42,10 @@ class InvoiceHeader extends Model
     {
         return $this->belongsTo(PaidInformation::class, 'payment_info_id');
     }
+
+    public function attachments()
+    {
+        return $this->hasMany(PurchaseAttachment::class);
+    }
+
 }

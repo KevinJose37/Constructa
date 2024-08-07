@@ -2,10 +2,10 @@
     <x-page-title title="Tabla de órdenes de compra"></x-page-title>
     <x-table>
 
-            
+        @livewireScripts
+
         <div class="row w-100">
             <div class="col-lg-6 w-25">
-                <!-- Div a la izquierda -->
                 <div class="input-group">
                     <button class="btn btn-primary"><i class="ri-search-line"></i></button>
                     <input type="text" name="filter" class="form-control" placeholder="Buscar orden de compra" wire:model.live="search">
@@ -13,6 +13,7 @@
                 </div>
             </div>
         </div>
+
         <div class="table-responsive">
             <table class="table table-striped table-centered mb-0">
                 <thead>
@@ -36,18 +37,20 @@
                         <td class="col-md-2">{{ $order->total_payable }} COP</td>
                         <td class="col-md-2">{{ $order->date }}</td>
                         <td class="col-md-1">{{ $order->responsible_name }}</td>
-                        <td class="col-md-1"><livewire:purchase-order-paid-information :order="$order" :wire:key="'purchase-order-paid-' . $order->id"></livewire:purchase-order-paid-information>
+                        <td class="col-md-1">
+                            <livewire:purchase-order-paid-information :order="$order" :wire:key="'purchase-order-paid-' . $order->id"></livewire:purchase-order-paid-information>
                         </td>
-
                         <td class="col-md-1" style="display: flex; align-items: center;">
-            <a href="#" class="text-reset fs-19 px-1 delete-project-btn" wire:click.prevent="destroyAlert({{ $order->id }})" style="margin-right: 10px;">
-                <i class="ri-delete-bin-2-line"></i></a>
-            <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}" style="margin-right: 10px;">
-                <i class="ri-search-eye-line"></i></a>
-            <a href="#" style="margin-right: 10px;">
-                <i class="ri-file-upload-fill"></i></a>
-        </td>
+                            <a href="#" class="text-reset fs-19 px-1 delete-project-btn" wire:click.prevent="destroyAlert({{ $order->id }})" style="margin-right: 10px;">
+                                <i class="ri-delete-bin-2-line"></i></a>
+                            <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}" style="margin-right: 10px;">
+                                <i class="ri-search-eye-line"></i></a>
+                                <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}" style="margin-right: 10px;">
+                                <i class="ri-file-upload-fill"></i></a>
+                        </td>
+                        </td>
                     </tr>
+
                     <!-- Fila de detalles -->
                     <tr id="collapse{{ $order->id }}" class="collapse">
                         <td colspan="7">
@@ -78,7 +81,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($order->invoiceDetails as $detail)
-                                    <!-- Iterar solo sobre los detalles de la orden actual -->
                                     <tr>
                                         <td>{{ $detail->id_purchase_order }}</td>
                                         <td>{{ $detail->id_item }}</td>
@@ -115,3 +117,12 @@
         {{ $purchaseOrder->links(data: ['scrollTo' => false]) }}
     </x-table>
 </div><!-- end col -->
+
+<script>
+    document.addEventListener('livewire:load', function () {
+        this.on('openModal', () => {
+            var myModal = new bootstrap.Modal(document.getElementById('attachmentsModal'), {});
+            myModal.show();
+        });
+    });
+</script>
