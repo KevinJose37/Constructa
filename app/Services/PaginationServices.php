@@ -10,6 +10,6 @@ class PaginationServices{
 
     public function filter($query)
     {
-        return $query->paginate(10);
+        return $query->paginate(5);
     }
 }

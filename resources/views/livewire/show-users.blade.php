@@ -17,7 +17,7 @@
             @endcan
         </div>
         <table class="table table-striped table-centered mb-0">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th>Nombre completo</th>
                     <th>Nombre del usuario</th>

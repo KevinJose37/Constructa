@@ -7,6 +7,8 @@ use App\Http\Repository\UserRepository;
 use App\Http\Repository\ProjectRepository;
 use App\Http\Repository\ProjectUserRepository;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class ProjectUserServices implements IService
 {
@@ -23,6 +25,8 @@ class ProjectUserServices implements IService
         $this->projectRepository = $projectRepo;
         $this->projectUserRepository = $projectUserRepo;
     }
+
+    
 
 
     public function getAll()
