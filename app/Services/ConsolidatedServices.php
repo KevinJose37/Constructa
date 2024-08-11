@@ -39,15 +39,19 @@ class ConsolidatedServices
         ->paginate(10);
     }
     
+    #Esto hace el filtro del buscador de la tabla de consolidados
     public function getFilteredDetailsByProject($search, $projectId)
-    {
-        return InvoiceHeader::with('invoiceDetails')
-            ->where('project_id', $projectId)
-            ->whereHas('invoiceDetails', function($query) use ($search) {
+{
+    return InvoiceHeader::with(['invoiceDetails.item']) 
+        ->where('project_id', $projectId)
+        ->whereHas('invoiceDetails', function($query) use ($search) {
+            $query->whereHas('item', function($query) use ($search) {
                 if ($search) {
-                    $query->where('item.name', 'like', "%{$search}%");
+                    $query->where('name', 'like', "%{$search}%");
                 }
-            })
-            ->paginate(10);
-    }
+            });
+        })
+        ->paginate(10);
+}
+
 }

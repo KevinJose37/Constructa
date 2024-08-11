@@ -51,7 +51,15 @@ class AttachmentsPage extends Component
             session()->flash('error', 'Ocurrió un error al cargar el nombre de la orden.');
         }
     }
-
+    public function download($id)
+    {
+        $attachment = PurchaseAttachment::find($id);
+        if ($attachment && Storage::disk('public')->exists($attachment->path)) {
+            return response()->download(storage_path('app/public/' . $attachment->path), $attachment->filename);
+        } else {
+            abort(404, 'Archivo no encontrado');
+        }
+    }
     public function saveAttachments()
     {
         try {

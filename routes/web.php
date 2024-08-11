@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
     Route::get('/attachments/{invoiceHeaderId}', AttachmentsPage::class)->name('attachments.page');
+    Route::get('/download-attachment/{id}', [AttachmentsPage::class, 'download'])->name('download.attachment');
 
     Route::get('/dashboard', function () {
         return view('DashboardIndex');

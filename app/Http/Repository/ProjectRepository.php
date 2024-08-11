@@ -55,12 +55,8 @@ class ProjectRepository implements IRepository{
 
     public function filterLike($value){
         return Project::with('projectStatus')->where(function ($queryBuilder) use ($value) {
-            $queryBuilder->where('project_name', 'like', "%$value%")
-                         ->orWhere('project_description', 'like', "%$value%")
-                         ->orWhere('project_start_date', 'like', "%$value%")
-                         ->orWhere('project_estimated_end', 'like', "%$value%")
-                         ->orWhere('entidad_contratante', 'like', "%$value%") 
-                         ->orWhere('contract_number', 'like', "%$value%"); 
+            $queryBuilder->where('project_name', 'like', "%$value%");
+                         
         });
     }
 

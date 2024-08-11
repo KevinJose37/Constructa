@@ -15,6 +15,7 @@
                 <thead>
                     <tr>
                         <th>ORDEN DE COMPRA</th>
+                        <th>ITEM    </th> <!-- Nueva columna para numeración -->
                         <th>DESCRIPCIÓN</th>
                         <th>UND.</th>
                         <th>CANTIDAD</th>
@@ -26,7 +27,6 @@
                         <th>VALOR RETENCIÓN</th>
                         <th>VALOR TOTAL INCLUIDO IVA Y RETENCIÓN</th>
                         <th>EMPRESA</th>
-                        <th>NIT</th>
                         <th>TELÉFONO DE CONTACTO</th>
                         <th>DESTINO DE MATERIAL</th>
                         <th>FORMA DE PAGO</th>
@@ -36,6 +36,7 @@
                 </thead>
                 <tbody>
                     @foreach ($purchaseOrder as $order)
+                        @php $itemCounter = 1; @endphp <!-- Inicializa el contador -->
                         @foreach ($order->invoiceDetails as $detail)
                             @php
                                 $retention = $detail->total_price_iva * 0.025;
@@ -43,6 +44,7 @@
                             @endphp
                             <tr>
                                 <td>{{ $detail->id_purchase_order }}</td>
+                                <td>{{ $itemCounter++ }}</td> <!-- Incrementa el contador -->
                                 <td>{{ $detail->item->name }}</td>
                                 <td>{{ $detail->item->unit_measurement }}</td>
                                 <td>{{ $detail->quantity }}</td>
@@ -54,11 +56,10 @@
                                 <td>${{ number_format($retention, 2, '.', ',') }}</td>
                                 <td>${{ number_format($totalWithRetention, 2, '.', ',') }}</td>
                                 <td>{{ $order->company_name }}</td>
-                                <td>{{ $order->company_nit }}</td>
                                 <td>{{ $order->phone }}</td>
                                 <td>{{ $order->material_destination }}</td>
                                 <td>{{ $order->paymentMethod->payment_name }}</td>
-                                <td>{{ $order->bank_name }}</td>
+                                <td>{{ $order->bank_name }} - {{ $order->account_type }} - {{ $order->account_number }}</td>
                                 <td>{{ $order->supportType->support_name }}</td>
                             </tr>
                         @endforeach

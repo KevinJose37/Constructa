@@ -165,11 +165,6 @@
                                 <div class="col-sm-2">
                                     <input type="text" class="form-control form-control-sm" id="inputAccountType"
                                         placeholder="Tipo" wire:model="account_type">
-                                    @error('account_type')
-                                        <div class="invalid-feedback {{ $errors->has('account_type') ? 'd-block' : '' }}">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
                                 </div>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control form-control-sm"

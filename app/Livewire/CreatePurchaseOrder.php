@@ -23,7 +23,7 @@ class CreatePurchaseOrder extends Component
     public PurchaseOrderForm $formPurchase;
     public $currentDate, $order_name, $contractor_name, $contractor_nit, $responsible_name, $company_name,
         $company_nit, $phone, $material_destination, $payment_method_id, $bank_name,
-        $account_type, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
+        $account_type, $accountType, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
 
     public function mount($id, ProjectServices $projectServices)
     {
@@ -215,7 +215,6 @@ class CreatePurchaseOrder extends Component
             'material_destination' => 'required|string',
             'payment_method_id' => 'required|exists:payment_methods,id',
             'bank_name' => 'required|string',
-            'account_type' => 'required|string',
             'account_number' => 'required|string',
             'support_type_id' => 'required|exists:payment_support,id',
             'project_id' => 'required|numeric',
@@ -235,40 +234,43 @@ class CreatePurchaseOrder extends Component
     }
 
     public function storeHeader()
-    {
-        // Validar los campos de la cabecera
-        $this->validate();
+{
+    // Validar los campos de la cabecera
+    $this->validate();
 
-        $this->updateTotals();
-        $subtotalBeforeIva = floatval($this->clearFormat($this->totalPurchase));
-        $totalIva = floatval($this->clearFormat($this->totalIVA));
-        $totalWithIva = floatval($this->clearFormat($this->totalPurchaseIva));
-        $retention = floatval($this->clearFormat($this->retencion));
-        $totalPayable = floatval($this->clearFormat($this->totalPay));
+    $this->updateTotals();
+    $subtotalBeforeIva = floatval($this->clearFormat($this->totalPurchase));
+    $totalIva = floatval($this->clearFormat($this->totalIVA));
+    $totalWithIva = floatval($this->clearFormat($this->totalPurchaseIva));
+    $retention = floatval($this->clearFormat($this->retencion));
+    $totalPayable = floatval($this->clearFormat($this->totalPay));
 
-        $invoiceHeader = InvoiceHeader::create([
-            'date' => $this->currentDate,
-            'order_name' => $this->order_name,
-            'contractor_name' => $this->contractor_name,
-            'contractor_nit' => $this->contractor_nit,
-            'responsible_name' => $this->responsible_name,
-            'company_name' => $this->company_name,
-            'company_nit' => $this->company_nit,
-            'phone' => $this->phone,
-            'material_destination' => $this->material_destination,
-            'payment_method_id' => $this->payment_method_id,
-            'bank_name' => $this->bank_name,
-            'account_type' => $this->account_type,
-            'account_number' => $this->account_number,
-            'support_type_id' => $this->support_type_id,
-            'project_id' => $this->project_id,
-            'general_observations' => $this->general_observations,
-            'subtotal_before_iva' => $subtotalBeforeIva,
-            'total_iva' => $totalIva,
-            'total_with_iva' => $totalWithIva,
-            'retention' => $retention,
-            'total_payable' => $totalPayable
-        ]);
+    $accountType = $this->account_type ?: 'N/A'; // Asegúrate de utilizar la variable local
+
+    $invoiceHeader = InvoiceHeader::create([
+        'date' => $this->currentDate,
+        'order_name' => $this->order_name,
+        'contractor_name' => $this->contractor_name,
+        'contractor_nit' => $this->contractor_nit,
+        'responsible_name' => $this->responsible_name,
+        'company_name' => $this->company_name,
+        'company_nit' => $this->company_nit,
+        'phone' => $this->phone,
+        'material_destination' => $this->material_destination,
+        'payment_method_id' => $this->payment_method_id,
+        'bank_name' => $this->bank_name,
+        'account_type' => $accountType, 
+        'account_number' => $this->account_number,
+        'support_type_id' => $this->support_type_id,
+        'project_id' => $this->project_id,
+        'general_observations' => $this->general_observations,
+        'subtotal_before_iva' => $subtotalBeforeIva,
+        'total_iva' => $totalIva,
+        'total_with_iva' => $totalWithIva,
+        'retention' => $retention,
+        'total_payable' => $totalPayable
+    ]);
+
 
         foreach ($this->selectedItems as $item) {
             InvoiceDetail::create([

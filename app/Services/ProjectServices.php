@@ -23,17 +23,17 @@ class ProjectServices implements IService{
     }
 
     public function getAllPaginate($filter = "")
-    {
+{
+    $projectQuery = $this->projectRepository->ProjectQuery();
 
-        $projectQuery = $this->projectRepository->ProjectQuery();
-        if($filter != ""){
-            $filter = htmlspecialchars(trim($filter));
-            $projectQuery = $this->projectRepository->filterLike($filter);
-
-        }
-
-        return $this->paginationService->filter($projectQuery);
+    if ($filter !== "") {
+        $filter = htmlspecialchars(trim($filter));
+        $projectQuery = $this->projectRepository->filterLike($filter);
     }
+
+    return $this->paginationService->filter($projectQuery);
+}
+
 
     public function getById(int $id)
     {

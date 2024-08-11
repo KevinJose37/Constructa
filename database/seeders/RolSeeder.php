@@ -6,7 +6,6 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-
 class RolSeeder extends Seeder
 {
     /**
@@ -44,9 +43,8 @@ class RolSeeder extends Seeder
         $approved_account = Permission::firstOrCreate(['name' => 'approved_account.purchase']);
         $paid_account = Permission::firstOrCreate(['name' => 'paid.purchase']);
 
-
         // Asignar permisos a roles
-        $role_admin->syncPermissions(
+        $role_admin->syncPermissions([
             $store_project,
             $update_project,
             $delete_project,
@@ -62,10 +60,10 @@ class RolSeeder extends Seeder
             $view_purchase_order,
             $approved_tech,
             $approved_account,
-            $paid_account
-        );
+            $paid_account,
+        ]);
 
-        $role_gerente->syncPermissions(
+        $role_gerente->syncPermissions([
             $store_project,
             $update_project,
             $view_project,
@@ -77,18 +75,23 @@ class RolSeeder extends Seeder
             $store_purchase_order,
             $view_purchase_order,
             $approved_tech,
-            $paid_account
-        );
+            $paid_account,
+        ]);
 
-
-        $role_contador->syncPermissions(
+        $role_contador->syncPermissions([
             $view_project,
             $view_purchase_order,
             $store_purchase_order,
             $approved_account,
-            $paid_account
-        );
+            $paid_account,
+        ]);
 
-        $role_empleado->syncPermissions($view_project, $view_users, $update_users);
+        $role_empleado->syncPermissions([
+            $view_project,
+            $view_users,
+            $update_users,
+            $store_purchase_order,
+            $view_purchase_order,
+        ]);
     }
 }

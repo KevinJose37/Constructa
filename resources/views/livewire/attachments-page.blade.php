@@ -38,9 +38,9 @@
                                     </div>
                                 </div>
                                 <div class="col ps-0">
-                                    <a href="{{ Storage::url($attachment->path) }}" class="text-muted fw-bold" download="{{ $attachment->filename }}" target="_blank">
-                                        {{ $attachment->filename }}
-                                    </a>
+                                <a href="{{ route('download.attachment', ['id' => $attachment->id]) }}" class="text-muted fw-bold" download="{{ $attachment->filename }}" target="_blank">
+    {{ $attachment->filename }}
+</a>
                                     @php
                                         $fileSize = \Storage::disk('public')->exists($attachment->path) ? number_format(\Storage::disk('public')->size($attachment->path) / 1024, 2) . ' KB' : 'Size not available';
                                     @endphp
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <!-- Button -->
-                                    <a href="{{ Storage::url($attachment->path) }}" class="btn btn-link fs-16 text-muted" download="{{ $attachment->filename }}" target="_blank">
+                                    <a href="{{ route('download.attachment', ['id' => $attachment->id]) }}" class="text-muted fw-bold" download="{{ $attachment->filename }}" target="_blank">
                                         <i class="ri-download-line"></i>
                                     </a>
                                     <button wire:click="deleteAttachment({{ $attachment->id }})" class="btn btn-link text-danger">
