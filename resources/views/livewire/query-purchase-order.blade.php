@@ -19,12 +19,13 @@
                 <thead class="table-dark">
                     <tr class="d-flex">
                         <th class="col-md-2">Nombre de la orden</th>
+                        <th class="col-md-2">Proyecto</th>
+                        
                         <th class="col-md-2">Nombre contratista</th>
                         <th class="col-md-2">Nombre compañía destino</th>
-                        <th class="col-md-2">Total</th>
+                        <th class="col-md-1">Total</th>
                         <th class="col-md-1">Fecha</th>
                         <th class="col-md-1">Creador</th>
-                        <th class="col-md-1">Pagado</th>
                         <th class="col-md-1">Acciones</th>
                     </tr>
                 </thead>
@@ -32,14 +33,14 @@
                     @foreach ($purchaseOrder as $order)
                     <tr id="purchaseOrderRow_{{ $order->id }}" class="d-flex" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}" aria-expanded="false" aria-controls="collapse{{ $order->id }}">
                         <td class="col-md-2">{{ $order->order_name }}</td>
+                        <td class="col-md-2">{{ $order->project->project_name }}</td>
                         <td class="col-md-2">{{ $order->contractor_name }}</td>
                         <td class="col-md-2">{{ $order->company_name }}</td>
-                        <td class="col-md-2">{{ $order->total_payable }} COP</td>
+                        <td class="col-md-1">{{ $order->total_payable }} COP</td>
                         <td class="col-md-1">{{ $order->date }}</td>
-                        <td class="col-md-1">{{ $order->responsible_name }}</td>
                         <td class="col-md-1">
-                            <livewire:purchase-order-paid-information :order="$order" :wire:key="'purchase-order-paid-' . $order->id"></livewire:purchase-order-paid-information>
-                        </td>
+    <livewire:purchase-order-paid-information :order="$order" :wire:key="'purchase-order-paid-' . $order->id" />
+</td>
                         <td class="col-md-1" style="display: flex; align-items: center;">
                             <a href="#" class="text-reset fs-19 px-1 delete-project-btn" wire:click.prevent="destroyAlert({{ $order->id }})" style="margin-right: 10px;">
                                 <i class="ri-delete-bin-2-line"></i></a>
@@ -47,7 +48,6 @@
                                 <i class="ri-search-eye-line"></i></a>
                                 <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}" style="margin-right: 10px;">
                                 <i class="ri-file-upload-fill"></i></a>
-                        </td>
                         </td>
                     </tr>
 
@@ -114,15 +114,12 @@
                 </tbody>
             </table>
         </div>
-        {{ $purchaseOrder->links(data: ['scrollTo' => false]) }}
-    </x-table>
-</div><!-- end col -->
 
-<script>
-    document.addEventListener('livewire:load', function () {
-        this.on('openModal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('attachmentsModal'), {});
-            myModal.show();
-        });
-    });
-</script>
+        <div class="mt-3">
+        {{ $purchaseOrder->links(data: ['scrollTo' => false]) }}
+        </div>
+
+    </x-table>
+
+    
+</div><!-- end col -->

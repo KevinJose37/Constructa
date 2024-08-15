@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/usuarios', ShowUsers::class)->name('usuarios.index');
 
     // Rutas relacionadas con el avance de obra
-    Route::get('/workprogress', ShowWorkProgress::class)->name('workprogress.index');
+    Route::get('/workprogress/{id}', ShowWorkProgress::class)->name('workprogress.index');
 
 
 });

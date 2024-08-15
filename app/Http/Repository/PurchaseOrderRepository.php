@@ -59,21 +59,22 @@ class PurchaseOrderRepository implements IRepository
 
 
     public function filterLike($value, $limit = null)
-    {
-        return InvoiceHeader::where(function ($queryBuilder) use ($value) {
-            $queryBuilder->where('date', 'like', "%$value%")
-                ->orWhere('contractor_name', 'like', "%$value%")
-                ->orWhere('contractor_nit', 'like', "%$value%")
-                ->orWhere('responsible_name', 'like', "%$value%")
-                ->orWhere('company_name', 'like', "%$value%")
-                ->orWhere('company_nit', 'like', "%$value%")
-                ->orWhere('phone', 'like', "%$value%")
-                ->orWhere('material_destination', 'like', "%$value%")
-                ->orWhereHas('project', function ($statusQuery) use ($value) {
-                    $statusQuery->where('project_name', 'like', "%$value%");
-                });
-        });
-    }
+{
+    $query = InvoiceHeader::where(function ($queryBuilder) use ($value) {
+        $queryBuilder->where('date', 'like', "%$value%")
+            ->orWhere('contractor_name', 'like', "%$value%")
+            ->orWhere('contractor_nit', 'like', "%$value%")
+            ->orWhere('responsible_name', 'like', "%$value%")
+            ->orWhere('company_name', 'like', "%$value%")
+            ->orWhere('company_nit', 'like', "%$value%")
+            ->orWhere('phone', 'like', "%$value%")
+            ->orWhere('material_destination', 'like', "%$value%")
+            ->orWhere('order_name', 'like', "%$value%");
+    });
+
+    return $query;
+}
+
 
 
     public function PurchaseOrderByProject($id, $searchValue = null)

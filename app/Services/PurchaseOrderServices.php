@@ -28,14 +28,14 @@ class PurchaseOrderServices implements IService
     }
 
     public function getAllPaginate($filter = '')
-    {
-        $projectQuery = $this->purchaseOrderRepository->PurchaseOrderQuery();
-        if ($filter != "") {
-            $filter = htmlspecialchars(trim($filter));
-            $projectQuery = $this->purchaseOrderRepository->filterLike($filter);
-        }
-        return $this->paginationService->filter($projectQuery);
+{
+    $projectQuery = $this->purchaseOrderRepository->PurchaseOrderQuery();
+    if ($filter != "") {
+        $filter = htmlspecialchars(trim($filter));
+        $projectQuery = $this->purchaseOrderRepository->filterLike($filter);
     }
+    return $projectQuery->paginate(5); // Asegúrate de usar paginate aquí.
+}
 
     public function getAllFilter($filter, $limit = null)
     {

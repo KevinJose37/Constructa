@@ -23,15 +23,14 @@
         .action-item {
             flex: 1 1 20%;
             text-align: center;
-            position: relative; /* Asegura que los elementos hijos con position: absolute se posicionen correctamente */
+            position: relative;
         }
 
         .table-container {
             overflow-x: auto;
-            height: 500px; /* Altura predefinida de la tabla */
+            height: 500px; 
         }
 
-        /* Asegura que el dropdown se superponga correctamente */
         .dropdown-menu {
             position: absolute;
             z-index: 1050;
