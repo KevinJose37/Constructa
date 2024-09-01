@@ -37,7 +37,7 @@ class CreatePurchaseOrderModal extends Component
         if (!is_null($quantityItem) && !is_null($priceUnit) && !is_null($this->orderForm->currentIva)) {
             $total = $priceUnit * $quantityItem;
             $this->orderForm->totalPrice = number_format($total, 2, ',', '.');
-            $this->orderForm->totalPriceIva = number_format(Helpers::calculateTotalIva($total, $this->orderForm->currentIva), 0, ',', '.');
+            $this->orderForm->totalPriceIva = number_format(Helpers::calculateTotalIva($total, $this->orderForm->currentIva),  2, ',', '.');
         }
     }
 
@@ -50,5 +50,15 @@ class CreatePurchaseOrderModal extends Component
             'resetSelect',
             id: 'item-select',
         );
+    }
+
+    protected function formatCurrency($value)
+    {
+        return number_format($value, 2, ',', '.');
+    }
+
+    protected function clearFormat($value)
+    {
+        return str_replace(',', '.', str_replace('.', '', $value));
     }
 }

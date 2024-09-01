@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- Invoice Logo-->
-                <div class="clearfix">
+                <div class="row clearfix">
                     <div class="float-start mb-3">
                         <h4 class="m-0 d-print-none">Orden de compra n°{{ $lastInvoiceId + 1 }}</h4>
                     </div>
@@ -16,6 +16,23 @@
                             </div>
                         @enderror
                     </div>
+
+                </div>
+                <div class="row mt-3">
+
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <label for="colFormLabelSm" class="col col-form-label col-form-label-sm">Retención
+                                %</label>
+                            <div class="col-sm-6 d-flex align-items-center">
+
+                                <input type="number" class="form-control form-control-sm" id="inputRetencion"
+                                    placeholder="Ingrese el valor para la retención" wire:model="retencion">
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
                 <div class="row mt-4">
                     <div class="col">

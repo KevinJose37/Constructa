@@ -19,11 +19,13 @@ use App\Services\ProjectServices;
 class CreatePurchaseOrder extends Component
 {
     public $selectedItems = [];
-    public $totalPurchaseIva, $totalPurchase, $totalIVA, $retencion, $totalPay;
+    public $totalPurchaseIva, $totalPurchase, $totalIVA, $totalPay;
     public PurchaseOrderForm $formPurchase;
+    public $retencion = 2.5;
     public $currentDate, $order_name, $contractor_name, $contractor_nit, $responsible_name, $company_name,
         $company_nit, $phone, $material_destination, $payment_method_id, $bank_name,
         $account_type, $accountType, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
+
 
     public function mount($id, ProjectServices $projectServices)
     {
@@ -62,39 +64,58 @@ class CreatePurchaseOrder extends Component
 
     protected function calculateTotal()
     {
-        $this->totalPurchaseIva = 0;
-        $tempSum = 0;
+        $this->totalPurchaseIva = '0'; // Iniciar como string para BCMath
+        $tempSum = '0'; // Iniciar como string para BCMath
+
         foreach ($this->selectedItems as $item) {
-            $tempSum += $this->clearFormat($item["totalPriceIva"]);
+            // Limpia el formato y convierte a string
+            $totalPriceIva = $this->clearFormat($item["totalPriceIva"]);
+
+            // Asegúrate de que el valor sea en el formato adecuado para BCMath
+            $tempSum = bcadd($tempSum, $totalPriceIva, 2); // Suma los valores con precisión de 2 decimales
         }
-        $this->totalPurchaseIva = $tempSum;
+
+        $this->totalPurchaseIva = $tempSum; // Asigna el resultado final
     }
 
     protected function updateTotals()
     {
-        $this->totalPurchase = 0;
-        $this->totalIVA = 0;
-        $this->totalPurchaseIva = 0;
+        $this->totalPurchase = '0'; // Inicializa como string para BCMath
+        $this->totalIVA = '0'; // Inicializa como string para BCMath
+        $this->totalPurchaseIva = '0'; // Inicializa como string para BCMath
 
         foreach ($this->selectedItems as $item) {
-            $price = floatval($this->clearFormat($item['totalPrice']));
-            $iva = floatval($this->clearFormat($item['iva']));
-            $totalPriceIva = floatval($this->clearFormat($item['totalPriceIva']));
+            // Limpia el formato y convierte a cadena
+            $price = $this->clearFormat($item['totalPrice']);
+            $iva = $this->clearFormat($item['iva']);
+            $totalPriceIva = $this->clearFormat($item['totalPriceIva']);
 
-            $this->totalPurchase += $price;
-            $this->totalIVA += $iva;
-            $this->totalPurchaseIva += $totalPriceIva;
+            // Suma con BCMath
+            $this->totalPurchase = bcadd($this->totalPurchase, $price, 2);
+            $this->totalIVA = bcadd($this->totalIVA, $iva, 2);
+            $this->totalPurchaseIva = bcadd($this->totalPurchaseIva, $totalPriceIva, 2);
         }
 
-        // Calcula la retención (2.5% del total incluido IVA)
-        $this->retencion = $this->totalPurchaseIva * 0.025;
+        // Calcula la retención (2.5% del total incluido IVA) usando BCMath
+        // $retencionPercentage = '0.025'; // 2.5% como cadena para BCMath
+        $retencionPercentage = $this->percentageToDecimal($this->retencion);
+        $this->retencion = bcmul($this->totalPurchaseIva, $retencionPercentage, 2);
 
         // Total a pagar es total con IVA menos la retención
-        $this->totalPay = $this->totalPurchaseIva - $this->retencion;
+        $this->totalPay = bcsub($this->totalPurchaseIva, $this->retencion, 2);
 
         // Formatear las cantidades monetarias si es necesario
         $this->formatCurrencyValues();
     }
+
+    protected function percentageToDecimal($percentage) {
+        // Asegúrate de que el porcentaje sea una cadena
+        $percentage = (string) $percentage;
+        
+        // Dividir el porcentaje por 100 para obtener el decimal
+        return bcdiv($percentage, '100', 6); // 6 es la precisión decimal deseada
+    }
+    
 
     protected function formatCurrencyValues()
     {
@@ -130,21 +151,38 @@ class CreatePurchaseOrder extends Component
 
         if ($existingItemIndex !== false) {
             $this->selectedItems[$existingItemIndex]["quantity"] += $quantityItem;
-            $this->selectedItems[$existingItemIndex]["totalPrice"] = $this->clearFormat($this->selectedItems[$existingItemIndex]["price"]) * $this->selectedItems[$existingItemIndex]["quantity"];
-            $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($this->clearFormat($this->selectedItems[$existingItemIndex]["price"]), $iva));
+
+            // Calcular el total sin IVA utilizando BCMath
+            $price = $this->clearFormat($this->selectedItems[$existingItemIndex]["price"]);
+            $quantity = $this->selectedItems[$existingItemIndex]["quantity"];
+            $this->selectedItems[$existingItemIndex]["totalPrice"] = bcmul($price, $quantity, 2);
+
+            // Calcular el IVA y el total con IVA utilizando BCMath
+            $this->selectedItems[$existingItemIndex]["iva"] = $this->formatCurrency(Helpers::calculateIva($price, $iva));
             $this->selectedItems[$existingItemIndex]["ivaProduct"] = $iva;
-            $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->clearFormat($this->selectedItems[$existingItemIndex]["price"]), $iva));
-            $this->selectedItems[$existingItemIndex]["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->selectedItems[$existingItemIndex]["totalPrice"], $iva));
+            $this->selectedItems[$existingItemIndex]["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($price, $iva));
+
+            $totalPrice = $this->selectedItems[$existingItemIndex]["totalPrice"];
+            $this->selectedItems[$existingItemIndex]["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($totalPrice, $iva));
         } else {
             $currentItem["quantity"] = $quantityItem;
             $currentItem["price"] = $unitPrice;
-            $currentItem["totalPrice"] = $this->formatCurrency($this->clearFormat($unitPrice) * $currentItem["quantity"]);
-            $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($this->clearFormat($unitPrice), $iva));
+
+            // Calcular el total sin IVA utilizando BCMath
+            $price = $this->clearFormat($unitPrice);
+            $currentItem["totalPrice"] = $this->formatCurrency(bcmul($price, $currentItem["quantity"], 2));
+
+            // Calcular el IVA y el total con IVA utilizando BCMath
+            $currentItem["iva"] = $this->formatCurrency(Helpers::calculateIva($price, $iva));
             $currentItem["ivaProduct"] = $iva;
-            $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($this->clearFormat($unitPrice), $iva));
-            $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($currentItem["totalPrice"], $iva));
+            $currentItem["priceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($price, $iva));
+
+            $totalPrice = $this->clearFormat($currentItem["totalPrice"]);
+            $currentItem["totalPriceIva"] = $this->formatCurrency(Helpers::calculateTotalIva($totalPrice, $iva));
+
             array_push($this->selectedItems, $currentItem);
         }
+
 
         $this->calculateTotal();
         $this->updateTotals();
@@ -194,7 +232,7 @@ class CreatePurchaseOrder extends Component
 
     protected function formatCurrency($value)
     {
-        return number_format($value, 2, ',', '.');
+        return number_format((float) $value, 2, ',', '.');
     }
 
     protected function clearFormat($value)
@@ -234,42 +272,42 @@ class CreatePurchaseOrder extends Component
     }
 
     public function storeHeader()
-{
-    // Validar los campos de la cabecera
-    $this->validate();
+    {
+        // Validar los campos de la cabecera
+        $this->validate();
 
-    $this->updateTotals();
-    $subtotalBeforeIva = floatval($this->clearFormat($this->totalPurchase));
-    $totalIva = floatval($this->clearFormat($this->totalIVA));
-    $totalWithIva = floatval($this->clearFormat($this->totalPurchaseIva));
-    $retention = floatval($this->clearFormat($this->retencion));
-    $totalPayable = floatval($this->clearFormat($this->totalPay));
+        $this->updateTotals();
+        $subtotalBeforeIva = floatval($this->clearFormat($this->totalPurchase));
+        $totalIva = floatval($this->clearFormat($this->totalIVA));
+        $totalWithIva = floatval($this->clearFormat($this->totalPurchaseIva));
+        $retention = floatval($this->clearFormat($this->retencion));
+        $totalPayable = floatval($this->clearFormat($this->totalPay));
 
-    $accountType = $this->account_type ?: 'N/A'; // Asegúrate de utilizar la variable local
+        $accountType = $this->account_type ?: 'N/A'; // Asegúrate de utilizar la variable local
 
-    $invoiceHeader = InvoiceHeader::create([
-        'date' => $this->currentDate,
-        'order_name' => $this->order_name,
-        'contractor_name' => $this->contractor_name,
-        'contractor_nit' => $this->contractor_nit,
-        'responsible_name' => $this->responsible_name,
-        'company_name' => $this->company_name,
-        'company_nit' => $this->company_nit,
-        'phone' => $this->phone,
-        'material_destination' => $this->material_destination,
-        'payment_method_id' => $this->payment_method_id,
-        'bank_name' => $this->bank_name,
-        'account_type' => $accountType, 
-        'account_number' => $this->account_number,
-        'support_type_id' => $this->support_type_id,
-        'project_id' => $this->project_id,
-        'general_observations' => $this->general_observations,
-        'subtotal_before_iva' => $subtotalBeforeIva,
-        'total_iva' => $totalIva,
-        'total_with_iva' => $totalWithIva,
-        'retention' => $retention,
-        'total_payable' => $totalPayable
-    ]);
+        $invoiceHeader = InvoiceHeader::create([
+            'date' => $this->currentDate,
+            'order_name' => $this->order_name,
+            'contractor_name' => $this->contractor_name,
+            'contractor_nit' => $this->contractor_nit,
+            'responsible_name' => $this->responsible_name,
+            'company_name' => $this->company_name,
+            'company_nit' => $this->company_nit,
+            'phone' => $this->phone,
+            'material_destination' => $this->material_destination,
+            'payment_method_id' => $this->payment_method_id,
+            'bank_name' => $this->bank_name,
+            'account_type' => $accountType,
+            'account_number' => $this->account_number,
+            'support_type_id' => $this->support_type_id,
+            'project_id' => $this->project_id,
+            'general_observations' => $this->general_observations,
+            'subtotal_before_iva' => $subtotalBeforeIva,
+            'total_iva' => $totalIva,
+            'total_with_iva' => $totalWithIva,
+            'retention' => $retention,
+            'total_payable' => $totalPayable
+        ]);
 
 
         foreach ($this->selectedItems as $item) {
@@ -291,9 +329,19 @@ class CreatePurchaseOrder extends Component
         $this->updateTotals();
 
         $this->reset([
-            'contractor_name', 'order_name', 'contractor_nit',
-            'company_name', 'company_nit', 'phone', 'material_destination',
-            'payment_method_id', 'bank_name', 'account_type', 'account_number', 'support_type_id', 'general_observations',
+            'contractor_name',
+            'order_name',
+            'contractor_nit',
+            'company_name',
+            'company_nit',
+            'phone',
+            'material_destination',
+            'payment_method_id',
+            'bank_name',
+            'account_type',
+            'account_number',
+            'support_type_id',
+            'general_observations',
         ]);
 
         $this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se guardó correctamente la orden de compra');
