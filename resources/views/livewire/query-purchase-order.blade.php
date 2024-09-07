@@ -48,7 +48,12 @@
                                 <i class="ri-search-eye-line"></i></a>
                                 <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}" style="margin-right: 10px;">
                                 <i class="ri-file-upload-fill"></i></a>
-                        </td>
+                                <a href="#" class="text-reset fs-19 px-1" wire:click="$dispatch('setOrderId', { orderId: {{ $order->id }} })" data-bs-toggle="modal" data-bs-target="#editPurchaseOrderInfoModal" style="margin-right: 10px;">
+    <i class="ri-information-fill"></i>
+</a>
+                                                   </td>
+                                                   <livewire:edit-purchase-order-info :wire:key="'edit-purchase-order-' . $order->id" :orderId="$order->id" />
+
                     </tr>
 
                     <!-- Fila de detalles -->
@@ -120,6 +125,5 @@
         </div>
 
     </x-table>
-
-    
+   
 </div><!-- end col -->

@@ -1,13 +1,14 @@
 <div>
     <x-page-title title="Tabla de consolidado"></x-page-title>
     <x-table>
-        <div class="row w-100">
+        <div class="row w-100 w-25">
             <div class="col-lg-6 w-25">
                 <div class="input-group">
                     <button class="btn btn-primary"><i class="ri-search-line"></i></button>
                     <input type="text" name="filter" class="form-control" placeholder="Buscar material" wire:model.live="search">
                     <button class="btn" id="clear-filter" wire:click="$set('search', '')"><i class="ri-close-line"></i></button>
                 </div>
+                
             </div>
         </div>
         <div class="table-responsive">
@@ -15,7 +16,7 @@
                 <thead>
                     <tr>
                         <th>ORDEN DE COMPRA</th>
-                        <th>ITEM    </th> <!-- Nueva columna para numeración -->
+                        <th>ITEM</th> <!-- Nueva columna para numeración -->
                         <th>DESCRIPCIÓN</th>
                         <th>UND.</th>
                         <th>CANTIDAD</th>
@@ -32,6 +33,10 @@
                         <th>FORMA DE PAGO</th>
                         <th>CUENTA BANCARIA</th>
                         <th>TIPO SOPORTE</th>
+                        <th>Tiene Soporte?</th> <!-- Nueva columna -->
+                        <th>Fecha de Pago</th> <!-- Nueva columna -->
+                        <th>Quién Pagó?</th> <!-- Nueva columna -->
+                        <th>Es Caja Menor?</th> <!-- Nueva columna -->
                     </tr>
                 </thead>
                 <tbody>
@@ -61,6 +66,10 @@
                                 <td>{{ $order->paymentMethod->payment_name }}</td>
                                 <td>{{ $order->bank_name }} - {{ $order->account_type }} - {{ $order->account_number }}</td>
                                 <td>{{ $order->supportType->support_name }}</td>
+                                <td>{{ $order->has_support ? 'Sí' : 'No' }}</td> <!-- Mostrar si tiene soporte -->
+                                <td>{{ $order->payment_date }}</td> <!-- Mostrar la fecha de pago -->
+                                <td>{{ $order->payer }}</td> <!-- Mostrar quién pagó -->
+                                <td>{{ $order->is_petty_cash ? 'Sí' : 'No' }}</td> <!-- Mostrar si es caja menor -->
                             </tr>
                         @endforeach
                     @endforeach
