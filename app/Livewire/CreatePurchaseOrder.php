@@ -108,14 +108,16 @@ class CreatePurchaseOrder extends Component
         $this->formatCurrencyValues();
     }
 
-    protected function percentageToDecimal($percentage) {
+    protected function percentageToDecimal($percentage)
+    {
         // Asegúrate de que el porcentaje sea una cadena
         $percentage = (string) $percentage;
         
+
         // Dividir el porcentaje por 100 para obtener el decimal
         return bcdiv($percentage, '100', 6); // 6 es la precisión decimal deseada
     }
-    
+
 
     protected function formatCurrencyValues()
     {
@@ -273,6 +275,18 @@ class CreatePurchaseOrder extends Component
     {
         // Validar los campos de la cabecera
         $this->validate();
+
+        $this->contractor_name = strtoupper($this->contractor_name);
+        $this->order_name = strtoupper($this->order_name);
+        $this->contractor_nit = strtoupper($this->contractor_nit);
+        $this->responsible_name = strtoupper($this->responsible_name);
+        $this->company_name = strtoupper($this->company_name);
+        $this->company_nit = strtoupper($this->company_nit);
+        $this->phone = strtoupper($this->phone);
+        $this->material_destination = strtoupper($this->material_destination);
+        $this->bank_name = strtoupper($this->bank_name);
+        $this->account_type = strtoupper($this->account_type);
+        $this->general_observations = strtoupper($this->general_observations);
 
         $this->updateTotals();
         $subtotalBeforeIva = floatval($this->clearFormat($this->totalPurchase));
