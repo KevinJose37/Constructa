@@ -252,8 +252,6 @@ class CreatePurchaseOrder extends Component
             'phone' => 'required|string',
             'material_destination' => 'required|string',
             'payment_method_id' => 'required|exists:payment_methods,id',
-            'bank_name' => 'required|string',
-            'account_number' => 'required|string',
             'support_type_id' => 'required|exists:payment_support,id',
             'project_id' => 'required|numeric',
         ];
