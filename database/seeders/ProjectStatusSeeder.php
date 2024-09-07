@@ -20,19 +20,19 @@ class ProjectStatusSeeder extends Seeder
         ProjectStatus::firstOrCreate(['status_name' => 'Finalizado']);
         ProjectStatus::firstOrCreate(['status_name' => 'No iniciado']);
         ProjectStatus::firstOrCreate(['status_name' => 'Cancelado']);
-        ProjectStatus::firstOrCreate(['status_name' => 'En pausa']);
+        ProjectStatus::firstOrCreate(['status_name' => 'Suspendido']);
 
         Project::firstOrCreate([
-            "project_name" => "Base Project",
-            "project_description" => "Simple project",
+            "project_name" => "Proyecto de ejemplo",
+            "project_description" => "Descripcion de ejemplo",
             "project_status_id" => 3,
             "project_start_date" => new DateTime(),
             "project_estimated_end" => new DateTime(),
         ]);
 
         Project::firstOrCreate([
-            "project_name" => "Default Project",
-            "project_description" => "Simple project",
+            "project_name" => "Proyecto de ejemplo",
+            "project_description" => "Descripcion de ejemplo",
             "project_status_id" => 1,
             "project_start_date" => new DateTime(),
             "project_estimated_end" => new DateTime(),
