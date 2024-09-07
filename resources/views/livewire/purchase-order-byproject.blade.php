@@ -18,11 +18,12 @@
             <table class="table table-striped table-centered mb-3">
                 <thead class="table-dark">
                     <tr class="d-flex">
+                    <th class="col-md-1">Numero de orden</th>
                         <th class="col-md-2">Nombre de la orden de compra</th>
                         <th class="col-md-2">Nombre contratista</th>
                         <th class="col-md-2">Nombre compañía destino</th>
                         <th class="col-md-2">Total</th>
-                        <th class="col-md-2">Fecha</th>
+                        <th class="col-md-1">Fecha</th>
                         <th class="col-md-1">Pagado</th>
                         <th class="col-md-1">Acciones</th>
                     </tr>
@@ -33,11 +34,12 @@
                     <tr id="purchaseOrderRow_{{ $order->id }}" class="d-flex" data-bs-toggle="collapse"
                         data-bs-target="#collapse{{ $order->id }}" aria-expanded="false"
                         aria-controls="collapse{{ $order->id }}">
+                        <td class="col-md-1">{{ $order->id }}</td>
                         <td class="col-md-2">{{ $order->order_name }}</td>
                         <td class="col-md-2">{{ $order->contractor_name }}</td>
                         <td class="col-md-2">{{ $order->company_name }}</td>
                         <td class="col-md-2">{{ $order->total_payable }} COP</td>
-                        <td class="col-md-2">{{ $order->date }}</td>
+                        <td class="col-md-1">{{ $order->date }}</td>
                         <td class="col-md-1"><livewire:purchase-order-paid-information :order="$order"
                                 :wire:key="'purchase-order-paid-' . $order->id"></livewire:purchase-order-paid-information>
                         </td>
