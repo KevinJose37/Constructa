@@ -21,9 +21,9 @@ class CreatePurchaseOrder extends Component
     public $selectedItems = [];
     public $totalPurchaseIva, $totalPurchase, $totalIVA, $totalPay;
     public PurchaseOrderForm $formPurchase;
-    public $retencion = 2.5;
+    public $retencionPercentage = 2.5;
     public $currentDate, $order_name, $contractor_name, $contractor_nit, $responsible_name, $company_name,
-        $company_nit, $phone, $material_destination, $payment_method_id, $bank_name,
+        $company_nit, $phone, $material_destination, $payment_method_id, $bank_name, $retencion,
         $account_type, $accountType, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
 
 
@@ -78,7 +78,7 @@ class CreatePurchaseOrder extends Component
         $this->totalPurchaseIva = $tempSum; // Asigna el resultado final
     }
 
-    protected function updateTotals()
+    public function updateTotals()
     {
         $this->totalPurchase = '0'; // Inicializa como string para BCMath
         $this->totalIVA = '0'; // Inicializa como string para BCMath
@@ -97,8 +97,7 @@ class CreatePurchaseOrder extends Component
         }
 
         // Calcula la retención (2.5% del total incluido IVA) usando BCMath
-        // $retencionPercentage = '0.025'; // 2.5% como cadena para BCMath
-        $retencionPercentage = $this->percentageToDecimal($this->retencion);
+        $retencionPercentage = $this->percentageToDecimal($this->retencionPercentage);
         $this->retencion = bcmul($this->totalPurchaseIva, $retencionPercentage, 2);
 
         // Total a pagar es total con IVA menos la retención
@@ -318,7 +317,8 @@ class CreatePurchaseOrder extends Component
             'total_iva' => $totalIva,
             'total_with_iva' => $totalWithIva,
             'retention' => $retention,
-            'total_payable' => $totalPayable
+            'total_payable' => $totalPayable,
+            'retention_value' => $this->retencionPercentage
         ]);
 
 

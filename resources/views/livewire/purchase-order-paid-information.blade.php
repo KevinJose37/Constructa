@@ -52,11 +52,11 @@
                 ) {
                     $classButton = 'success';
                     $statusButton = 'Pagado';
-                    $clickAction = "\$set('form.open', true)" ;
+                    $clickAction = "\$set('form.open', true)";
                 } else {
                     $classButton = 'warning';
                     $statusButton = 'Por confirmar';
-                    $clickAction = (Auth::user()->can('paid.purchase')) ? "\$set('form.open', true)" : "";
+                    $clickAction = Auth::user()->can('paid.purchase') ? "\$set('form.open', true)" : '';
                 }
             }
         }
@@ -66,7 +66,8 @@
     <button type="button" class="btn btn-{{ $classButton }} "
         wire:click="{!! $clickAction !!}">{{ $statusButton }}</button>
 
-    <x-dialog-modal wire:model="form.open" maxWidth="md" id="order_modal_{{ $order->id }}">
+    {{-- @dump($statusButton, $clickAction) --}}
+    <x-dialog-modal wire:model="form.open" maxWidth="md" id="order_modal_paid_info_{{ $order->id }}">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
             <div class="modal-content">

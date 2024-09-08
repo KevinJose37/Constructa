@@ -25,9 +25,8 @@
                             <label for="colFormLabelSm" class="col col-form-label col-form-label-sm">Retención
                                 %</label>
                             <div class="col-sm-6 d-flex align-items-center">
-
                                 <input type="number" class="form-control form-control-sm" id="inputRetencion"
-                                    placeholder="Ingrese el valor para la retención" wire:model="retencion">
+                                    placeholder="Ingrese el valor para la retención" wire:model="retencionPercentage" wire:keydown="updateTotals">
                             </div>
                         </div>
 

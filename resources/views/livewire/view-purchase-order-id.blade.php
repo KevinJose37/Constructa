@@ -13,6 +13,21 @@
 
                     </div>
                 </div>
+                <div class="row mt-3">
+
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <label for="colFormLabelSm" class="col col-form-label col-form-label-sm">Retención
+                                %</label>
+                            <div class="col-sm-6 d-flex align-items-center">
+                                <input type="number" class="form-control form-control-sm" id="inputRetencion" value="{{ $currentOrder->retention_value }}"
+                                    @disabled(true)>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
                 <div class="row mt-4">
                     <div class="col">
                         <div class="row mb-3 align-items-center">
@@ -166,7 +181,7 @@
                                             <td>{{ $detail->iva }}</td>
                                             <td>{{ $detail->price_iva }}</td>
                                             <td>{{ $detail->total_price_iva }}</td>
-                                            
+
                                         </tr>
                                     @endforeach
                                 </tbody>

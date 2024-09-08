@@ -14,7 +14,7 @@ class InvoiceHeader extends Model
         'date','order_name','contractor_name', 'contractor_nit', 'responsible_name', 'company_name', 'company_nit',
         'phone', 'material_destination', 'payment_method_id', 'bank_name', 'account_type', 'account_number',
         'support_type_id', 'project_id', 'general_observations', 'subtotal_before_iva', 'total_iva',
-        'total_with_iva', 'retention', 'total_payable', 'payment_info_id'
+        'total_with_iva', 'retention', 'total_payable', 'payment_info_id', 'retention_value'
     ];
 
     // Definir relaciones si es necesario
