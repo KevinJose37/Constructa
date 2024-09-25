@@ -107,15 +107,14 @@ class CreatePurchaseOrder extends Component
         $this->formatCurrencyValues();
     }
 
-    protected function percentageToDecimal($percentage)
-    {
-        // Asegúrate de que el porcentaje sea una cadena
-        $percentage = (string) $percentage;
-        
-
-        // Dividir el porcentaje por 100 para obtener el decimal
-        return bcdiv($percentage, '100', 6); // 6 es la precisión decimal deseada
+    public function percentageToDecimal($percentage)
+{
+    if (!is_numeric($percentage) || $percentage == 0) {
+        return '0'; // Retorna '0' como cadena si no es un número válido o es 0
     }
+
+    return bcdiv((string)$percentage, '100', 6); // 6 es la precisión decimal deseada
+}
 
 
     protected function formatCurrencyValues()
