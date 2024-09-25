@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PurchaseOrder;
 
 use App\Models\Project;
 use Livewire\Component;
@@ -42,7 +42,7 @@ class PurchaseOrderByproject extends Component
     {
         $purchaseOrder = $servicePurchase->getByProject($this->projectId, $this->search);
         
-        return view('livewire.purchase-order-byproject', compact('purchaseOrder'));
+        return view('livewire.purchaseorder.purchase-order-byproject', compact('purchaseOrder'));
     }
 
     #[On('destroy-purchase-project')]

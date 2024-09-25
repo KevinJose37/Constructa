@@ -1,17 +1,19 @@
 <?php
 
-use App\Livewire\ShowUsers;
-use App\Livewire\ShowProjects;
+use App\Livewire\Users\ShowUsers;
+use App\Livewire\Projects\ShowProjects;
 use App\Livewire\ChatComponent;
 use App\Livewire\ShowWorkProgress;
-use App\Livewire\QueryPurchaseOrder;
 use App\Livewire\QueryConsolidated;
-use App\Livewire\CreatePurchaseOrder;
-use App\Livewire\ViewPurchaseOrderId;
+use App\Livewire\PurchaseOrder\QueryPurchaseOrder;
+use App\Livewire\PurchaseOrder\CreatePurchaseOrder;
+use App\Livewire\PurchaseOrder\ViewPurchaseOrderId;
+use App\Livewire\PurchaseOrder\PurchaseOrderByproject;
+use App\Livewire\AttachmentsPage;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-use App\Livewire\PurchaseOrderByproject;
-use App\Livewire\AttachmentsPage;
+
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

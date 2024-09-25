@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Projects;
 
 use App\Livewire\Forms\UpdateProjectForm;
 use App\Models\Project;
@@ -48,6 +48,6 @@ class UpdateProject extends Component
     public function render(ProjectServices $projectServices)
     {
         $projectstatus = $projectServices->getStatusProjects();
-        return view('livewire.update-project', compact('projectstatus'));
+        return view('livewire.projects.update-project', compact('projectstatus'));
     }
 }

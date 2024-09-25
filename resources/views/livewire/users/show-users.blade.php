@@ -13,7 +13,7 @@
                 </div>
             </div>
             @can('store.project')
-                <livewire:create-user></livewire:create-user>
+                <livewire:users.create-user>
             @endcan
         </div>
         <table class="table table-striped table-centered mb-0">
@@ -35,15 +35,15 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->rol->name }}</td>
                         <td style="display: flex; align-items: center;">
-                            <livewire:show-projects-user :$user
-                                :wire:key="'show-projects-' . $user->id"></livewire:show-projects-user>
+                            <livewire:projects.show-projects-user :$user
+                                :wire:key="'show-projects-' . $user->id">
                             @can('delete.users')
                                 <a href="#" class="text-reset fs-19 px-1 delete-user-btn"
                                     wire:click.prevent="destroyAlertUser({{ $user->id }}, '{{ $user->fullname }}')">
                                     <i class="ri-delete-bin-2-line"></i></a>
                             @endcan
                             @can('update.users')
-                                <livewire:update-user :$user :wire:key="'update-user-' . $user->id"></livewire:update-user>
+                                <livewire:users.update-user :$user :wire:key="'update-user-' . $user->id">
                             @endcan
 
                         </td>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Users;
 
 use App\Livewire\Forms\UpdateUserForm;
 use App\Models\User;
@@ -46,6 +46,6 @@ class UpdateUser extends Component
     public function render(UserServices $userService)
     {
         $roles = $userService->getRolesUsers();
-        return view('livewire.update-user', compact('roles'));
+        return view('livewire.users.update-user', compact('roles'));
     }
 }

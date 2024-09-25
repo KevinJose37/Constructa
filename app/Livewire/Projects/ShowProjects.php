@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Projects;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -29,7 +29,7 @@ class ShowProjects extends Component
             $projects = $projectServices->getAllPaginate($this->search);
         }
 
-        return view('livewire.show-projects',  compact('projects'));
+        return view('livewire.projects.show-projects',  compact('projects'));
     }
 
     #[On('destroy-project')] 

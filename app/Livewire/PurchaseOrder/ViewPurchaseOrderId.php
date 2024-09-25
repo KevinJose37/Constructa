@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PurchaseOrder;
 
 use Livewire\Component;
 use App\Models\PaymentMethod;
@@ -39,6 +39,6 @@ class ViewPurchaseOrderId extends Component
     #[Title('Orden de compra')]
     public function render()
     {
-        return view('livewire.view-purchase-order-id');
+        return view('livewire.purchaseorder.view-purchase-order-id');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PurchaseOrder;
 
 use Livewire\Component;
 use App\Models\InvoiceHeader;
@@ -53,6 +53,6 @@ class EditPurchaseOrderInfo extends Component
 
     public function render()
     {
-        return view('livewire.edit-purchase-order-info');
+        return view('livewire.purchaseorder.edit-purchase-order-info');
     }
 }

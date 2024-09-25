@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 @can('store.project')
-                    <livewire:create-project></livewire:create-project>
+                    <livewire:projects.create-project>
                 @endcan
             </div>
             <div class="table-container">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     <div class="action-item">
-                        <livewire:view-users-project :project="$project" :wire:key="'view-' . $project->id"></livewire:view-users-project>
+                        <livewire:projects.view-users-project :project="$project" :wire:key="'view-' . $project->id"></livewire:projects.view-users-project>
                     </div>
                     @can('delete.project')
                         <div class="action-item">
@@ -117,7 +117,7 @@
                     @endcan
                     @can('update.project')
                         <div class="action-item">
-                            <livewire:update-project :project="$project" :wire:key="'update-' . $project->id"></livewire:update-project>
+                            <livewire:projects.update-project :project="$project" :wire:key="'update-' . $project->id">
                         </div>
                     @endcan
                 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Projects;
 
 use Livewire\Component;
 use App\Services\ProjectServices;
@@ -40,6 +40,6 @@ class CreateProject extends Component
     public function render(ProjectServices $projectServices)
     {
         $projectstatus = $projectServices->getStatusProjects();
-        return view('livewire.create-project', compact('projectstatus'));
+        return view('livewire.projects.create-project', compact('projectstatus'));
     }
 }

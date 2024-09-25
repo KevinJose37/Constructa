@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Users;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -28,7 +28,7 @@ class ShowUsers extends Component
             $users = collect([$user]);
         }
 
-        return view('livewire.show-users',  compact('users'));
+        return view('livewire.users.show-users',  compact('users'));
     }
 
     #[On('destroy-user')]

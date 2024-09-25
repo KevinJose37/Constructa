@@ -40,7 +40,7 @@
                             <td class="col-md-1">{{ $order->total_payable }} COP</td>
                             <td class="col-md-1">{{ $order->date }}</td>
                             <td class="col-md-1">
-                                <livewire:purchase-order-paid-information :order="$order"
+                                <livewire:purchaseorder.purchase-order-paid-information :order="$order"
                                     :wire:key="'purchase-order-paid-' . $order->id" />
                             </td>
                             <td class="col-md-1" style="display: flex; align-items: center;">
@@ -60,7 +60,7 @@
                                     <i class="ri-information-fill"></i>
                                 </a>
                             </td>
-                            <livewire:edit-purchase-order-info :wire:key="'edit-purchase-order-' . $order->id"
+                            <livewire:purchaseorder.edit-purchase-order-info :wire:key="'edit-purchase-order-' . $order->id"
                                 :orderId="$order->id" />
 
                         </tr>

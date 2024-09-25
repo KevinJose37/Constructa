@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PurchaseOrder;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -24,7 +24,7 @@ class QueryPurchaseOrder extends Component
     public function render(PurchaseOrderServices $purchaseOrderServices)
     {
         $purchaseOrder = $purchaseOrderServices->getAllPaginate($this->search);
-        return view('livewire.query-purchase-order', compact('purchaseOrder'));
+        return view('livewire.purchaseorder.query-purchase-order', compact('purchaseOrder'));
     }
 
     #[On('destroy-purchase')]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Projects;
 
 use App\Models\Project;
 use Livewire\Component;
@@ -68,6 +68,6 @@ class ViewUsersProject extends Component
         
         $usersNotAssigned = $projectUserServices->getNotAssignedUsers($this->project->id);
 
-        return view('livewire.view-users-project', compact('usersNotAssigned'));
+        return view('livewire.projects.view-users-project', compact('usersNotAssigned'));
     }
 }

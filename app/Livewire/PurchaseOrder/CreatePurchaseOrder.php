@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PurchaseOrder;
 
 use Livewire\Component;
 use App\Helpers\Helpers;
@@ -59,7 +59,7 @@ class CreatePurchaseOrder extends Component
 
         $paymentMethods = PaymentMethod::all();
         $paymentSupport = PaymentSupport::all();
-        return view('livewire.create-purchase-order', compact('paymentMethods', 'paymentSupport'));
+        return view('livewire.purchaseorder.create-purchase-order', compact('paymentMethods', 'paymentSupport'));
     }
 
     protected function calculateTotal()

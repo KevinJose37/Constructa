@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Users;
 
 use App\Livewire\Forms\CreateUserForm;
 use App\Services\UserServices;
@@ -31,6 +31,6 @@ class CreateUser extends Component
     public function render(UserServices $userService)
     {
         $roles = $userService->getRolesUsers();
-        return view('livewire.create-user', compact('roles'));
+        return view('livewire.users.create-user', compact('roles'));
     }
 }

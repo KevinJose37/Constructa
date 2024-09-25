@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\PurchaseOrder;
 
 use App\Helpers\Helpers;
 use Livewire\Component;
@@ -16,7 +16,7 @@ class CreatePurchaseOrderModal extends Component
     {
         $this->orderForm->itemSelect = null;
         $items = $itemService->getAll();
-        return view('livewire.create-purchase-order-modal', compact('items'));
+        return view('livewire.purchaseorder.create-purchase-order-modal', compact('items'));
     }
 
     public function getUnit(ItemService $itemService)
