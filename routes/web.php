@@ -4,6 +4,7 @@ use App\Livewire\ShowUsers;
 use App\Livewire\ShowProjects;
 use App\Livewire\ChatComponent;
 use App\Livewire\ShowWorkProgress;
+use App\Livewire\Materials;
 use App\Livewire\QueryPurchaseOrder;
 use App\Livewire\QueryConsolidated;
 use App\Livewire\CreatePurchaseOrder;
@@ -30,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
     Route::get('/attachments/{invoiceHeaderId}', AttachmentsPage::class)->name('attachments.page');
     Route::get('/download-attachment/{id}', [AttachmentsPage::class, 'download'])->name('download.attachment');
+    Route::get('/materiales', Materials::class)->name('materials.page');
+    
 
     Route::get('/dashboard', function () {
         return view('DashboardIndex');

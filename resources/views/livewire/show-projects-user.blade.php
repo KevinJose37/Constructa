@@ -59,7 +59,7 @@
                                                             <td>{{ $projectAssing->project_name }}</td>
                                                             <td>{{ $projectAssing->projectStatus->status_name }}</td>
                                                             <td>{{ $projectAssing->pivot->created_at }}</td>
-                                                            @can('unassign.user.project')
+                                                            @can(abilities: 'unassign.user.project')
                                                                 <td><a class="text-reset fs-19 px-1 delete-user-project-btn"
                                                                         wire:click="destroyAlertProject({{ $projectAssing->id }}, '{{ $projectAssing->project_name }}')">
                                                                         <i class="ri-delete-bin-2-line"></i></a></td>
