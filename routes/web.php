@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Livewire\PurchaseOrderByproject;
 use App\Livewire\AttachmentsPage;
+use App\Livewire\Budget;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -41,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas relacionadas con proyectos
     Route::get('/proyectos', ShowProjects::class)->name('projects.index');
+    Route::get('/budget/{id_presupuesto}', Budget::class)->name('budget');
 
     // Rutas relacionadas con chats
 

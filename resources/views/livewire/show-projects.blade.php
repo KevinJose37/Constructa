@@ -99,10 +99,11 @@
                                     <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}" class="dropdown-item">Crear órdenes de compra</a>
                                 @endcan
                                 <a href="{{ route('workprogress.index', ['id' => $project->id]) }}" class="dropdown-item">Avance de obra</a>
-                                <a href="{{ route('purchaseorderproject.get', ['id' => $project->id]) }}" class="dropdown-item">Ver órdenes de compra</a>
+                                <a href="{{ route('purchaseorderproject.get', ['id' => $project->id]) }}" class="dropdown-item">Órdenes de compra</a>
                                 <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}" class="dropdown-item">Chat del proyecto</a>
-                                <a href="{{ route('consolidated.view', ['id' => $project->id]) }}" class="dropdown-item">Ver Consolidado</a>
-                            </div>
+                                <a href="{{ route('consolidated.view', ['id' => $project->id]) }}" class="dropdown-item">Consolidado</a>
+                                <a href="{{ route('budget', ['id_presupuesto' => $project->id]) }}" class="dropdown-item">Presupuesto</a>
+                                </div>
                         </div>
                     </div>
                     <div class="action-item">

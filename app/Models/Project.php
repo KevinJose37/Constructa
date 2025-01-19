@@ -37,4 +37,9 @@ class Project extends Model
     {
         return $this->hasMany(InvoiceHeader::class);
     }
+
+    public function budget()
+{
+    return $this->hasOne(BudgetHeader::class, 'id_proyecto', 'id');
+}
 }
