@@ -98,7 +98,7 @@
                                 @can('store.purchase')
                                     <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}" class="dropdown-item">Crear órdenes de compra</a>
                                 @endcan
-                                <a href="{{ route('workprogress.index', ['id' => $project->id]) }}" class="dropdown-item">Avance de obra</a>
+                                <!--<a href="{{ route('workprogress.index', ['id' => $project->id]) }}" class="dropdown-item">Avance de obra</a>-->
                                 <a href="{{ route('purchaseorderproject.get', ['id' => $project->id]) }}" class="dropdown-item">Órdenes de compra</a>
                                 <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}" class="dropdown-item">Chat del proyecto</a>
                                 <a href="{{ route('consolidated.view', ['id' => $project->id]) }}" class="dropdown-item">Consolidado</a>

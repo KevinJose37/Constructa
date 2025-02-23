@@ -65,29 +65,27 @@
                 </a>
             </li>
             @can('view.users')
-                <li class="side-nav-item">
-                    <a href="{{ route('usuarios.index') }}" class="side-nav-link">
-                        <i class="ri-user-fill"></i>
-                        <span> Usuarios </span>
-                    </a>
-                </li>
+            <li class="side-nav-item">
+                <a href="{{ route('usuarios.index') }}" class="side-nav-link">
+                    <i class="ri-user-fill"></i>
+                    <span> Usuarios </span>
+                </a>
+            </li>
             @endcan
             <li class="side-nav-item">
                 <a href="{{ route('purchaseorder.view') }}" class="side-nav-link">
-                <i class="ri-shopping-cart-2-fill"></i>
+                    <i class="ri-shopping-cart-2-fill"></i>
                     <span> Órdenes de compra </span>
                 </a>
             </li>
 
-            
-            <!-- <li class="side-nav-title mt-1"> Comunicacion</li>
 
             <li class="side-nav-item">
-                <a href="{{ route('chatprojects') }}" class="side-nav-link">
-                    <i class="ri-chat-voice-fill"></i>
-                    <span> Chat </span>
+                <a href="{{ route('materials.page') }}" class="side-nav-link">
+                    <i class="ri-clipboard-fill"></i>
+                    <span> Materiales </span>
                 </a>
-            </li> -->
+            </li> 
 
         </ul>
         <!--- End Sidemenu -->

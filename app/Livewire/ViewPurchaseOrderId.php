@@ -36,7 +36,7 @@ class ViewPurchaseOrderId extends Component
     }
 
     #[Layout('layouts.app')]
-    #[Title('Orden de compra')]
+    #[Title('Visualizar orden de compra')]
     public function render()
     {
         return view('livewire.view-purchase-order-id');

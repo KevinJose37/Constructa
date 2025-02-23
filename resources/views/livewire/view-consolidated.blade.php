@@ -8,7 +8,6 @@
                     <input type="text" name="filter" class="form-control" placeholder="Buscar material" wire:model.live="search">
                     <button class="btn" id="clear-filter" wire:click="$set('search', '')"><i class="ri-close-line"></i></button>
                 </div>
-                
             </div>
         </div>
         <div class="table-responsive">
@@ -16,7 +15,7 @@
                 <thead>
                     <tr>
                         <th>ORDEN DE COMPRA</th>
-                        <th>ITEM</th> <!-- Nueva columna para numeración -->
+                        <th>ITEM</th>
                         <th>DESCRIPCIÓN</th>
                         <th>UND.</th>
                         <th>CANTIDAD</th>
@@ -25,6 +24,7 @@
                         <th>IVA (%)</th>
                         <th>VALOR UNITARIO INCLUIDO IVA</th>
                         <th>VALOR PARCIAL INCLUIDO IVA</th>
+                        <th>RETENCIÓN (%)</th> <!-- Nueva columna -->
                         <th>VALOR RETENCIÓN</th>
                         <th>VALOR TOTAL INCLUIDO IVA Y RETENCIÓN</th>
                         <th>EMPRESA</th>
@@ -33,23 +33,24 @@
                         <th>FORMA DE PAGO</th>
                         <th>CUENTA BANCARIA</th>
                         <th>TIPO SOPORTE</th>
-                        <th>Tiene Soporte?</th> <!-- Nueva columna -->
-                        <th>Fecha de Pago</th> <!-- Nueva columna -->
-                        <th>Quién Pagó?</th> <!-- Nueva columna -->
-                        <th>Es Caja Menor?</th> <!-- Nueva columna -->
+                        <th>Tiene Soporte?</th>
+                        <th>Fecha de Pago</th>
+                        <th>Quién Pagó?</th>
+                        <th>Es Caja Menor?</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($purchaseOrder as $order)
-                        @php $itemCounter = 1; @endphp <!-- Inicializa el contador -->
+                        @php $itemCounter = 1; @endphp
                         @foreach ($order->invoiceDetails as $detail)
                             @php
-                                $retention = $detail->total_price_iva * 0.025;
-                                $totalWithRetention = $detail->total_price_iva - $retention;
+                                $retentionPercentage = 2.5;
+                                $retentionValue = $detail->total_price * ($retentionPercentage / 100);
+                                $totalWithRetention = $detail->total_price_iva - $retentionValue;
                             @endphp
                             <tr>
                                 <td>{{ $detail->id_purchase_order }}</td>
-                                <td>{{ $itemCounter++ }}</td> <!-- Incrementa el contador -->
+                                <td>{{ $itemCounter++ }}</td>
                                 <td>{{ $detail->item->name }}</td>
                                 <td>{{ $detail->item->unit_measurement }}</td>
                                 <td>{{ $detail->quantity }}</td>
@@ -58,7 +59,8 @@
                                 <td>{{ $detail->iva }}</td>
                                 <td>${{ number_format($detail->price_iva, 2, '.', ',') }}</td>
                                 <td>${{ number_format($detail->total_price_iva, 2, '.', ',') }}</td>
-                                <td>${{ number_format($retention, 2, '.', ',') }}</td>
+                                <td>{{ $retentionPercentage }}%</td> <!-- Muestra el porcentaje de retención -->
+                                <td>${{ number_format($retentionValue, 2, '.', ',') }}</td>
                                 <td>${{ number_format($totalWithRetention, 2, '.', ',') }}</td>
                                 <td>{{ $order->company_name }}</td>
                                 <td>{{ $order->phone }}</td>
@@ -66,10 +68,10 @@
                                 <td>{{ $order->paymentMethod->payment_name }}</td>
                                 <td>{{ $order->bank_name }} - {{ $order->account_type }} - {{ $order->account_number }}</td>
                                 <td>{{ $order->supportType->support_name }}</td>
-                                <td>{{ $order->has_support ? 'Sí' : 'No' }}</td> <!-- Mostrar si tiene soporte -->
-                                <td>{{ $order->payment_date }}</td> <!-- Mostrar la fecha de pago -->
-                                <td>{{ $order->payer }}</td> <!-- Mostrar quién pagó -->
-                                <td>{{ $order->is_petty_cash ? 'Sí' : 'No' }}</td> <!-- Mostrar si es caja menor -->
+                                <td>{{ $order->has_support ? 'Sí' : 'No' }}</td>
+                                <td>{{ $order->payment_date }}</td>
+                                <td>{{ $order->payer }}</td>
+                                <td>{{ $order->is_petty_cash ? 'Sí' : 'No' }}</td>
                             </tr>
                         @endforeach
                     @endforeach

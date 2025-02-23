@@ -25,24 +25,17 @@ class Budget extends Component
     ];
     public $modalItems = [];
 
+    public $editCapitulo = null;
+    public $editItems = [];
+
     protected $rules = [
         'modalCapitulo.numero_capitulo' => 'required|string',
         'modalCapitulo.nombre_capitulo' => 'required|string',
+        'modalItems.*.numero_item' => 'required|string',
         'modalItems.*.descripcion' => 'required|string',
         'modalItems.*.und' => 'required|string',
         'modalItems.*.cantidad' => 'required|numeric|min:0',
         'modalItems.*.vr_unit' => 'required|numeric|min:0',
-    ];
-
-    protected $messages = [
-        'modalCapitulo.numero_capitulo.required' => 'El número de capítulo es requerido',
-        'modalCapitulo.nombre_capitulo.required' => 'El nombre del capítulo es requerido',
-        'modalItems.*.descripcion.required' => 'La descripción del ítem es requerida',
-        'modalItems.*.und.required' => 'La unidad es requerida',
-        'modalItems.*.cantidad.required' => 'La cantidad es requerida',
-        'modalItems.*.cantidad.numeric' => 'La cantidad debe ser un número',
-        'modalItems.*.vr_unit.required' => 'El valor unitario es requerido',
-        'modalItems.*.vr_unit.numeric' => 'El valor unitario debe ser un número',
     ];
 
     public function mount($id_presupuesto)
@@ -62,103 +55,81 @@ class Budget extends Component
         $this->localizacion = $this->budget->localizacion;
     }
 
+    public function updateLocalizacion()
+{
+    // Validar el campo de localización
+    $this->validate([
+        'localizacion' => 'required|string|max:255',
+    ]);
+
+    // Actualizar la localización en la base de datos
+    $this->budget->update([
+        'localizacion' => $this->localizacion,
+    ]);
+
+    // Cerrar el modal y mostrar un mensaje de éxito
+    $this->dispatch('close-modal');
+    session()->flash('message', 'Localización actualizada correctamente.');
+}
+
     public function addItem()
     {
         $newItem = [
+            'numero_item' => '',
             'descripcion' => '',
             'und' => '',
             'cantidad' => '',
             'vr_unit' => '',
         ];
-        
+
         if (!is_array($this->modalItems)) {
             $this->modalItems = [];
         }
-        
+
         $this->modalItems[] = $newItem;
     }
 
-    public function removeItem($index)
-    {
-        if (isset($this->modalItems[$index])) {
-            unset($this->modalItems[$index]);
-            $this->modalItems = array_values($this->modalItems);
-        }
-    }
-
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
-
-    public function updateLocalizacion()
-    {
-        $this->validate([
-            'localizacion' => 'required|string|max:255',
-        ]);
-
-        $this->budget->update([
-            'localizacion' => $this->localizacion,
-        ]);
-
-        $this->dispatch('close-modal');
-        session()->flash('message', 'Localización actualizada correctamente.');
-    }
-
     public function saveChapter()
-{
-    // Validar datos
-    $this->validate();
+    {
+        $this->validate();
 
-    try {
+        try {
+            DB::beginTransaction();
 
-        // Iniciar transacción
-        DB::beginTransaction();
-
-        // Guardar capítulo
-        $chapter = Chapter::create([
-            'id_presupuesto' => $this->budget->id_presupuesto,
-            'numero_capitulo' => $this->modalCapitulo['numero_capitulo'],
-            'nombre_capitulo' => $this->modalCapitulo['nombre_capitulo'],
-        ]);
-
-
-        // Guardar ítems
-        foreach ($this->modalItems as $item) {
-            $itemBudget = ItemsBudgets::create([
-                'id_capitulo' => $chapter->id_capitulo,
-                'descripcion' => $item['descripcion'],
-                'und' => $item['und'],
-                'cantidad' => $item['cantidad'],
-                'vr_unit' => $item['vr_unit'],
-                'vr_total' => $item['cantidad'] * $item['vr_unit'],
+            $chapter = Chapter::create([
+                'id_presupuesto' => $this->budget->id_presupuesto,
+                'numero_capitulo' => $this->modalCapitulo['numero_capitulo'],
+                'nombre_capitulo' => $this->modalCapitulo['nombre_capitulo'],
             ]);
 
+            foreach ($this->modalItems as $item) {
+                ItemsBudgets::create([
+                    'id_capitulo' => $chapter->id_capitulo,
+                    'numero_item' => $item['numero_item'],
+                    'descripcion' => $item['descripcion'],
+                    'und' => $item['und'],
+                    'cantidad' => $item['cantidad'],
+                    'vr_unit' => $item['vr_unit'],
+                    'vr_total' => round($item['cantidad'] * $item['vr_unit']),
+                ]);
+            }
+
+            DB::commit();
+
+            $this->modalCapitulo = [
+                'numero_capitulo' => '',
+                'nombre_capitulo' => '',
+            ];
+            $this->modalItems = [];
+
+            $this->dispatch('close-modal');
+            session()->flash('message', 'Capítulo e ítems guardados correctamente.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            session()->flash('error', 'Error al guardar capítulo e ítems.');
         }
-
-        // Confirmar transacción
-        DB::commit();
-
-        // Limpiar formulario
-        $this->modalCapitulo = [
-            'numero_capitulo' => '',
-            'nombre_capitulo' => '',
-        ];
-        $this->modalItems = [];
-
-        // Cerrar modal y mostrar mensaje de éxito
-        $this->dispatch('close-modal');
-        session()->flash('message', 'Capítulo e ítems guardados correctamente.');
-
-    } catch (\Exception $e) {
-        // Revertir transacción en caso de error
-        DB::rollBack();
-
-        // Mostrar mensaje de error al usuario
-        session()->flash('error', 'Error al guardar capítulo e ítems. Por favor, inténtalo de nuevo.');
     }
-}
-
 
     public function render()
     {

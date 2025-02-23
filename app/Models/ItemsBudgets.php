@@ -13,7 +13,7 @@ class ItemsBudgets extends Model
 
     protected $primaryKey = 'id_item_budget'; // Nombre de la clave primaria
 
-    protected $fillable = ['id_capitulo', 'descripcion', 'und', 'cantidad', 'vr_unit', 'vr_total'];
+    protected $fillable = ['id_capitulo', 'numero_item', 'descripcion', 'und', 'cantidad', 'vr_unit', 'vr_total'];
 
     public function chapter()
     {
