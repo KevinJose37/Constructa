@@ -55,10 +55,15 @@
 <tbody>
     @foreach($capitulos as $capitulo)
     <tr class="table-primary">
-        <td colspan="6">
-            <strong>Cap. {{ $capitulo->numero_capitulo }}:</strong> {{ $capitulo->nombre_capitulo }}
-        </td>
-    </tr>
+    <td colspan="5">
+        <strong>Cap. {{ $capitulo->numero_capitulo }}:</strong> {{ $capitulo->nombre_capitulo }}
+    </td>
+    <td class="text-end">
+        <button type="button" class="btn btn-danger btn-sm" wire:click="deleteChapter({{ $capitulo->id_capitulo }})">
+            Eliminar Capítulo
+        </button>
+    </td>
+</tr>
 
                         @php
                         $subtotal = 0; // Inicializar el subtotal

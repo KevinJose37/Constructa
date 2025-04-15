@@ -1,7 +1,7 @@
 <!-- ========== Left Sidebar Start ========== -->
 <div class="leftside-menu">
     <!-- Brand Logo Light -->
-    <a href="index.html" class="logo logo-light">
+    <a href="{{ route('dashboard') }}" class="logo logo-light">
         <span class="logo-lg">
             <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" width="200">
         </span>
@@ -10,7 +10,7 @@
         </span>
     </a>
     <!-- Brand Logo Dark -->
-    <a href="index.html" class="logo logo-dark">
+    <a href="{{ route('dashboard') }}" class="logo logo-dark">
         <span class="logo-lg">
             <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" style="width: 200px;  height: 70px;">
             <!-- Ajusta los valores según necesites -->
@@ -50,7 +50,7 @@
             <li class="side-nav-title mt-1"> Principal</li>
 
             <li class="side-nav-item">
-                <a href="" class="side-nav-link">
+                <a href="{{ route('dashboard') }}" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
                     <span> Dashboard </span>
                 </a>
@@ -94,3 +94,23 @@
     </div>
 </div>
 <!-- ========== Left Sidebar End ========== -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    let settings = localStorage.getItem("theme-settings");
+
+    if (settings) {
+        let parsedSettings = JSON.parse(settings);
+        
+        // Asegurar que el menú siempre sea claro
+        parsedSettings.menu = parsedSettings.menu || {};
+        parsedSettings.menu.color = "light";
+
+        // Guardar de nuevo en localStorage
+        localStorage.setItem("theme-settings", JSON.stringify(parsedSettings));
+
+        // Aplicar los cambios al body (si es necesario)
+        document.body.setAttribute("data-menu-color", "light");
+    }
+});
+</script>

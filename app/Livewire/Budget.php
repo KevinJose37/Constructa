@@ -131,13 +131,34 @@ class Budget extends Component
         }
     }
 
-    public function render()
-    {
-        return view('livewire.budget', [
-            'budget' => $this->budget,
-            'capitulos' => Chapter::where('id_presupuesto', $this->budget->id_presupuesto)
-                ->with('items')
-                ->get()
-        ]);
+    public function deleteChapter($id_capitulo)
+{
+    try {
+        DB::beginTransaction();
+
+        // Eliminar los ítems asociados al capítulo
+        ItemsBudgets::where('id_capitulo', $id_capitulo)->delete();
+
+        // Eliminar el capítulo
+        Chapter::where('id_capitulo', $id_capitulo)->delete();
+
+        DB::commit();
+
+        session()->flash('message', 'Capítulo y ítems eliminados correctamente.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        session()->flash('error', 'Error al eliminar el capítulo y sus ítems.');
     }
+}
+
+    public function render()
+{
+    return view('livewire.budget', [
+        'budget' => $this->budget,
+        'capitulos' => Chapter::where('id_presupuesto', $this->budget->id_presupuesto)
+            ->orderBy('numero_capitulo', 'asc') // Ordenar por número de capítulo de menor a mayor
+            ->with('items') // Cargar los ítems asociados
+            ->get()
+    ]);
+}
 }

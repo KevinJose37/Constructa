@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Livewire\PurchaseOrderByproject;
 use App\Livewire\AttachmentsPage;
 use App\Livewire\Budget;
+use App\Livewire\Dashboard;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -35,9 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/materiales', Materials::class)->name('materials.page');
     
 
-    Route::get('/dashboard', function () {
-        return view('DashboardIndex');
-    })->name('dashboard.index');
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
 
 
     // Rutas relacionadas con proyectos
