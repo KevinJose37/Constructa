@@ -1,13 +1,19 @@
 <div class="container my-4">
     <div class="card shadow rounded-4">
         <div class="card-body p-4">
-            <h3 class="mb-4">Orden de compra #{{ $lastInvoiceId + 1 }}</h3>
+            <h3 class="mb-4">
+                @if ($isViewMode)
+                    Orden de compra n°{{ $order->id }}
+                @else
+                    Orden de compra #{{ $lastInvoiceId + 1 }}
+                @endif
+            </h3>
 
             <!-- Order Name -->
             <div class="mb-4">
                 <label for="inputApodo" class="form-label">Nombre de la orden</label>
                 <input type="text" class="form-control" id="inputApodo" placeholder="Identifique esta orden de compra"
-                    wire:model="order_name">
+                    wire:model="order_name" @disabled($isViewMode)>
                 @error('order_name')
                     <div class="invalid-feedback d-block">
                         {{ $message }}
@@ -24,7 +30,7 @@
                         <div class="mb-3">
                             <label for="inputContratista" class="form-label">Contratista</label>
                             <input type="text" class="form-control" id="inputContratista"
-                                wire:model="contractor_name" disabled>
+                                wire:model="contractor_name" @disabled(true)>
                             @error('contractor_name')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -35,7 +41,7 @@
                         <div class="mb-3">
                             <label for="inputNitOne" class="form-label">NIT Contratista</label>
                             <input type="text" class="form-control" id="inputNitOne" wire:model="contractor_nit"
-                                disabled>
+                                @disabled(true)>
                             @error('contractor_nit')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -46,7 +52,7 @@
                         <div class="mb-3">
                             <label for="inputResponsable" class="form-label">Responsable</label>
                             <input type="text" class="form-control" id="inputResponsable"
-                                wire:model="responsible_name" disabled>
+                                wire:model="responsible_name" @disabled(true)>
                             @error('responsible_name')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -57,7 +63,7 @@
                         <div class="mb-3">
                             <label for="inputFecha" class="form-label">Fecha</label>
                             <input type="text" class="form-control" id="inputFecha" wire:model="currentDate"
-                                disabled>
+                                @disabled(true)>
                             @error('currentDate')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -68,7 +74,8 @@
                         <div class="mb-3">
                             <label for="inputRetencion" class="form-label">Retención (%)</label>
                             <input type="number" class="form-control" id="inputRetencion"
-                                wire:model="retencionPercentage" wire:keydown="updateTotals">
+                                wire:model="retencionPercentage" @disabled($isViewMode)
+                                @if (!$isViewMode) wire:keydown="updateTotals" @endif>
                             @error('retencionPercentage')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -85,7 +92,8 @@
 
                         <div class="mb-3">
                             <label for="inputEmpresa" class="form-label">Empresa</label>
-                            <input type="text" class="form-control" id="inputEmpresa" wire:model="company_name">
+                            <input type="text" class="form-control" id="inputEmpresa" wire:model="company_name"
+                                @disabled($isViewMode)>
                             @error('company_name')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -95,7 +103,8 @@
 
                         <div class="mb-3">
                             <label for="inputSNit" class="form-label">NIT Empresa</label>
-                            <input type="text" class="form-control" id="inputSNit" wire:model="company_nit">
+                            <input type="text" class="form-control" id="inputSNit" wire:model="company_nit"
+                                @disabled($isViewMode)>
                             @error('company_nit')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -105,7 +114,8 @@
 
                         <div class="mb-3">
                             <label for="inputTele" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="inputTele" wire:model="phone">
+                            <input type="tel" class="form-control" id="inputTele" wire:model="phone"
+                                @disabled($isViewMode)>
                             @error('phone')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -116,7 +126,7 @@
                         <div class="mb-3">
                             <label for="inputDestin" class="form-label">Destino Material</label>
                             <input type="text" class="form-control" id="inputDestin"
-                                wire:model="material_destination">
+                                wire:model="material_destination" @disabled($isViewMode)>
                             @error('material_destination')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -134,12 +144,17 @@
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="inputType" class="form-label">Método de Pago</label>
-                        <select class="form-select" id="inputType" wire:model="payment_method_id">
-                            <option value="">Seleccione</option>
-                            @foreach ($paymentMethods as $method)
-                                <option value="{{ $method->id }}">{{ $method->payment_name }}</option>
-                            @endforeach
-                        </select>
+                        @if ($isViewMode)
+                            <input type="text" class="form-control" id="inputType"
+                                value="{{ $paymentMethodName }}" disabled>
+                        @else
+                            <select class="form-select" id="inputType" wire:model="payment_method_id">
+                                <option value="">Seleccione</option>
+                                @foreach ($paymentMethods as $method)
+                                    <option value="{{ $method->id }}">{{ $method->payment_name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
                         @error('payment_method_id')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -149,7 +164,8 @@
 
                     <div class="col-md-4">
                         <label for="inputBank" class="form-label">Banco</label>
-                        <input type="text" class="form-control" id="inputBank" wire:model="bank_name">
+                        <input type="text" class="form-control" id="inputBank" wire:model="bank_name"
+                            @disabled($isViewMode)>
                         @error('bank_name')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -159,7 +175,8 @@
 
                     <div class="col-md-2">
                         <label for="inputAccountType" class="form-label">Tipo de Cuenta</label>
-                        <input type="text" class="form-control" id="inputAccountType" wire:model="account_type">
+                        <input type="text" class="form-control" id="inputAccountType" wire:model="account_type"
+                            @disabled($isViewMode)>
                         @error('account_type')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -170,7 +187,7 @@
                     <div class="col-md-2">
                         <label for="inputAccountNumber" class="form-label">N° Cuenta</label>
                         <input type="text" class="form-control" id="inputAccountNumber"
-                            wire:model="account_number">
+                            wire:model="account_number" @disabled($isViewMode)>
                         @error('account_number')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -180,12 +197,17 @@
 
                     <div class="col-md-6">
                         <label for="inputSupport" class="form-label">Tipo de Soporte</label>
-                        <select class="form-select" id="inputSupport" wire:model="support_type_id">
-                            <option value="">Seleccione</option>
-                            @foreach ($paymentSupport as $support)
-                                <option value="{{ $support->id }}">{{ $support->support_name }}</option>
-                            @endforeach
-                        </select>
+                        @if ($isViewMode)
+                            <input type="text" class="form-control" id="inputSupport"
+                                value="{{ $paymentSupport }}" disabled>
+                        @else
+                            <select class="form-select" id="inputSupport" wire:model="support_type_id">
+                                <option value="">Seleccione</option>
+                                @foreach ($paymentSupport as $support)
+                                    <option value="{{ $support->id }}">{{ $support->support_name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
                         @error('support_type_id')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -195,11 +217,18 @@
                 </div>
             </div>
 
-            <div>
-                <livewire:create-purchase-order-modal></livewire:create-purchase-order-modal>
+            <div class="">
+                @livewire('attachments-page', ['invoiceHeaderId' => $order->id ?? null, 'onlyView' => $isViewMode])
             </div>
+
+            @if (!$isViewMode)
+                <div>
+                    <livewire:create-purchase-order-modal></livewire:create-purchase-order-modal>
+                </div>
+            @endif
+
             <!-- Tabla de productos -->
-            @if (!empty($selectedItems))
+            @if ($isViewMode || !empty($selectedItems))
                 <div class="card mt-4 border-0 shadow-sm p-4">
                     <h5 class="card-title mb-4">Productos</h5>
 
@@ -214,38 +243,60 @@
                                     <th>Valor UN sin IVA</th>
                                     <th>Valor PAR antes IVA</th>
                                     <th>IVA</th>
-                                    <th>IVA producto</th>
+                                    @if (!$isViewMode)
+                                        <th>IVA producto</th>
+                                    @endif
                                     <th>Valor UN IVA</th>
                                     <th>Valor PAR IVA</th>
+                                    @if (!$isViewMode)
+                                        <th>Acciones</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($selectedItems as $index => $currentItem)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>
-                                            <b>{{ $currentItem['name'] }}</b> <br />
-                                            {{-- {{ $currentItem['description'] }} --}}
-                                        </td>
-                                        <td>{{ $currentItem['quantity'] }}</td>
-                                        <td>${{ $currentItem['price'] }}</td>
-                                        <td>${{ $currentItem['price'] }}</td>
-                                        <td>${{ $currentItem['totalPrice'] }}</td>
-                                        <td>${{ $currentItem['iva'] }}</td>
-                                        <td>{{ $currentItem['ivaProduct'] }}%</td>
-                                        <td>${{ $currentItem['priceIva'] }}</td>
-                                        <td>${{ $currentItem['totalPriceIva'] }}</td>
-                                        <td> <a href="#" class="text-reset fs-19 px-1 delete-project-btn"
-                                                wire:click.prevent="destroyAlertPurchase({{ $currentItem['id'] }}, '{{ $currentItem['name'] }}', '{{ $index }}')">
-                                                <i class="ri-delete-bin-2-line"></i></a></td>
-
-                                    </tr>
-                                @endforeach
+                                @if ($isViewMode)
+                                    @foreach ($order->invoiceDetails as $index => $detail)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                <b>{{ $detail->item->name }}</b> <br />
+                                            </td>
+                                            <td>{{ $detail->quantity }}</td>
+                                            <td>{{ $detail->item->unit_measurement }}</td>
+                                            <td>${{ number_format($detail->price, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->total_price, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->iva, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->price_iva, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->total_price_iva, 2, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    @foreach ($selectedItems as $index => $currentItem)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                <b>{{ $currentItem['name'] }}</b>
+                                            </td>
+                                            <td>{{ $currentItem['quantity'] }}</td>
+                                            <td>{{ $currentItem['unit_measurement'] ?? '' }}</td>
+                                            <td>${{ $currentItem['price'] }}</td>
+                                            <td>${{ $currentItem['totalPrice'] }}</td>
+                                            <td>${{ $currentItem['iva'] }}</td>
+                                            <td>{{ $currentItem['ivaProduct'] }}%</td>
+                                            <td>${{ $currentItem['priceIva'] }}</td>
+                                            <td>${{ $currentItem['totalPriceIva'] }}</td>
+                                            <td>
+                                                <a href="#" class="text-reset fs-19 px-1 delete-project-btn"
+                                                    wire:click.prevent="destroyAlertPurchase({{ $currentItem['id'] }}, '{{ $currentItem['name'] }}', '{{ $index }}')">
+                                                    <i class="ri-delete-bin-2-line"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             @endif
 
             <!-- end row -->
@@ -253,7 +304,7 @@
                 <div class="col-4">
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Deje un comentario aquí" id="floatingTextarea"
-                            wire:model="general_observations"></textarea>
+                            wire:model="general_observations" @disabled($isViewMode)></textarea>
                         <label for="floatingTextarea">Observaciones Generales</label>
                         @error('general_observations')
                             <div class="invalid-feedback d-block">
@@ -265,36 +316,57 @@
 
                 <div class="col-4">
                     <h6 class="text-muted">Valor antes de IVA:</h6>
-                    <p class="fs-13"><strong>Subtotal: </strong> <span>
-                            ${{ number_format(floatval(str_replace(',', '.', $totalPurchase)), 2, ',', '.') }}</span>
-                    </p>
-                    <p class="fs-13"><strong>IVA: </strong> <span>
-                            ${{ number_format(floatval(str_replace(',', '.', $totalIVA)), 2, ',', '.') }}</span></p>
-                    <p class="fs-13"><strong>Valor total: </strong> <span>
-                            ${{ number_format(floatval(str_replace(',', '.', $totalPurchaseIva)), 2, ',', '.') }}</span>
-                    </p>
-                    <p class="fs-13"><strong>Retención: </strong> <span>
-                            ${{ number_format(floatval(str_replace(',', '.', $retencion)), 2, ',', '.') }}</span></p>
-                    <p class="fs-13"><strong>Valor por pagar: </strong> <span>
-                            ${{ number_format(floatval(str_replace(',', '.', $totalPay)), 2, ',', '.') }}</span></p>
+                    @if ($isViewMode)
+                        <p class="fs-13"><strong>Subtotal: </strong> <span>
+                                ${{ number_format($order->subtotal_before_iva, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>IVA: </strong> <span>
+                                ${{ number_format($order->total_iva, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>Valor total: </strong> <span>
+                                ${{ number_format($order->total_with_iva, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>Retención: </strong> <span>
+                                ${{ number_format($order->retention, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
+                                ${{ number_format($order->total_payable, 2, ',', '.') }}</span></p>
+                    @else
+                        <p class="fs-13"><strong>Subtotal: </strong> <span>
+                                ${{ $totalPurchase }}</span></p>
+                        <p class="fs-13"><strong>IVA: </strong> <span>
+                                ${{ $totalIVA }}</span></p>
+                        <p class="fs-13"><strong>Valor total: </strong> <span>
+                                ${{ $totalPurchaseIva }}</span></p>
+                        <p class="fs-13"><strong>Retención: </strong> <span>
+                                ${{ $retencion }}</span></p>
+                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
+                                ${{ $totalPay }}</span></p>
+                    @endif
                 </div> <!-- end col-->
 
                 <div class="col-4">
                     <div class="text-sm-end">
                         <h6 class="text-muted">Valor después de IVA:</h6>
-                        <p><b>Sub-total:</b> <span class="float-end">
-                                ${{ number_format(floatval(str_replace(',', '.', $totalPurchaseIva)), 2, ',', '.') }}</span>
-                        </p>
-                        <h3>${{ number_format(floatval(str_replace(',', '.', $totalPay)), 2, ',', '.') }} COP</h3>
+                        @if ($isViewMode)
+                            <p><b>Sub-total:</b> <span class="float-end">
+                                    ${{ number_format($order->total_with_iva, 2, ',', '.') }}</span>
+                            </p>
+                            <h3>${{ number_format($order->total_payable, 2, ',', '.') }} COP</h3>
+                        @else
+                            <p><b>Sub-total:</b> <span class="float-end">
+                                    ${{ $totalPurchaseIva }}</span>
+                            </p>
+                            <h3>${{ $totalPay }} COP</h3>
+                        @endif
                     </div>
                 </div> <!-- end col-->
-
 
                 <div class="d-print-none mt-4">
                     <div class="text-end">
                         <a href="javascript:window.print()" class="btn btn-primary"><i class="ri-printer-line"></i>
                             Imprimir</a>
-                        <a href="javascript:void(0);" class="btn btn-info" wire:click="storeHeader">Guardar</a>
+                        @if ($isViewMode)
+                            <a class="btn btn-info" href="{{ url()->previous() }}">Atrás</a>
+                        @else
+                            <a href="javascript:void(0);" class="btn btn-info" wire:click="storeHeader">Guardar</a>
+                        @endif
                     </div>
                 </div>
                 <!-- end buttons -->

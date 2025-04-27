@@ -21,16 +21,20 @@ class AttachmentsPage extends Component
     public $invoiceHeaderId;
     public $attachments = [];
     public $orderName;
+    public $onlyView = false;
+    protected $listeners = ['saveAttachmentsEvent' => 'saveAttachments', "flashMessage" => 'flashMessage'];
 
     protected $rules = [
         'attachments.*' => 'file|max:2048',
     ];
 
-    public function mount($invoiceHeaderId)
+    public function mount($invoiceHeaderId = null)
     {
         try {
             $this->invoiceHeaderId = $invoiceHeaderId;
-            $this->loadOrderName();
+            if ($invoiceHeaderId) {
+                $this->loadOrderName();
+            }
         } catch (Exception $e) {
             Log::error('Error in mount method: ' . $e->getMessage());
             session()->flash('error', 'Ocurrió un error al cargar los datos.');
@@ -60,16 +64,47 @@ class AttachmentsPage extends Component
             abort(404, 'Archivo no encontrado');
         }
     }
-    public function saveAttachments()
+
+    public function flashMessage($type, $message)
+    {
+        session()->flash($type, $message);
+    }
+
+    public function removeTempFile($index)
     {
         try {
+            // Eliminar el archivo de la lista temporal
+            array_splice($this->attachments, $index, 1);
+        } catch (Exception $e) {
+            Log::error('Error in removeTempFile method: ' . $e->getMessage());
+            session()->flash('error', 'Ocurrió un error al eliminar el archivo temporal.');
+        }
+    }
+
+    public function updatedAttachments()
+    {
+        $hasFiles = !empty($this->attachments);
+
+        $this->dispatch('attachmentsStatusUpdated', $hasFiles);
+    }
+
+    public function saveAttachments($invoiceHeaderId = null)
+    {
+        try {
+
+            if ($invoiceHeaderId) {
+                $this->invoiceHeaderId = $invoiceHeaderId;
+            }
+
             if (empty($this->attachments)) {
-                session()->flash('error', 'Por favor seleccione al menos un archivo para subir.');
+                $this->addError('attachments', 'Por favor seleccione al menos un archivo para subir.');
+                $this->dispatch('attachmentsStatus', false);
                 return;
             }
 
             if (count($this->attachments) > 3) {
-                session()->flash('error', 'Por favor seleccione hasta 3 archivos.');
+                $this->addError('attachments', 'Por favor seleccione hasta 3 archivos.');
+                $this->dispatch('attachmentsStatus', false);
                 return;
             }
 
@@ -86,10 +121,13 @@ class AttachmentsPage extends Component
             }
 
             $this->attachments = [];  // Limpiar la lista de archivos después de guardar
+            $this->dispatch('attachmentsStatus', true);
             session()->flash('message', 'Adjuntos subidos exitosamente.');
         } catch (Exception $e) {
             Log::error('Error in saveAttachments method: ' . $e->getMessage());
-            session()->flash('error', 'Ocurrió un error al subir los adjuntos. Reinicie la página e intente nuevamente');
+            Log::error('File: ' . $e->getFile() . ' Line: ' . $e->getLine());  // Detalles de la ubicación
+            Log::error('Trace: ' . $e->getTraceAsString());
+            $this->addError('attachments', 'Ocurrió un error al subir los adjuntos. Reinicie la página e intente nuevamente');
         }
     }
 
