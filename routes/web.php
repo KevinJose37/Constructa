@@ -14,7 +14,10 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Livewire\PurchaseOrderByproject;
 use App\Livewire\AttachmentsPage;
 use App\Livewire\Budget;
+use App\Livewire\ProyectoReal;
+
 use App\Livewire\Dashboard;
+use App\Livewire\RealChapter;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -43,8 +46,7 @@ Route::middleware(['auth'])->group(function () {
     // Rutas relacionadas con proyectos
     Route::get('/proyectos', ShowProjects::class)->name('projects.index');
     Route::get('/budget/{id_presupuesto}', Budget::class)->name('budget');
-
-    // Rutas relacionadas con chats
+    Route::get('/proyecto-real/{id}', ProyectoReal::class)->name('proyecto-real');
 
     Route::get('/chat', ChatComponent::class)->name('chatprojects');
     Route::get('/chat/project/{id}', ChatComponent::class)->where('id', '[0-9]+')->name('chatbyid.get');

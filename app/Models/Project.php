@@ -42,4 +42,9 @@ class Project extends Model
 {
     return $this->hasOne(BudgetHeader::class, 'id_proyecto', 'id');
 }
+
+public function realproject()
+{
+    return $this->hasOne(RealProjectInfo::class, 'id_proyecto_real', 'id');
+}
 }

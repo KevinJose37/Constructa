@@ -103,7 +103,7 @@
                                 <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}" class="dropdown-item">Chat del proyecto</a>
                                 <a href="{{ route('consolidated.view', ['id' => $project->id]) }}" class="dropdown-item">Consolidado</a>
                                 <a href="{{ route('budget', ['id_presupuesto' => $project->id]) }}" class="dropdown-item">Presupuesto</a>
-                                </div>
+                                <a href="{{ route('proyecto-real', ['id' => $project->id]) }}" class="dropdown-item">Capítulo real</a>                                </div>
                         </div>
                     </div>
                     <div class="action-item">
