@@ -20,6 +20,7 @@ class InvoiceDetail extends Model
         'price_iva',
         'total_price_iva',
         'project_id',
+        
     ];
 
     public function invoiceHeader()

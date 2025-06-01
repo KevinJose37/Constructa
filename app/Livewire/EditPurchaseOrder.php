@@ -201,8 +201,6 @@ class EditPurchaseOrder extends Component
 
         $existingItemIndex = false;
         foreach ($this->selectedItems as $index => $item) {
-            dump($item['id'], $idItem, $item['price'], $unitPrice, $item['ivaProduct'], $iva);
-
             if ($item['id'] == $idItem && $item['price'] == $unitPrice && $item['ivaProduct'] == $iva) {
                 $existingItemIndex = $index;
                 break;

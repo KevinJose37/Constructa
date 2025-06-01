@@ -59,7 +59,6 @@ class QueryPurchaseOrder extends Component
         return view('livewire.query-purchase-order', compact('purchaseOrder'));
     }
 
-
     #[On('destroy-purchase')]
     public function destroy($id, PurchaseOrderServices $purchaseOrderServices)
     {
@@ -83,6 +82,38 @@ class QueryPurchaseOrder extends Component
             title: 'Orden de compra',
             message: "¿estás seguro de eliminar la orden de compra para el proyecto?",
             emit: 'destroy-purchase',
+        );
+    }
+
+    #[On('active-purchase')]
+    public function active($id, PurchaseOrderServices $purchaseOrderServices)
+    {
+        $purchaseOrder = $purchaseOrderServices->getById($id);
+
+        $deleteProject = $purchaseOrderServices->Update($id, ["is_active" => !$purchaseOrder->is_active]);
+        if ($deleteProject !== null) {
+            $this->dispatch('purchaseRefresh')->to(QueryPurchaseOrder::class);
+            $this->dispatch('alert', type: 'success', title: 'Proyectos', message: "Se cambió el estado correctamente a la orden de compra");
+            return;
+        }
+
+        $this->dispatch('alert', type: 'error', title: 'Proyectos', message: "No se pudo cambiar el estado de la orden de compra");
+    }
+
+    public function activeAlert($id, PurchaseOrderServices $purchaseOrderServices)
+    {
+        $purchaseOrder = $purchaseOrderServices->getById($id);
+        if (!$purchaseOrder) {
+            $this->dispatch('alert', type: 'error', title: 'Orden de compra', message: "No se encontró la orden de compra");
+            return;
+        }
+        $purchaseOrder = $this->dispatch(
+            'alertConfirmation',
+            id: $id,
+            type: 'warning',
+            title: 'Orden de compra',
+            message: "¿estás seguro de cambiar el estado de la orden de compra para el proyecto?",
+            emit: 'active-purchase',
         );
     }
 }

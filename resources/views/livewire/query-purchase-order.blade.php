@@ -88,6 +88,15 @@
                                             </a>
                                         </li>
                                         <li>
+                                            <a href="#" class="dropdown-item text-reset"
+                                                wire:click.prevent="activeAlert({{ $order->id }})">
+                                                <i
+                                                    class="{{ $order->is_active == true ? 'ri-close-line' : 'ri-check-line' }} me-2"></i>
+                                                {{ $order->is_active == true ? 'Desactivar' : 'Activar' }} orden de
+                                                compra
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}"
                                                 class="dropdown-item text-reset">
                                                 <i class="ri-search-eye-line me-2"></i> Ver orden de compra
