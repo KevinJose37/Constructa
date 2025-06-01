@@ -23,7 +23,7 @@
                         <th class="col-md-2">Nombre compañía destino</th>
                         <th class="col-md-1">Total</th>
                         <th class="col-md-1">Fecha</th>
-                        <th class="col-md-1">Creador</th>
+                        <th class="col-md-1">Estado</th>
                         <th class="col-md-1">Acciones</th>
                     </tr>
                 </thead>
