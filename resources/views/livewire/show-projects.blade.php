@@ -28,7 +28,7 @@
 
         .table-container {
             overflow-x: auto;
-            height: 500px; 
+            height: 500px;
         }
 
         .dropdown-menu {
@@ -76,56 +76,72 @@
                         </tr>
                     </thead>
                     <tbody>
-    @foreach ($projects as $project)
-        <tr wire:key="project-{{ $project->id }}">
-            <td class="contract-description text-wrap">{{ \Illuminate\Support\Str::limit($project->project_name, 100) }}</td>
-            <td>{{ $project->contract_number }}</td>
-            <td class="contract-description text-wrap">{{ \Illuminate\Support\Str::limit($project->project_description, 100) }}</td>
-            <td>{{ $project->projectStatus->status_name }}</td>
-            <td>{{ $project->nit }}</td>
-            <td>{{ $project->contratista }}</td>
-            <td>{{ $project->entidad_contratante }}</td>
-            <td>{{ $project->project_start_date }}</td>
-            <td>{{ $project->project_estimated_end }}</td>
-            <td class="actions-cell">
-                <div class="actions-content">
-                    <div class="action-item">
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="ri-settings-3-line"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-animated dropdown-menu-end">
-                                @can('store.purchase')
-                                    <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}" class="dropdown-item">Crear órdenes de compra</a>
-                                @endcan
-                                <!--<a href="{{ route('workprogress.index', ['id' => $project->id]) }}" class="dropdown-item">Avance de obra</a>-->
-                                <a href="{{ route('purchaseorderproject.get', ['id' => $project->id]) }}" class="dropdown-item">Órdenes de compra</a>
-                                <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}" class="dropdown-item">Chat del proyecto</a>
-                                <a href="{{ route('consolidated.view', ['id' => $project->id]) }}" class="dropdown-item">Consolidado</a>
-                                <a href="{{ route('budget', ['id_presupuesto' => $project->id]) }}" class="dropdown-item">Presupuesto</a>
-                                <a href="{{ route('proyecto-real', ['id' => $project->id]) }}" class="dropdown-item">Capítulo real</a>                                </div>
-                        </div>
-                    </div>
-                    <div class="action-item">
-                        <livewire:view-users-project :project="$project" :wire:key="'view-' . $project->id"></livewire:view-users-project>
-                    </div>
-                    @can('delete.project')
-                        <div class="action-item">
-                            <a href="#" class="text-reset fs-19 px-1 delete-project-btn" wire:click.prevent="destroyAlert({{ $project->id }}, '{{ $project->project_name }}')" wire:key="delete-{{ $project->id }}">
-                                <i class="ri-delete-bin-2-line"></i>
-                            </a>
-                        </div>
-                    @endcan
-                    @can('update.project')
-                        <div class="action-item">
-                            <livewire:update-project :project="$project" :wire:key="'update-' . $project->id"></livewire:update-project>
-                        </div>
-                    @endcan
-                </div>
-            </td>
-        </tr>
-    @endforeach
-</tbody>
+                        @foreach ($projects as $project)
+                            <tr wire:key="project-{{ $project->id }}">
+                                <td class="contract-description text-wrap">
+                                    {{ \Illuminate\Support\Str::limit($project->project_name, 100) }}</td>
+                                <td>{{ $project->contract_number }}</td>
+                                <td class="contract-description text-wrap">
+                                    {{ \Illuminate\Support\Str::limit($project->project_description, 100) }}</td>
+                                <td>{{ $project->projectStatus->status_name }}</td>
+                                <td>{{ $project->nit }}</td>
+                                <td>{{ $project->contratista }}</td>
+                                <td>{{ $project->entidad_contratante }}</td>
+                                <td>{{ $project->project_start_date }}</td>
+                                <td>{{ $project->project_estimated_end }}</td>
+                                <td class="actions-cell">
+                                    <div class="actions-content">
+                                        <div class="action-item">
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle arrow-none card-drop"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ri-settings-3-line"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-animated dropdown-menu-end">
+                                                    @can('store.purchase')
+                                                        <a href="{{ route('purchaseorder.save', ['id' => $project->id]) }}"
+                                                            class="dropdown-item">Crear órdenes de compra</a>
+                                                    @endcan
+                                                    <!--<a href="{{ route('workprogress.index', ['id' => $project->id]) }}" class="dropdown-item">Avance de obra</a>-->
+                                                    <a href="{{ route('purchaseorder.view', ['project' => $project->id]) }}"
+                                                        class="dropdown-item">
+                                                        Órdenes de compra
+                                                    </a>
+                                                    <a href="{{ route('chatbyid.get', ['id' => $project->id]) }}"
+                                                        class="dropdown-item">Chat del proyecto</a>
+                                                    <a href="{{ route('consolidated.view', ['id' => $project->id]) }}"
+                                                        class="dropdown-item">Consolidado</a>
+                                                    <a href="{{ route('budget', ['id_presupuesto' => $project->id]) }}"
+                                                        class="dropdown-item">Presupuesto</a>
+                                                    <a href="{{ route('proyecto-real', ['id' => $project->id]) }}"
+                                                        class="dropdown-item">Capítulo real</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="action-item">
+                                            <livewire:view-users-project :project="$project"
+                                                :wire:key="'view-' . $project->id"></livewire:view-users-project>
+                                        </div>
+                                        @can('delete.project')
+                                            <div class="action-item">
+                                                <a href="#" class="text-reset fs-19 px-1 delete-project-btn"
+                                                    wire:click.prevent="destroyAlert({{ $project->id }}, '{{ $project->project_name }}')"
+                                                    wire:key="delete-{{ $project->id }}">
+                                                    <i class="ri-delete-bin-2-line"></i>
+                                                </a>
+                                            </div>
+                                        @endcan
+                                        @can('update.project')
+                                            <div class="action-item">
+                                                <livewire:update-project :project="$project"
+                                                    :wire:key="'update-' . $project->id"></livewire:update-project>
+                                            </div>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
 
                 </table>
             </div>
