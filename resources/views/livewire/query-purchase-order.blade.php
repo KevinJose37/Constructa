@@ -74,38 +74,46 @@
                                 <livewire:purchase-order-paid-information :order="$order"
                                     :wire:key="'purchase-order-paid-' . $order->id" />
                             </td>
-
-                            {{-- Acciones --}}
-                            <td class="col-md-1" style="display: flex; align-items: center;">
-                                {{-- Eliminar proyecto --}}
-                                <a href="#" class="text-reset fs-19 px-1 delete-project-btn"
-                                    wire:click.prevent="destroyAlert({{ $order->id }})" style="margin-right: 10px;">
-                                    <i class="ri-delete-bin-2-line"></i>
-                                </a>
-
-                                {{-- Más información --}}
-                                <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}"
-                                    style="margin-right: 10px;">
-                                    <i class="ri-search-eye-line"></i>
-                                </a>
-
-                                <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
-                                    style="margin-right: 10px;">
-                                    <i class="ri-search-eye-line"></i>
-                                </a>
-                                {{-- Adjuntos --}}
-                                <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}"
-                                    style="margin-right: 10px;">
-                                    <i class="ri-file-upload-fill"></i>
-                                </a>
-
-                                {{-- Información --}}
-                                <a href="#" class="text-reset fs-19 px-1"
-                                    wire:click="$dispatch('setOrderId', { orderId: {{ $order->id }} })"
-                                    data-bs-toggle="modal" data-bs-target="#editPurchaseOrderInfoModal"
-                                    style="margin-right: 10px;">
-                                    <i class="ri-information-fill"></i>
-                                </a>
+                            <td class="col-md-1">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Acciones
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#" class="dropdown-item text-reset"
+                                                wire:click.prevent="destroyAlert({{ $order->id }})">
+                                                <i class="ri-delete-bin-2-line me-2"></i> Eliminar orden de compra
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}"
+                                                class="dropdown-item text-reset">
+                                                <i class="ri-search-eye-line me-2"></i> Ver orden de compra
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
+                                                class="dropdown-item text-reset">
+                                                <i class="ri-pencil-fill me-2"></i> Editar orden de compra
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}"
+                                                class="dropdown-item text-reset">
+                                                <i class="ri-file-upload-fill me-2"></i> Adjuntos
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item text-reset"
+                                                wire:click="$dispatch('setOrderId', { orderId: {{ $order->id }} })"
+                                                data-bs-toggle="modal" data-bs-target="#editPurchaseOrderInfoModal">
+                                                <i class="ri-information-fill me-2"></i> Información
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
 
                             {{-- Editar --}}
