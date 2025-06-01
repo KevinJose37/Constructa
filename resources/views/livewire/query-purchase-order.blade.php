@@ -89,6 +89,10 @@
                                     <i class="ri-search-eye-line"></i>
                                 </a>
 
+                                <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
+                                    style="margin-right: 10px;">
+                                    <i class="ri-search-eye-line"></i>
+                                </a>
                                 {{-- Adjuntos --}}
                                 <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}"
                                     style="margin-right: 10px;">

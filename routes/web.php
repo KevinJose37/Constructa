@@ -1,23 +1,24 @@
 <?php
 
+use App\Livewire\Budget;
+use App\Livewire\Dashboard;
+use App\Livewire\Materials;
 use App\Livewire\ShowUsers;
+use App\Livewire\RealChapter;
+use App\Livewire\ProyectoReal;
 use App\Livewire\ShowProjects;
 use App\Livewire\ChatComponent;
+use App\Livewire\AttachmentsPage;
 use App\Livewire\ShowWorkProgress;
-use App\Livewire\Materials;
-use App\Livewire\QueryPurchaseOrder;
+use App\Livewire\EditPurchaseOrder;
 use App\Livewire\QueryConsolidated;
+use App\Livewire\QueryPurchaseOrder;
 use App\Livewire\CreatePurchaseOrder;
 use App\Livewire\ViewPurchaseOrderId;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Livewire\PurchaseOrderByproject;
-use App\Livewire\AttachmentsPage;
-use App\Livewire\Budget;
-use App\Livewire\ProyectoReal;
 
-use App\Livewire\Dashboard;
-use App\Livewire\RealChapter;
+use Illuminate\Support\Facades\Route;
+use App\Livewire\PurchaseOrderByproject;
+use App\Http\Controllers\Auth\LoginController;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -34,10 +35,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchaseorder/project/{id}', PurchaseOrderByproject::class)->name('purchaseorderproject.get');
     Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
+    Route::get('/purchaseorder/edit/{id}', EditPurchaseOrder::class)
+        // ->middleware()
+        ->name('purchaseorder.edit');
     Route::get('/attachments/{invoiceHeaderId}', AttachmentsPage::class)->name('attachments.page');
     Route::get('/download-attachment/{id}', [AttachmentsPage::class, 'download'])->name('download.attachment');
     Route::get('/materiales', Materials::class)->name('materials.page');
-    
+
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
@@ -57,6 +61,4 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas relacionadas con el avance de obra
     Route::get('/workprogress/{id}', ShowWorkProgress::class)->name('workprogress.index');
-
-
 });

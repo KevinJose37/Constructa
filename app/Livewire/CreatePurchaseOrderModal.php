@@ -44,7 +44,7 @@ class CreatePurchaseOrderModal extends Component
     public function save()
     {
         $this->orderForm->validate();
-        $this->dispatch('storeItem', $this->orderForm->currentSelect, $this->orderForm->priceUnit, $this->orderForm->quantityItem, $this->orderForm->currentIva)->to(CreatePurchaseOrder::class);
+        $this->dispatch('storeItem', $this->orderForm->currentSelect, $this->orderForm->priceUnit, $this->orderForm->quantityItem, $this->orderForm->currentIva);
         $this->orderForm->reset();
         $this->dispatch(
             'resetSelect',

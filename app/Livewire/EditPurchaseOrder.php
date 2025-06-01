@@ -13,57 +13,116 @@ use App\Models\PaymentSupport;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Services\ProjectServices;
+use App\Services\PurchaseOrderServices;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Livewire\Forms\PurchaseOrderForm;
 
-class CreatePurchaseOrder extends Component
+class EditPurchaseOrder extends Component
 {
     public $selectedItems = [];
-    public $attachmentsValid = false; // Propiedad para saber si los archivos son válidos
+    public $attachmentsValid = true; // Por defecto asumimos que los archivos ya existentes son válidos
 
     public $totalPurchaseIva, $totalPurchase, $totalIVA, $totalPay;
-    public PurchaseOrderForm $formPurchase;
     public $retencionPercentage = 2.5;
     public $currentDate, $order_name, $contractor_name, $contractor_nit, $responsible_name, $company_name,
         $company_nit, $phone, $material_destination, $payment_method_id, $bank_name, $retencion,
-        $account_type, $accountType, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations, $generalObservations;
+        $account_type, $accountType, $account_number, $support_type_id, $lastInvoiceId, $formattedDate, $project_id, $invoiceHeader, $general_observations;
+
     public $order = null;
+    public $order_id;
+    public $originalItems = []; // Para guardar los items originales y compararlos con los cambios
 
-
-    public function mount($id, ProjectServices $projectServices)
+    public function mount($id, PurchaseOrderServices $purchaseOrderServices, ItemService $itemService)
     {
-        $this->currentDate = now()->format('y/m/d');
-        $this->project_id = $id;
-        $this->responsible_name = Auth::user()->name;
-        $currentProject = $projectServices->getById($this->project_id);
-
-        if (!$currentProject || is_null($currentProject)) {
-            $this->redirect('/proyectos');
+        // Verificar si el ID es numérico
+        if (!is_numeric($id)) {
+            $this->redirect('/purchaseorder');
             return;
         }
 
-        $this->contractor_name = $currentProject->contratista;
-        $this->contractor_nit = $currentProject->nit;
+        $this->order_id = $id;
 
-        // Obtener el último ID de la orden de compra para el proyecto específico
-        $this->lastInvoiceId = InvoiceHeader::where('project_id', $this->project_id)->max('id');
+        // Cargar la orden de compra
+        $this->order = $purchaseOrderServices->getById($id);
+        if (!$this->order) {
+            $this->dispatch('alert', type: 'error', title: 'Órdenes de compra', message: 'No se encontró la orden de compra');
+            $this->redirect('/purchaseorder');
+            return;
+        }
+
+        // Verificar permisos del usuario
+        $user = Auth::user();
+        // if (!$user->can('update.purchase')) {
+        //     $this->dispatch('alert', type: 'error', title: 'Permisos', message: 'No tiene permisos para editar órdenes de compra');
+        //     $this->redirect('/purchaseorder');
+        //     return;
+        // }
+
+        // Cargar datos del encabezado
+        $this->loadHeaderData();
+
+        // Cargar los detalles/items de la orden
+        $this->loadOrderItems($itemService);
+
+        // Calcular totales
+        $this->updateTotals();
+    }
+
+    protected function loadHeaderData()
+    {
+        $this->currentDate = $this->order->date;
+        $this->order_name = $this->order->order_name;
+        $this->contractor_name = $this->order->contractor_name;
+        $this->contractor_nit = $this->order->contractor_nit;
+        $this->responsible_name = $this->order->responsible_name;
+        $this->company_name = $this->order->company_name;
+        $this->company_nit = $this->order->company_nit;
+        $this->phone = $this->order->phone;
+        $this->material_destination = $this->order->material_destination;
+        $this->payment_method_id = $this->order->payment_method_id;
+        $this->bank_name = $this->order->bank_name;
+        $this->account_type = $this->order->account_type;
+        $this->account_number = $this->order->account_number;
+        $this->support_type_id = $this->order->support_type_id;
+        $this->project_id = $this->order->project_id;
+        $this->general_observations = $this->order->general_observations;
+        $this->retencionPercentage = $this->order->retention_value ?? 2.5;
+    }
+
+    protected function loadOrderItems(ItemService $itemService)
+    {
+        // Obtener detalles/items de la orden
+        $details = InvoiceDetail::where('id_purchase_order', $this->order_id)->get();
+
+        foreach ($details as $detail) {
+            $item = $itemService->getById($detail->id_item)->toArray();
+
+            if ($item) {
+                // Formatear los valores para mostrarlos correctamente
+                $item['quantity'] = $detail->quantity;
+                $item['price'] = $this->formatCurrency($detail->price);
+                $item['totalPrice'] = $this->formatCurrency($detail->total_price);
+                $item['ivaProduct'] = $detail->iva;
+                $item['iva'] = $this->formatCurrency(Helpers::calculateIva($detail->price, $detail->iva));
+                $item['priceIva'] = $this->formatCurrency($detail->price_iva);
+                $item['totalPriceIva'] = $this->formatCurrency($detail->total_price_iva);
+
+                $this->selectedItems[] = $item;
+            }
+        }
+
+        // Guardar copia de los items originales para comparación
+        $this->originalItems = json_encode($this->selectedItems);
     }
 
     #[Layout('layouts.app')]
-    #[Title('Crear orden de compra')]
+    #[Title('Editar orden de compra')]
     #[On('itemRefresh')]
-    public function render(ItemService $itemService)
+    public function render()
     {
-        $user = Auth::user();
-        if (!$user->can('store.purchase')) {
-            $this->redirect('/proyectos');
-            return;
-        }
-
         $paymentMethods = PaymentMethod::all();
         $paymentSupport = PaymentSupport::all();
-        return view('livewire.purchase-order-form', compact('paymentMethods', 'paymentSupport'));
+        return view('livewire.purchase-order-form-edit', compact('paymentMethods', 'paymentSupport'));
     }
 
     protected function calculateTotal()
@@ -117,7 +176,6 @@ class CreatePurchaseOrder extends Component
         return bcdiv((string)$percentage, '100', 6); // 6 es la precisión decimal deseada
     }
 
-
     protected function formatCurrencyValues()
     {
         $this->totalPurchase = $this->formatCurrency($this->totalPurchase);
@@ -143,6 +201,8 @@ class CreatePurchaseOrder extends Component
 
         $existingItemIndex = false;
         foreach ($this->selectedItems as $index => $item) {
+            dump($item['id'], $idItem, $item['price'], $unitPrice, $item['ivaProduct'], $iva);
+
             if ($item['id'] == $idItem && $item['price'] == $unitPrice && $item['ivaProduct'] == $iva) {
                 $existingItemIndex = $index;
                 break;
@@ -188,7 +248,6 @@ class CreatePurchaseOrder extends Component
         $this->calculateTotal();
         $this->updateTotals();
     }
-
 
     #[On('destroy-item')]
     public function destroy($id, $secondparameters, ItemService $itemService)
@@ -277,20 +336,20 @@ class CreatePurchaseOrder extends Component
         $this->attachmentsValid = $status;
     }
 
-    public function storeHeader()
+    public function updateHeader()
     {
-
         $this->validate();
         DB::beginTransaction();
 
         try {
-            // Verificar si hay archivos adjuntos
-            if (!isset($this->attachmentsValid) || !$this->attachmentsValid) {
-                $this->dispatch('flashMessage', 'error', 'Los adjuntos son requeridos.');
+            // Verificar si hay archivos adjuntos válidos (solo si se actualizaron)
+            if (isset($this->attachmentsValid) && !$this->attachmentsValid) {
+                $this->dispatch('flashMessage', 'error', 'Los adjuntos son requeridos o tienen un formato inválido.');
                 DB::rollBack();
                 return;
             }
 
+            // Convertir a mayúsculas
             $this->contractor_name = strtoupper($this->contractor_name);
             $this->order_name = strtoupper($this->order_name);
             $this->contractor_nit = strtoupper($this->contractor_nit);
@@ -312,7 +371,9 @@ class CreatePurchaseOrder extends Component
 
             $accountType = $this->account_type ?: 'N/A';
 
-            $invoiceHeader = InvoiceHeader::create([
+            // Actualizar el encabezado de la factura
+            $invoiceHeader = InvoiceHeader::findOrFail($this->order_id);
+            $invoiceHeader->update([
                 'date' => $this->currentDate,
                 'order_name' => $this->order_name,
                 'contractor_name' => $this->contractor_name,
@@ -337,8 +398,13 @@ class CreatePurchaseOrder extends Component
                 'retention_value' => $this->retencionPercentage,
             ]);
 
-            $this->dispatch('saveAttachmentsEvent', $invoiceHeader->id);
+            // Si hay archivos adjuntos actualizados, guardarlos
+            $this->dispatch('updateAttachmentsEvent', $invoiceHeader->id);
 
+            // Eliminar los detalles anteriores de la factura
+            InvoiceDetail::where('id_purchase_order', $this->order_id)->delete();
+
+            // Crear los nuevos detalles
             foreach ($this->selectedItems as $item) {
                 InvoiceDetail::create([
                     'id_purchase_order' => $invoiceHeader->id,
@@ -353,32 +419,19 @@ class CreatePurchaseOrder extends Component
                 ]);
             }
 
-            $this->selectedItems = [];
-            $this->updateTotals();
-            $this->reset([
-                'contractor_name',
-                'order_name',
-                'contractor_nit',
-                'company_name',
-                'company_nit',
-                'phone',
-                'material_destination',
-                'payment_method_id',
-                'bank_name',
-                'account_type',
-                'account_number',
-                'support_type_id',
-                'general_observations',
-            ]);
-
             DB::commit();
 
-            $this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se guardó correctamente la orden de compra');
+            $this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se actualizó correctamente la orden de compra');
             sleep(1);
-            $this->redirect(route('purchaseorderproject.get', ['id' => $this->project_id]));
+            $this->redirect(route('purchaseorder.view', ['id' => $this->order_id]));
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->dispatch('alert', type: 'error', title: 'Error al guardar', message: 'Ocurrió un error: ' . $e->getMessage());
+            $this->dispatch('alert', type: 'error', title: 'Error al actualizar', message: 'Ocurrió un error: ' . $e->getMessage());
         }
+    }
+
+    public function cancelEdit()
+    {
+        $this->redirect(route('purchaseorder.view', ['id' => $this->order_id]));
     }
 }

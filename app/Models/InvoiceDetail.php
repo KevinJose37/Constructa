@@ -10,7 +10,6 @@ class InvoiceDetail extends Model
     use HasFactory;
     public $timestamps = false;
 
-
     protected $fillable = [
         'id_purchase_order',
         'id_item',
