@@ -55,7 +55,7 @@ class PurchaseOrderServices implements IService
 
     public function Update(int $id, array $data)
     {
-        return;
+        return $this->purchaseOrderRepository->Update($id, $data);
     }
 
     public function Delete(int $id)

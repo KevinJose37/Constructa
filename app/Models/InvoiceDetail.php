@@ -10,7 +10,6 @@ class InvoiceDetail extends Model
     use HasFactory;
     public $timestamps = false;
 
-
     protected $fillable = [
         'id_purchase_order',
         'id_item',
@@ -21,6 +20,7 @@ class InvoiceDetail extends Model
         'price_iva',
         'total_price_iva',
         'project_id',
+        
     ];
 
     public function invoiceHeader()

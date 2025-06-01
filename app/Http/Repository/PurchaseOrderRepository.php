@@ -34,7 +34,12 @@ class PurchaseOrderRepository implements IRepository
 
     public function Update($id, array $data)
     {
-        return;
+        $record = InvoiceHeader::find($id);
+        if ($record) {
+            $record->update($data);
+            return $record;
+        }
+        return null;
     }
 
     public function Delete($id)
@@ -59,21 +64,21 @@ class PurchaseOrderRepository implements IRepository
 
 
     public function filterLike($value, $limit = null)
-{
-    $query = InvoiceHeader::where(function ($queryBuilder) use ($value) {
-        $queryBuilder->where('date', 'like', "%$value%")
-            ->orWhere('contractor_name', 'like', "%$value%")
-            ->orWhere('contractor_nit', 'like', "%$value%")
-            ->orWhere('responsible_name', 'like', "%$value%")
-            ->orWhere('company_name', 'like', "%$value%")
-            ->orWhere('company_nit', 'like', "%$value%")
-            ->orWhere('phone', 'like', "%$value%")
-            ->orWhere('material_destination', 'like', "%$value%")
-            ->orWhere('order_name', 'like', "%$value%");
-    });
+    {
+        $query = InvoiceHeader::where(function ($queryBuilder) use ($value) {
+            $queryBuilder->where('date', 'like', "%$value%")
+                ->orWhere('contractor_name', 'like', "%$value%")
+                ->orWhere('contractor_nit', 'like', "%$value%")
+                ->orWhere('responsible_name', 'like', "%$value%")
+                ->orWhere('company_name', 'like', "%$value%")
+                ->orWhere('company_nit', 'like', "%$value%")
+                ->orWhere('phone', 'like', "%$value%")
+                ->orWhere('material_destination', 'like', "%$value%")
+                ->orWhere('order_name', 'like', "%$value%");
+        });
 
-    return $query;
-}
+        return $query;
+    }
 
 
 
