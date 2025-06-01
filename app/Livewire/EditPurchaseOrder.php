@@ -13,9 +13,10 @@ use App\Models\PaymentSupport;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
 use App\Services\ProjectServices;
-use App\Services\PurchaseOrderServices;
+use App\Models\PurchaseOrderState;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Services\PurchaseOrderServices;
 
 class EditPurchaseOrder extends Component
 {
@@ -395,6 +396,31 @@ class EditPurchaseOrder extends Component
                 'total_payable' => $totalPayable,
                 'retention_value' => $this->retencionPercentage,
             ]);
+
+            $idInvoiceHeader = $invoiceHeader->id;
+
+            $editState = PurchaseOrderState::where('invoice_header_id', $idInvoiceHeader)
+                ->where(function ($query) {
+                    $query->where('status', PurchaseOrderState::STATUS_POR_CONFIRMAR)
+                        ->orWhere('status', PurchaseOrderState::STATUS_PENDIENTE);
+                })
+                ->first();
+
+            if ($editState) {
+                $editState->update([
+                    'status' => PurchaseOrderState::STATUS_SIN_PROCESAR,
+                    'status_notes' => 'Orden de compra editada por el usuario',
+                    'status_changed_at' => now(),
+                    'changed_by_user_id' => Auth::id(),
+                    'previous_status' => $editState->status,
+                    'change_metadata' => [
+                        'action' => 'edit',
+                        'user_id' => Auth::id(),
+                        'timestamp' => now()->toDateTimeString(),
+                    ],
+                ]);
+            }
+
 
             // Si hay archivos adjuntos actualizados, guardarlos
             $this->dispatch('updateAttachmentsEvent', $invoiceHeader->id);

@@ -34,8 +34,8 @@ class PurchaseOrderState extends Model
     // Mapeo para mostrar en UI
     const STATUS_LABELS = [
         self::STATUS_SIN_PROCESAR => 'Sin procesar',
-        self::STATUS_PENDIENTE => 'Pendiente',
-        self::STATUS_POR_CONFIRMAR => 'Por confirmar',
+        self::STATUS_PENDIENTE => 'En revisión',
+        self::STATUS_POR_CONFIRMAR => 'Pagar orden',
         self::STATUS_PAGADO => 'Pagado',
     ];
 
