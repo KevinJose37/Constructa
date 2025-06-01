@@ -45,7 +45,7 @@
                     </thead>
                     <tbody>
                         @foreach ($capitulos as $capitulo)
-                            <tr class="table-primary" style="cursor: pointer;" title="Doble clic para editar">
+                            <tr class="table-primary">
                                 <td colspan="5">
                                     <strong>Cap. {{ $capitulo->numero_capitulo }}:</strong>
                                     {{ $capitulo->nombre_capitulo }}
@@ -73,7 +73,7 @@
                                 @php
                                     $subtotal += $item->vr_total;
                                 @endphp
-                                <tr style="cursor: pointer;" title="Doble clic para editar">
+                                <tr style="cursor: pointer;">
                                     <td class="text-center">{{ $item->numero_item }}</td>
                                     <td>{{ $item->descripcion }}</td>
                                     <td class="text-center">{{ $item->und }}</td>
@@ -375,16 +375,6 @@
                 Livewire.on('open-modal', (modalId) => {
                     const modal = new bootstrap.Modal(document.getElementById(modalId));
                     modal.show();
-                });
-
-                // Manejar el evento de editar capítulo
-                Livewire.on('editChapter', (chapterId) => {
-                    // El componente Livewire ya maneja la lógica, solo necesitamos abrir el modal
-                    editChapter(chapterId);
-                    setTimeout(() => {
-                        const modal = new bootstrap.Modal(document.getElementById('editChapterModal'));
-                        modal.show();
-                    }, 100);
                 });
 
                 // Prevenir el envío del formulario al presionar Enter en los inputs
