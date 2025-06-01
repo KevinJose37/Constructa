@@ -103,10 +103,19 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
-                                                class="dropdown-item text-reset">
-                                                <i class="ri-pencil-fill me-2"></i> Editar orden de compra
-                                            </a>
+                                            @php
+                                                $estado = $order->purchaseOrderState?->status;
+                                            @endphp
+
+                                            {{-- @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO && auth()->user()->hasRole('Director'))--}}
+                                            @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO)
+                                                <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
+                                                    class="dropdown-item text-reset">
+                                                    <i class="ri-pencil-fill me-2"></i> Editar orden de compra
+                                                </a>
+                                            @endif
+
+
                                         </li>
                                         <li>
                                             <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}"

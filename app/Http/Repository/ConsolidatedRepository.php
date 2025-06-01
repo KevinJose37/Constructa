@@ -54,7 +54,7 @@ class PurchaseOrderRepository implements IRepository
 
     public function PurchaseOrderQuery()
     {
-        return InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation');
+        return InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation', 'purchaseOrderState');
     }
 
 

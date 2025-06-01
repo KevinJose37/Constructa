@@ -51,13 +51,17 @@ class EditPurchaseOrder extends Component
             return;
         }
 
-        // Verificar permisos del usuario
+        // Verificar si el estado es pagado y no tiene rol permitido
+        $estado = $this->order->purchaseOrderState?->status;
         $user = Auth::user();
-        // if (!$user->can('update.purchase')) {
-        //     $this->dispatch('alert', type: 'error', title: 'Permisos', message: 'No tiene permisos para editar órdenes de compra');
-        //     $this->redirect('/purchaseorder');
-        //     return;
-        // }
+
+        // TODO: ajustar para validar permisos adicionales en lugar de solo el rol
+        // if ($estado === \App\Models\PurchaseOrderState::STATUS_PAGADO && !$user->hasRole('Director')) {
+        if ($estado === \App\Models\PurchaseOrderState::STATUS_PAGADO) {
+            $this->dispatch('alert', type: 'error', title: 'Acceso denegado', message: 'Esta orden ya fue pagada y no puede ser editada');
+            $this->redirect('/purchaseorder');
+            return;
+        }
 
         // Cargar datos del encabezado
         $this->loadHeaderData();

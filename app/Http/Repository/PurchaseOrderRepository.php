@@ -84,8 +84,9 @@ class PurchaseOrderRepository implements IRepository
 
     public function PurchaseOrderByProject($id, $searchValue = null)
     {
-        $query = InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation')
+        $query = InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation', 'purchaseOrderState')
             ->where('project_id', $id);
+
 
         // Aplicar el filtro si se proporciona un valor de búsqueda
         if ($searchValue) {
