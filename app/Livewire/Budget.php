@@ -89,6 +89,11 @@ class Budget extends Component
         $this->modalItems[] = $newItem;
     }
 
+    public function removeItem($index)
+    {
+        unset($this->modalItems[$index]);
+        $this->modalItems = array_values($this->modalItems);
+    }
     public function saveChapter()
     {
         $this->validate();
