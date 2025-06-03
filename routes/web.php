@@ -19,6 +19,7 @@ use App\Livewire\ViewPurchaseOrderId;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\PurchaseOrderByproject;
 use App\Http\Controllers\Auth\LoginController;
+use App\Livewire\RedirectMaterials;
 
 // Rutas de autenticación
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -34,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchaseorder/view/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
     Route::get('/purchaseorder/edit/{id}', EditPurchaseOrder::class)->name('purchaseorder.edit');
+    Route::get('/purchaseorder/redirect/{id}', RedirectMaterials::class)->name('purchaseorder.redirect');
+
 
     // Consolidado
     Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');

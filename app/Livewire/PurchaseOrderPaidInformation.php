@@ -20,7 +20,7 @@ class PurchaseOrderPaidInformation extends Component
     {
         $this->order = $order;
         $this->orderState = $order->getOrCreateState();
-//        dd($this->orderState, $this->orderState->status_label);
+        //        dd($this->orderState, $this->orderState->status_label);
         $this->loadFormData();
         $this->calculateAndUpdateState();
     }
@@ -227,6 +227,7 @@ class PurchaseOrderPaidInformation extends Component
 
             $this->handleSuccessfulUpdate($purchaseService, 'Se asignó correctamente la información de pago');
             $this->form->reset(['name', 'method', 'how', 'date']);
+            $this->redirect(route('purchaseorder.redirect', ['id' => $this->order->id]));
         } else {
             $this->dispatch(
                 'alert',
