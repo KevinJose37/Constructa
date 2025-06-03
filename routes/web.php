@@ -31,19 +31,19 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas relacionadas con la orden de compra
     Route::get('/purchaseorder/{projectId?}', QueryPurchaseOrder::class)->name('purchaseorder.view');
-    Route::get('/purchaseorder/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
-    Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
+    Route::get('/purchaseorder/view/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
     Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
-    Route::get('/purchaseorder/edit/{id}', EditPurchaseOrder::class)
-        // ->middleware()
-        ->name('purchaseorder.edit');
+    Route::get('/purchaseorder/edit/{id}', EditPurchaseOrder::class)->name('purchaseorder.edit');
+
+    // Consolidado
+    Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
+
     Route::get('/attachments/{invoiceHeaderId}', AttachmentsPage::class)->name('attachments.page');
     Route::get('/download-attachment/{id}', [AttachmentsPage::class, 'download'])->name('download.attachment');
     Route::get('/materiales', Materials::class)->name('materials.page');
 
 
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-
 
 
     // Rutas relacionadas con proyectos
