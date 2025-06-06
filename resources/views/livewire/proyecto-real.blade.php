@@ -4,12 +4,12 @@
             <table class="table table-bordered table-centered mb-3">
                 <thead>
                     <tr>
-                        <th colspan="3" class="text-center">PROYECTO REAL DE OBRA.</th>
+                        <th colspan="12" class="text-center">PROYECTO REAL DE OBRA.</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="3" class="text-center">
+                        <td colspan="12" class="text-center">
                             <strong>PROYECTO:</strong> {{ $project->project_name }}
                         </td>
                     </tr>
@@ -30,18 +30,19 @@
                 <table class="table table-bordered table-centered mb-0">
                     <thead>
                         <tr>
-                            <th class="text-center">#ITEM</th>
-                            <th class="text-center">DESCRIPCIÓN</th>
-                            <th class="text-center">ACCIONES</th>
+                            <th class="text-center" colspan="2">#ITEM</th>
+                            <th class="text-center" colspan="6">DESCRIPCIÓN</th>
+                            <th class="text-center" colspan="4">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{-- @dd($chapters) --}}
                         @forelse ($chapters as $chapter)
                             <tr class="table-primary">
-                                <td colspan="2">
+                                <td colspan="8">
                                     <strong>Cap. {{ $chapter->chapter_number }}:</strong> {{ $chapter->chapter_name }}
                                 </td>
-                                <td class="text-end">
+                                <td class="text-end" colspan="4">
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-warning btn-sm"
                                             wire:click="editChapter({{ $chapter->id }})" title="Editar capítulo">
@@ -55,16 +56,31 @@
                                 </td>
 
                             </tr>
+                            @php
+                                $sumTotal = 0;
+                            @endphp
                             @foreach ($chapter->items as $item)
+                                @php
+                                    $sumTotal = bcadd($sumTotal, $item->total, 2);
+                                @endphp
                                 <tr>
-                                    <td class="text-center">{{ $item->item_number }}</td>
-                                    <td>{{ $item->description }}</td>
+                                    <td class="text-center" colspan="2">{{ $item->item_number }}</td>
+                                    <td colspan="6">{{ $item->description }}</td>
+                                    <td colspan="4" class="text-end"> <button
+                                            wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
+                                            type="button" class="btn btn-info btn-sm">
+                                            <i class="ri-eye-line"></i> Ver información item
+                                        </button></td>
                                     {{-- <td class="text-end">${{ number_format($item->total, 2) }}</td> --}}
                                 </tr>
                             @endforeach
+                            <tr class="table-light">
+                                <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
+                                <td class="text-end" colspan="4"><strong>{{ $sumTotal }}</strong></td>
+                            </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center">No hay capítulos registrados aún.</td>
+                                <td colspan="12" class="text-center">No hay capítulos registrados aún.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -257,6 +273,62 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal para visualizar materiales -->
+    <div wire:ignore.self class="modal fade" id="itemsModal" tabindex="-1" aria-labelledby="itemsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content shadow-sm">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="itemsModalLabel">
+                        Materiales
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-striped align-middle text-center mb-0">
+                            <thead class="table-info">
+                                <tr>
+                                    <th scope="col">Orden de compra</th>
+                                    <th scope="col">N° Item</th>
+                                    <th scope="col">Item</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">UND</th>
+                                    <th scope="col">Valor total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($currentItemsRedirect as $item)
+                                    <tr>
+                                        <td>{{ $item->purchase_order_id ?? 'N/A' }}</td>
+                                        <td>{{ $item->invoiceDetail->id_item ?? 'N/A' }}</td>
+                                        <td class="text-start">{{ $item->invoiceDetail->item->name ?? 'Sin nombre' }}
+                                        </td>
+                                        <td>{{ number_format($item->invoiceDetail->quantity ?? 0, 2) }}</td>
+                                        <td>{{ $item->invoiceDetail->item->unit_measurement ?? '-' }}</td>
+                                        <td>${{ number_format($item->invoiceDetail->total_price_iva ?? 0, 2) }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-muted text-center py-3">No hay materiales
+                                            asociados a este ítem.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @push('scripts')

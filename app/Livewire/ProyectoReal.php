@@ -9,6 +9,7 @@ use App\Models\RealProjectInfo;
 use App\Models\Project;
 use App\Models\RealProject;
 use App\Models\Chapter;
+use App\Models\MaterialRedirections;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
@@ -38,6 +39,8 @@ class ProyectoReal extends Component
         'nombre_capitulo' => '',
     ];
     public $editItems = [];
+    // Ver items por item
+    public $currentItemsRedirect = [];
 
     public function mount(int $id)
     {
@@ -68,7 +71,7 @@ class ProyectoReal extends Component
             'items' => 'required|array|min:1',
             'items.*.item_number' => 'required|string',
             'items.*.description' => 'required|string',
-            'items.*.total' => 'required|numeric',
+            // 'items.*.total' => 'required|numeric',
         ]);
 
         // Crear capítulo
@@ -92,10 +95,11 @@ class ProyectoReal extends Component
         $this->addItem();
 
         // Emitir evento para actualizar tabla
-        $this->dispatch('chapterSaved');
+        // $this->dispatch('chapterSaved');
+            $this->dispatch('alert', type: 'success', title: 'Proyecto real', message: 'Capítulo e ítems creados correctamente.');
 
         // Cerrar el modal
-        $this->dispatch('close-modal');
+        $this->dispatch('close-modal', 'chapterModal');
     }
 
     public function deleteChapter($chapterId)
@@ -111,7 +115,6 @@ class ProyectoReal extends Component
     public function editChapter($id_capitulo)
     {
         $chapter = RealProject::with('items')->findOrFail($id_capitulo);
-        // dd($chapter);
 
         $this->isEditing = true;
         $this->editingChapter = $id_capitulo;
@@ -142,7 +145,7 @@ class ProyectoReal extends Component
             'editCapitulo.nombre_capitulo' => 'required|string',
             'editItems.*.item_number' => 'required|string',
             'editItems.*.description' => 'required|string',
-            'editItems.*.total' => 'required|numeric|min:0',
+            // 'editItems.*.total' => 'required|numeric|min:0',
         ]);
 
         try {
@@ -173,10 +176,10 @@ class ProyectoReal extends Component
 
             $this->resetEditForm();
             $this->dispatch('close-modal', 'editChapterModal');
-            $this->dispatch('alert', type: 'success', title: 'Presupuesto', message: 'Capítulo e ítems actualizados correctamente.');
+            $this->dispatch('alert', type: 'success', title: 'Proyecto real', message: 'Capítulo e ítems actualizados correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            $this->dispatch('alert', type: 'error', title: 'Presupuesto', message: 'Error al actualizar capítulo e ítems: ' . $e->getMessage());
+            $this->dispatch('alert', type: 'error', title: 'Proyecto real', message: 'Error al actualizar capítulo e ítems: ' . $e->getMessage());
         }
     }
 
@@ -219,6 +222,31 @@ class ProyectoReal extends Component
         ];
         $this->editItems = [];
     }
+
+    // Ver items redireccionados
+
+    public function viewInfoItem($itemId, $chapterId)
+    {
+        $this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])
+            ->where('chapter_id', $chapterId)
+            ->where('item_id', $itemId)
+            ->get();
+
+        // dd($this->currentItemsRedirect);
+
+        if (!$this->currentItemsRedirect && $this->currentItemsRedirect->isEmpty()) {
+            $this->dispatch('alert', [
+                'type' => 'info',
+                'title' => 'Proyecto real',
+                'message' => 'Este Item aún no tiene materiales direccionados'
+            ]);
+            return;
+        }
+
+        $this->dispatch('open-modal', 'itemsModal');
+    }
+
+
     public function render()
     {
         $chapters = RealProject::where('project_id', $this->project->id)
