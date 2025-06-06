@@ -32,7 +32,7 @@
                         <tr>
                             <th class="text-center">#ITEM</th>
                             <th class="text-center">DESCRIPCIÓN</th>
-                            <th class="text-center">VR. TOTAL</th>
+                            <th class="text-center">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,7 +59,7 @@
                                 <tr>
                                     <td class="text-center">{{ $item->item_number }}</td>
                                     <td>{{ $item->description }}</td>
-                                    <td class="text-end">${{ number_format($item->total, 2) }}</td>
+                                    {{-- <td class="text-end">${{ number_format($item->total, 2) }}</td> --}}
                                 </tr>
                             @endforeach
                         @empty
@@ -108,7 +108,7 @@
                                             <tr>
                                                 <th>#ITEM</th>
                                                 <th>DESCRIPCIÓN</th>
-                                                <th>VR. TOTAL.</th>
+                                                {{-- <th>VR. TOTAL.</th> --}}
                                                 <th width="100">Acciones</th>
                                             </tr>
                                         </thead>
@@ -125,11 +125,11 @@
                                                             wire:model="items.{{ $index }}.description"
                                                             class="form-control" placeholder="Descripción">
                                                     </td>
-                                                    <td>
+                                                    {{-- <td>
                                                         <input type="number" step="0.01"
                                                             wire:model="items.{{ $index }}.total"
                                                             class="form-control" placeholder="Total">
-                                                    </td>
+                                                    </td> --}}
                                                     <td>
                                                         <button type="button"
                                                             wire:click="removeItem({{ $index }})"
@@ -198,7 +198,7 @@
                                     <tr>
                                         <th>#ITEM</th>
                                         <th>DESCRIPCIÓN</th>
-                                        <th>VR. UNIT.</th>
+                                        {{-- <th>VR. UNIT.</th> --}}
                                         <th width="100">Acciones</th>
                                     </tr>
                                 </thead>
@@ -221,14 +221,14 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 <input type="number" step="0.01" class="form-control"
                                                     wire:model.defer="editItems.{{ $index }}.total"
                                                     placeholder="0.00">
                                                 @error("editItems.$index.total")
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <button type="button" class="btn btn-danger btn-sm"
                                                     wire:click.prevent="removeEditItem({{ $index }})">

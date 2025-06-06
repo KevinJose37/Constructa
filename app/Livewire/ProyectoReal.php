@@ -83,7 +83,7 @@ class ProyectoReal extends Component
             $chapter->items()->create([
                 'item_number' => $item['item_number'],
                 'description' => $item['description'],
-                'total' => $item['total'],
+                'total' => 0,
             ]);
         }
 
@@ -128,7 +128,7 @@ class ProyectoReal extends Component
                 'id' => $current->id,
                 'item_number' => $current->item_number,
                 'description' => $current->description,
-                'total' => $current->total,
+                'total' => 0,
             ];
         }
 
@@ -165,7 +165,7 @@ class ProyectoReal extends Component
                     'real_project_id' => $chapter->id,
                     'item_number' => $itemData['item_number'],
                     'description' => $itemData['description'],
-                    'total' => $itemData['total'],
+                    'total' => 0,
                 ]);
             }
 
