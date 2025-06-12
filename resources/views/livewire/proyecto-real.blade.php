@@ -61,6 +61,7 @@
                             @endphp
                             @foreach ($chapter->items as $item)
                                 @php
+                                    // var_dump($item->total);
                                     $sumTotal = bcadd($sumTotal, $item->total, 2);
                                 @endphp
                                 <tr>
@@ -76,7 +77,8 @@
                             @endforeach
                             <tr class="table-light">
                                 <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
-                                <td class="text-end" colspan="4"><strong>{{ $sumTotal }}</strong></td>
+                                <td class="text-end" colspan="4"><strong>{{ number_format($sumTotal ?? 0, 2) }}
+                                        $</strong></td>
                             </tr>
                         @empty
                             <tr>

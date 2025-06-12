@@ -64,9 +64,10 @@ class RedirectMaterials extends Component
                     'item_id' => $itemId,
                 ]);
 
-                RealProjectInfo::where('id', $itemId)->update([
-                    'total' => $this->purchaseOrder->invoiceDetails[$index]->total_price_iva
-                ]);
+                RealProjectInfo::where('id', $itemId)->increment(
+                    'total',
+                    $this->purchaseOrder->invoiceDetails[$index]->total_price_iva
+                );
             }
 
             $this->dispatch('alert', type: 'success', title: 'Éxito', message: 'Redirecciones de materiales guardadas correctamente.');

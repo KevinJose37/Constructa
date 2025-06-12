@@ -96,7 +96,7 @@ class ProyectoReal extends Component
 
         // Emitir evento para actualizar tabla
         // $this->dispatch('chapterSaved');
-            $this->dispatch('alert', type: 'success', title: 'Proyecto real', message: 'Capítulo e ítems creados correctamente.');
+        $this->dispatch('alert', type: 'success', title: 'Proyecto real', message: 'Capítulo e ítems creados correctamente.');
 
         // Cerrar el modal
         $this->dispatch('close-modal', 'chapterModal');
@@ -252,6 +252,7 @@ class ProyectoReal extends Component
         $chapters = RealProject::where('project_id', $this->project->id)
             ->with('items')
             ->get();
+        // dump(RealProject::where('project_id', $this->project->id)->with('items')->toSql());
 
         return view('livewire.proyecto-real', compact('chapters'));
     }
