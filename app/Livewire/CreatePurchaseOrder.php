@@ -21,6 +21,7 @@ class CreatePurchaseOrder extends Component
 {
     public $selectedItems = [];
     public $attachmentsValid = false; // Propiedad para saber si los archivos son válidos
+    public $isViewMode = false;
 
     public $totalPurchaseIva, $totalPurchase, $totalIVA, $totalPay;
     public PurchaseOrderForm $formPurchase;
