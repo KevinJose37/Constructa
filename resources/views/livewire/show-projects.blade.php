@@ -103,7 +103,7 @@
                                                             class="dropdown-item">Crear órdenes de compra</a>
                                                     @endcan
                                                     <!--<a href="{{ route('workprogress.index', ['id' => $project->id]) }}" class="dropdown-item">Avance de obra</a>-->
-                                                    <a href="{{ route('purchaseorder.view', ['project' => $project->id]) }}"
+                                                    <a href="{{ route('purchaseorder.view', ['projectId' => $project->id]) }}"
                                                         class="dropdown-item">
                                                         Órdenes de compra
                                                     </a>
