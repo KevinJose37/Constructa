@@ -399,31 +399,29 @@ class EditPurchaseOrder extends Component
                 'retention' => $retention,
                 'total_payable' => $totalPayable,
                 'retention_value' => $this->retencionPercentage,
+                // Esto reinicia el estado de la orden de compra
+                'payment_info_id' => null
             ]);
 
             $idInvoiceHeader = $invoiceHeader->id;
 
+            // Esto reinicia el estado de la orden de compra
             $editState = PurchaseOrderState::where('invoice_header_id', $idInvoiceHeader)
-                ->where(function ($query) {
-                    $query->where('status', PurchaseOrderState::STATUS_POR_CONFIRMAR)
-                        ->orWhere('status', PurchaseOrderState::STATUS_PENDIENTE);
-                })
                 ->first();
-
-            if ($editState) {
-                $editState->update([
-                    'status' => PurchaseOrderState::STATUS_SIN_PROCESAR,
-                    'status_notes' => 'Orden de compra editada por el usuario',
-                    'status_changed_at' => now(),
-                    'changed_by_user_id' => Auth::id(),
-                    'previous_status' => $editState->status,
-                    'change_metadata' => [
-                        'action' => 'edit',
-                        'user_id' => Auth::id(),
-                        'timestamp' => now()->toDateTimeString(),
-                    ],
-                ]);
-            }
+            $editState->update([
+                'status' => PurchaseOrderState::STATUS_SIN_PROCESAR,
+                'status_notes' => 'Orden de compra editada por el usuario',
+                'status_changed_at' => now(),
+                'changed_by_user_id' => Auth::id(),
+                'previous_status' => $editState?->status,
+                'change_metadata' => [
+                    'action' => 'edit',
+                    'user_id' => Auth::id(),
+                    'timestamp' => now()->toDateTimeString(),
+                ],
+            ]);
+            $invoiceHeader->paidInformation()?->delete();
+            // Fin de actualización del estado
 
 
             // Si hay archivos adjuntos actualizados, guardarlos
