@@ -39,7 +39,7 @@
                             {{-- Nombre del proyecto --}}
                             <td class="col-md-2" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
                                 aria-expanded="false" aria-controls="collapse{{ $order->id }}">
-                                {{ $order->project->project_name }}
+                                {{ $order->project?->project_name }}
                             </td>
 
                             {{-- Nombre contratista --}}

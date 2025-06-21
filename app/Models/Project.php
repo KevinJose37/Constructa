@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,12 +40,12 @@ class Project extends Model
     }
 
     public function budget()
-{
-    return $this->hasOne(BudgetHeader::class, 'id_proyecto', 'id');
-}
+    {
+        return $this->hasOne(BudgetHeader::class, 'id_proyecto', 'id');
+    }
 
-public function realproject()
-{
-    return $this->hasOne(RealProjectInfo::class, 'id_proyecto_real', 'id');
-}
+    public function realproject()
+    {
+        return $this->hasOne(RealProjectInfo::class, 'id_proyecto_real', 'id');
+    }
 }
