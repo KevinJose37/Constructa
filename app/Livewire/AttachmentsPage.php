@@ -20,6 +20,7 @@ class AttachmentsPage extends Component
 
     public $invoiceHeaderId;
     public $attachments = [];
+    public $newAttachments = [];
     public $orderName;
     public $onlyView = false;
     protected $listeners = ['saveAttachmentsEvent' => 'saveAttachments', "flashMessage" => 'flashMessage'];
@@ -38,6 +39,18 @@ class AttachmentsPage extends Component
         } catch (Exception $e) {
             Log::error('Error in mount method: ' . $e->getMessage());
             session()->flash('error', 'Ocurrió un error al cargar los datos.');
+        }
+    }
+    
+    public function updatedNewAttachments()
+    {
+        // Agregar los nuevos archivos a la colección existente
+        if ($this->newAttachments) {
+            foreach ($this->newAttachments as $newFile) {
+                $this->attachments[] = $newFile;
+            }
+            // Limpiar la variable temporal
+            $this->newAttachments = [];
         }
     }
 
