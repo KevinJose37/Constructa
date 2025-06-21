@@ -114,7 +114,7 @@
                                                     <a href="{{ route('budget', ['id_presupuesto' => $project->id]) }}"
                                                         class="dropdown-item">Presupuesto</a>
                                                     <a href="{{ route('proyecto-real', ['id' => $project->id]) }}"
-                                                        class="dropdown-item">Capítulo real</a>
+                                                        class="dropdown-item">Proyecto real</a>
                                                 </div>
                                             </div>
                                         </div>
