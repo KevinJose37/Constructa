@@ -17,6 +17,7 @@
             <table class="table table-striped table-centered mb-0">
                 <thead class="table-dark">
                     <tr class="d-flex">
+                        <th class="col-md-1">#</th>
                         <th class="col-md-2">Nombre de la orden</th>
                         <th class="col-md-2">Proyecto</th>
                         <th class="col-md-2">Nombre contratista</th>
@@ -30,6 +31,11 @@
                 <tbody>
                     @foreach ($purchaseOrder as $order)
                         <tr id="purchaseOrderRow_{{ $order->id }}" class="d-flex">
+                            {{-- Id de la orden --}}
+                            <td class="col-md-1" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
+                                aria-expanded="false" aria-controls="collapse{{ $order->id }}">
+                                {{ $order->id }}
+                            </td>
                             {{-- Nombre de la orden --}}
                             <td class="col-md-2" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
                                 aria-expanded="false" aria-controls="collapse{{ $order->id }}">
@@ -43,8 +49,9 @@
                             </td>
 
                             {{-- Nombre contratista --}}
-                            <td class="col-md-2" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
-                                aria-expanded="false" aria-controls="collapse{{ $order->id }}">
+                            <td class="col-md-2" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ $order->id }}" aria-expanded="false"
+                                aria-controls="collapse{{ $order->id }}">
                                 {{ $order->contractor_name }}
                             </td>
 
