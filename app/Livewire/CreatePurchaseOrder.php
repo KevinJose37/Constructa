@@ -335,7 +335,9 @@ class CreatePurchaseOrder extends Component
                 'total_with_iva' => $totalWithIva,
                 'retention' => $retention,
                 'total_payable' => $totalPayable,
-                'retention_value' => $this->retencionPercentage,
+                'retention_value' => is_numeric($this->retencionPercentage)
+                    ? floatval(str_replace(',', '.', $this->retencionPercentage))
+                    : 0.00,
             ]);
 
             $this->dispatch('saveAttachmentsEvent', $invoiceHeader->id);
