@@ -1,5 +1,4 @@
 <div>
-
     <ol class="breadcrumb m-0">
         <li class="breadcrumb-item">
             <!-- Div a la derecha -->
@@ -7,7 +6,6 @@
                 Añadir nuevo item
             </button>
         </li>
-
     </ol>
     <x-dialog-modal wire:model="orderForm.open" maxWidth="md" id="new-item" :scrollable="true">
         <x-slot name="title"></x-slot>

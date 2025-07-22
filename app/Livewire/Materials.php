@@ -17,9 +17,6 @@ class Materials extends Component
 
 	public $confirmingDelete = false;
 	public $materialIdToDelete;
-	public $materialName;
-	public $materialUnit;
-	public $materialCategory;
 	public $search = '';
 	public $errorMessage = '';
 
@@ -31,7 +28,8 @@ class Materials extends Component
 	protected function getListeners()
 	{
 		return [
-			'search' => 'performSearch'
+			'search' => 'performSearch',
+			'materialCreated' => '$refresh', // Refresca la lista cuando se crea un material
 		];
 	}
 
@@ -65,57 +63,6 @@ class Materials extends Component
 		$this->resetPage();
 	}
 
-	public function createMaterial()
-	{
-
-		$validator = Validator::make($this->all(), [
-			'materialName' => 'required|string|max:255',
-			'materialUnit' => 'required|string|max:10',
-			'materialCategory' => 'required|exists:category_items,id',
-		], [
-			'materialName.required' => 'El nombre del material es requerido',
-			'materialName.string' => 'El nombre del material debe ser una cadena de texto',
-			'materialName.max' => 'El nombre del material debe tener menos de 255 caracteres',
-			'materialUnit.required' => 'La unidad de medida es requerida',
-			'materialUnit.string' => 'La unidad de medida debe ser una cadena de texto',
-			'materialCategory.required' => 'La categoría es requerida',
-			'materialCategory.exists' => 'La categoría seleccionada no es válida',
-		]);
-
-		if ($validator->fails()) {
-			$this->addError('materialName', $validator->errors()->first('materialName'));
-			$this->addError('materialUnit', $validator->errors()->first('materialUnit'));
-			$this->addError('materialCategory', $validator->errors()->first('materialCategory'));
-			return;
-		}
-
-		// Verificar si existe un material con el mismo nombre o código
-		$existingMaterial = Item::where('name', $this->materialName)
-			->where('id_category', $this->materialCategory)
-			->first();
-
-		if ($existingMaterial) {
-			if ($existingMaterial->name === $this->materialName) {
-				$this->addError('materialName', 'Ya existe un material con este nombre en la categoría seleccionada.');
-				return;
-			}
-		}
-
-		try {
-			Item::create([
-				'name' => $this->materialName,
-				'unit_measurement' => $this->materialUnit,
-				'id_category' => $this->materialCategory,
-			]);
-
-			$this->reset(['materialName', 'materialUnit', 'errorMessage', 'materialCategory']);
-            $this->dispatch('alert', type: 'success', title: 'Material', message: 'Material creado exitosamente');
-			$this->dispatch('close-modal', 'createMaterialModal');
-		} catch (\Exception $e) {
-			$this->errorMessage = 'Ocurrió un error al crear el material.';
-		}
-	}
-
 	public function render()
 	{
 		$materials = Item::query()
@@ -131,10 +78,7 @@ class Materials extends Component
 			})
 			->paginate(10);
 
-		$categories = Cache::remember('categories', 180, function () {
-			return CategoryItems::all();
-		});
 
-		return view('livewire.show-materials', compact('materials', 'categories'));
+		return view('livewire.show-materials', compact('materials'));
 	}
 }

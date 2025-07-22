@@ -280,10 +280,8 @@ class CreatePurchaseOrder extends Component
 
     public function storeHeader()
     {
-
         $this->validate();
         DB::beginTransaction();
-
         try {
             // Verificar si hay archivos adjuntos
             if (!isset($this->attachmentsValid) || !$this->attachmentsValid) {

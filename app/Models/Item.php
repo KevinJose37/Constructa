@@ -40,7 +40,9 @@ class Item extends Model
 					$category->last_value = $nextCount;
 					$category->save();
 				});
+				return;
 			}
+			$m->cod = '';
 		});
 	}
 
