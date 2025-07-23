@@ -11,12 +11,37 @@ class CreatePurchaseOrderModal extends Component
 {
 
     public CreatePurchaseOrderModalForm $orderForm;
+	public $iteration = 0;
 
-    public function render(ItemService $itemService)
+	protected function getListeners()
+	{
+		return [
+			'materialCreated' => 'refreshItems', // Cuando se crea un material, actualiza los items
+		];
+	}
+
+    public $items = [];
+
+    public function mount(ItemService $itemService)
+    {
+        $this->updateItems($itemService);
+    }
+
+    public function refreshItems(ItemService $itemService)
+    {
+        $this->updateItems($itemService);
+		$this->iteration++;
+    }
+
+    protected function updateItems(ItemService $itemService)
+    {
+        $this->items = $itemService->getAll();
+    }
+	
+    public function render()
     {
         $this->orderForm->itemSelect = null;
-        $items = $itemService->getAll();
-        return view('livewire.create-purchase-order-modal', compact('items'));
+        return view('livewire.create-purchase-order-modal');
     }
 
     public function getUnit(ItemService $itemService)

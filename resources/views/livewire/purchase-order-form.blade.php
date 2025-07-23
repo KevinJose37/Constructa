@@ -224,14 +224,21 @@
             @if (!$isViewMode)
                 <div>
                     <livewire:create-purchase-order-modal></livewire:create-purchase-order-modal>
+					<livewire:create-material-modal></livewire:create-material-modal>
                 </div>
             @endif
 
             <!-- Tabla de productos -->
-            @if ($isViewMode || !empty($selectedItems))
+
+			@if(empty($selectedItems))
+				<div class="card mt-4 border-0 shadow-sm p-4">
+					<h5 class="card-title mb-4">Productos</h5>
+					<p class="text-muted">No hay productos seleccionados</p>
+				</div>
+
+            @elseif ($isViewMode || !empty($selectedItems))
                 <div class="card mt-4 border-0 shadow-sm p-4">
                     <h5 class="card-title mb-4">Productos</h5>
-
                     <div class="table-responsive">
                         <table class="table table-hover table-sm align-middle">
                             <thead class="table-light">
@@ -297,7 +304,7 @@
                         </table>
                     </div>
                 </div>
-            @endif
+			@endif
 
             <!-- end row -->
             <div class="row mt-4">
