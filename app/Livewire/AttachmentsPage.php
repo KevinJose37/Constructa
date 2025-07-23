@@ -52,6 +52,9 @@ class AttachmentsPage extends Component
             // Limpiar la variable temporal
             $this->newAttachments = [];
         }
+
+		$hasFiles = !empty($this->attachments);
+        $this->dispatch('attachmentsStatusUpdated', $hasFiles);
     }
 
     public function loadOrderName()
@@ -96,9 +99,7 @@ class AttachmentsPage extends Component
 
     public function updatedAttachments()
     {
-        $hasFiles = !empty($this->attachments);
 
-        $this->dispatch('attachmentsStatusUpdated', $hasFiles);
     }
 
     public function saveAttachments($invoiceHeaderId = null)

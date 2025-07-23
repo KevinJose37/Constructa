@@ -13,7 +13,7 @@
             <div class="mb-4">
                 <label for="inputApodo" class="form-label">Nombre de la orden</label>
                 <input type="text" class="form-control" id="inputApodo" placeholder="Identifique esta orden de compra"
-                    wire:model="order_name" @disabled($isViewMode)>
+                    wire:model.lazy="order_name" @disabled($isViewMode)>
                 @error('order_name')
                     <div class="invalid-feedback d-block">
                         {{ $message }}
@@ -30,7 +30,7 @@
                         <div class="mb-3">
                             <label for="inputContratista" class="form-label">Contratista</label>
                             <input type="text" class="form-control" id="inputContratista"
-                                wire:model="contractor_name" @disabled(true)>
+                                wire:model.lazy="contractor_name" @disabled(true)>
                             @error('contractor_name')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -40,7 +40,7 @@
 
                         <div class="mb-3">
                             <label for="inputNitOne" class="form-label">NIT Contratista</label>
-                            <input type="text" class="form-control" id="inputNitOne" wire:model="contractor_nit"
+                            <input type="text" class="form-control" id="inputNitOne" wire:model.lazy="contractor_nit"
                                 @disabled(true)>
                             @error('contractor_nit')
                                 <div class="invalid-feedback d-block">
@@ -52,7 +52,7 @@
                         <div class="mb-3">
                             <label for="inputResponsable" class="form-label">Responsable</label>
                             <input type="text" class="form-control" id="inputResponsable"
-                                wire:model="responsible_name" @disabled(true)>
+                                wire:model.lazy="responsible_name" @disabled(true)>
                             @error('responsible_name')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -62,7 +62,7 @@
 
                         <div class="mb-3">
                             <label for="inputFecha" class="form-label">Fecha</label>
-                            <input type="text" class="form-control" id="inputFecha" wire:model="currentDate"
+                            <input type="text" class="form-control" id="inputFecha" wire:model.lazy="currentDate"
                                 @disabled(true)>
                             @error('currentDate')
                                 <div class="invalid-feedback d-block">
@@ -74,7 +74,7 @@
                         <div class="mb-3">
                             <label for="inputRetencion" class="form-label">Retención (%)</label>
                             <input type="number" class="form-control" id="inputRetencion"
-                                wire:model="retencionPercentage" @disabled($isViewMode)
+                                wire:model.lazy="retencionPercentage" @disabled($isViewMode)
                                 @if (!$isViewMode) wire:keydown="updateTotals" @endif>
                             @error('retencionPercentage')
                                 <div class="invalid-feedback d-block">
@@ -92,7 +92,7 @@
 
                         <div class="mb-3">
                             <label for="inputEmpresa" class="form-label">Empresa</label>
-                            <input type="text" class="form-control" id="inputEmpresa" wire:model="company_name"
+                            <input type="text" class="form-control" id="inputEmpresa" wire:model.lazy="company_name"
                                 @disabled($isViewMode)>
                             @error('company_name')
                                 <div class="invalid-feedback d-block">
@@ -103,7 +103,7 @@
 
                         <div class="mb-3">
                             <label for="inputSNit" class="form-label">NIT Empresa</label>
-                            <input type="text" class="form-control" id="inputSNit" wire:model="company_nit"
+                            <input type="text" class="form-control" id="inputSNit" wire:model.lazy="company_nit"
                                 @disabled($isViewMode)>
                             @error('company_nit')
                                 <div class="invalid-feedback d-block">
@@ -114,7 +114,7 @@
 
                         <div class="mb-3">
                             <label for="inputTele" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control" id="inputTele" wire:model="phone"
+                            <input type="tel" class="form-control" id="inputTele" wire:model.lazy="phone"
                                 @disabled($isViewMode)>
                             @error('phone')
                                 <div class="invalid-feedback d-block">
@@ -126,7 +126,7 @@
                         <div class="mb-3">
                             <label for="inputDestin" class="form-label">Destino Material</label>
                             <input type="text" class="form-control" id="inputDestin"
-                                wire:model="material_destination" @disabled($isViewMode)>
+                                wire:model.lazy="material_destination" @disabled($isViewMode)>
                             @error('material_destination')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -148,7 +148,7 @@
                             <input type="text" class="form-control" id="inputType"
                                 value="{{ $paymentMethodName }}" disabled>
                         @else
-                            <select class="form-select" id="inputType" wire:model="payment_method_id">
+                            <select class="form-select" id="inputType" wire:model.lazy="payment_method_id">
                                 <option value="">Seleccione</option>
                                 @foreach ($paymentMethods as $method)
                                     <option value="{{ $method->id }}">{{ $method->payment_name }}</option>
@@ -164,7 +164,7 @@
 
                     <div class="col-md-4">
                         <label for="inputBank" class="form-label">Banco</label>
-                        <input type="text" class="form-control" id="inputBank" wire:model="bank_name"
+                        <input type="text" class="form-control" id="inputBank" wire:model.lazy="bank_name"
                             @disabled($isViewMode)>
                         @error('bank_name')
                             <div class="invalid-feedback d-block">
@@ -175,8 +175,8 @@
 
                     <div class="col-md-2">
                         <label for="inputAccountType" class="form-label">Tipo de Cuenta</label>
-                        <input type="text" class="form-control" id="inputAccountType" wire:model="account_type"
-                            @disabled($isViewMode)>
+                        <input type="text" class="form-control" id="inputAccountType"
+                            wire:model.lazy="account_type" @disabled($isViewMode)>
                         @error('account_type')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -187,7 +187,7 @@
                     <div class="col-md-2">
                         <label for="inputAccountNumber" class="form-label">N° Cuenta</label>
                         <input type="text" class="form-control" id="inputAccountNumber"
-                            wire:model="account_number" @disabled($isViewMode)>
+                            wire:model.lazy="account_number" @disabled($isViewMode)>
                         @error('account_number')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -201,7 +201,7 @@
                             <input type="text" class="form-control" id="inputSupport"
                                 value="{{ $paymentSupport }}" disabled>
                         @else
-                            <select class="form-select" id="inputSupport" wire:model="support_type_id">
+                            <select class="form-select" id="inputSupport" wire:model.lazy="support_type_id">
                                 <option value="">Seleccione</option>
                                 @foreach ($paymentSupport as $support)
                                     <option value="{{ $support->id }}">{{ $support->support_name }}</option>
@@ -224,18 +224,17 @@
             @if (!$isViewMode)
                 <div>
                     <livewire:create-purchase-order-modal></livewire:create-purchase-order-modal>
-					<livewire:create-material-modal></livewire:create-material-modal>
+                    <livewire:create-material-modal></livewire:create-material-modal>
                 </div>
             @endif
 
             <!-- Tabla de productos -->
 
-			@if(empty($selectedItems))
-				<div class="card mt-4 border-0 shadow-sm p-4">
-					<h5 class="card-title mb-4">Productos</h5>
-					<p class="text-muted">No hay productos seleccionados</p>
-				</div>
-
+            @if (empty($selectedItems) && !$isViewMode)
+                <div class="card mt-4 border-0 shadow-sm p-4">
+                    <h5 class="card-title mb-4">Productos</h5>
+                    <p class="text-muted">No hay productos seleccionados</p>
+                </div>
             @elseif ($isViewMode || !empty($selectedItems))
                 <div class="card mt-4 border-0 shadow-sm p-4">
                     <h5 class="card-title mb-4">Productos</h5>
@@ -304,14 +303,14 @@
                         </table>
                     </div>
                 </div>
-			@endif
+            @endif
 
             <!-- end row -->
             <div class="row mt-4">
                 <div class="col-4">
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Deje un comentario aquí" id="floatingTextarea"
-                            wire:model="general_observations" @disabled($isViewMode)></textarea>
+                            wire:model.lazy="general_observations" @disabled($isViewMode)></textarea>
                         <label for="floatingTextarea">Observaciones Generales</label>
                         @error('general_observations')
                             <div class="invalid-feedback d-block">
