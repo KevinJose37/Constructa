@@ -1,55 +1,29 @@
 <div>
     <x-page-title title="Progreso de obra"></x-page-title>
 
-    <!-- Botón para crear un capítulo -->
-    <div class="d-flex flex-wrap gap-2 mb-3">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createChapterModal">
-            Crear capítulo
-        </button>
-    </div>
-
-    <!-- Modal para ingresar el nombre del capítulo -->
-    <div wire:ignore.self class="modal fade" id="createChapterModal" tabindex="-1" aria-labelledby="createChapterModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createChapterModalLabel">Nuevo Capítulo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control" placeholder="Nombre del capítulo" wire:model="chapterName">
-                    @error('chapterName') <span class="text-danger">{{ $message }}</span> @enderror
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" wire:click="createChapter" data-bs-dismiss="modal">Crear</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mostrar los capítulos creados -->
     @foreach($chapters as $chapter)
+    @if($chapter->workProgressChapter && $chapter->workProgressChapter->details)
         <div class="table-title">
-        {{ $chapter['chapter_number'] }}.{{ $chapter['chapter_name'] }} 
+            {{ $chapter->workProgressChapter->chapter_number }}.{{ $chapter->workProgressChapter->chapter_name }}
         </div>
 
-        <x-table>
+    <x-table>
+        <div class="table-container">
             <div class="table-responsive">
                 <table class="table table-striped table-centered mb-0">
                     <thead>
                         <tr>
                             <!-- Usamos colspan para que el título abarque las columnas deseadas -->
-                            <th colspan="2" class="text-center"></th>
+                            <th colspan="2" class="fixed-column text-center"></th>
                             <th colspan="4" class="text-center">Condiciones contratadas</th>
                             <th colspan="3" class="text-center">Balance mayores y menores</th>
                             <th colspan="2" class="text-center">Cantidades ajustadas balance</th>
-                            <th colspan="2" class="text-center">Avance semana</th>
+                            <th colspan="3" class="text-center">Avance semana</th>
                             <th colspan="4" class="text-center">Resumen</th>
                         </tr>
                         <tr>
-                            <th>Items</th>
-                            <th class="border-right">Descripcion</th>
+                            <th class="fixed-column">Items</th>
+                            <th class="fixed-column border-right">Descripcion</th>
                             <th>Unidad</th>
                             <th>Cantidad</th>
                             <th>Valor Unitario</th>
@@ -60,7 +34,8 @@
                             <th>Cantidad</th>
                             <th class="border-right">Valor Total</th>
                             <th>Cantidad</th>
-                            <th class="border-right">Valor Total</th>
+                            <th>Valor total</th>
+                            <th class="border-right">% Repr.</th>
                             <th>Total Cantidad</th>
                             <th>Saldo a ejecutar</th>
                             <th>Valor ejecutado</th>
@@ -68,11 +43,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Aquí se llenarán las filas dinámicamente -->
+                        @foreach($chapter->workProgressChapter->details as $detail)
+                        <tr>
+                            <!-- Columnas fijas -->
+                            <td class="fixed-column">{{ number_format($detail->item, 0) }}</td>
+
+                            <td class="fixed-column">{{ $detail->description }}</td>
+                            
+                            <!-- Columnas desplazables -->
+                            <td>{{ $detail->unit }}</td>
+                            <td>{{ $detail->contracted_quantity }}</td>
+                            <td>{{ $detail->unit_value }}</td>
+                            <td>{{ $detail->partial_value }}</td>
+                            <td>{{ $detail->balance_adjustment ?? '-' }}</td>
+                            <td>{{ $detail->balance_quantity ?? '-' }}</td>
+                            <td>{{ $detail->balance_total ?? '-' }}</td>
+                            <td>{{ $detail->adjusted_quantity ?? '-' }}</td>
+                            <td>{{ $detail->adjusted_total ?? '-' }}</td>
+                            <td>{{ $detail->week_quantity ?? '-' }}</td>
+                            <td>{{ $detail->week_total ?? '-' }}</td>
+                            <td>{{ $detail->representation_percentage ?? '-' }}%</td>
+                            <td>{{ $detail->total_quantity ?? '-' }}</td>
+                            <td>{{ $detail->remaining_quantity ?? '-' }}</td>
+                            <td>{{ $detail->executed_value ?? '-' }}</td>
+                            <td>{{ $detail->executed_percentage ?? '-' }}</td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+        </div>
         </x-table>
+    @endif
     @endforeach
 
     <style>
@@ -98,6 +100,46 @@
 
         .text-right {
             text-align: right;
+        }
+
+        /* Estilos para las columnas fijas */
+        .table-container {
+            position: relative;
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .fixed-column {
+            position: sticky;
+            left: 0;
+            background-color: white;
+            z-index: 1;
+        }
+
+        /* Asegurar que la segunda columna fija esté al lado de la primera */
+        th.fixed-column:nth-child(2),
+        td.fixed-column:nth-child(2) {
+            left: 50px; /* Ajusta este valor según el ancho de tu primera columna */
+        }
+
+        /* Estilo para el thead fijo */
+        thead th.fixed-column {
+            z-index: 2;
+            background-color: #f8f9fa; /* Color de fondo del header */
+        }
+
+        th.fixed-column, td.fixed-column {
+            width: 50px; 
+            min-width: 50px;
+            max-width: 70px;
+            word-wrap: break-word;
+        }
+
+        th.fixed-column:nth-child(2),
+        td.fixed-column:nth-child(2) {
+            width: 200px; /* Ancho más grande para la descripción */
+            min-width: 200px;
+            max-width: 200px;
         }
     </style>
 </div>

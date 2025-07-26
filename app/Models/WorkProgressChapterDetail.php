@@ -26,6 +26,7 @@ class WorkProgressChapterDetail extends Model
         'adjusted_value',
         'weekly_advance_quantity',
         'weekly_advance_value',
+        'representation_percentage',
         'total_quantity',
         'remaining_balance',
         'executed_value',

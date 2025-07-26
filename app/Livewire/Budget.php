@@ -9,6 +9,8 @@ use App\Models\BudgetHeader;
 use App\Models\Project;
 use App\Models\ItemsBudgets;
 use App\Models\Chapter;
+use App\Models\WorkProgressChapter;
+use App\Models\WorkProgressChapterDetail;
 use Illuminate\Support\Facades\DB;
 
 
@@ -114,6 +116,14 @@ class Budget extends Component
                 'nombre_capitulo' => $this->modalCapitulo['nombre_capitulo'],
             ]);
 
+            $progressChapter = WorkProgressChapter::create([
+                'project_id' => $this->budget->id_proyecto,
+                'chapter_number' => $chapter->numero_capitulo,
+                'chapter_name' => $chapter->nombre_capitulo,
+                'id_capitulo' => $chapter->id_capitulo, // la clave de enlace
+            ]);
+
+
             foreach ($this->modalItems as $item) {
                 ItemsBudgets::create([
                     'id_capitulo' => $chapter->id_capitulo,
@@ -123,6 +133,16 @@ class Budget extends Component
                     'cantidad' => $item['cantidad'],
                     'vr_unit' => $item['vr_unit'],
                     'vr_total' => round($item['cantidad'] * $item['vr_unit']),
+
+                ]);
+                WorkProgressChapterDetail::create([
+                    'chapter_id' => $progressChapter->id, // capítulo del avance
+                    'item' => $item['numero_item'],
+                    'description' => $item['descripcion'],
+                    'unit' => $item['und'],
+                    'contracted_quantity' => $item['cantidad'],
+                    'unit_value' => $item['vr_unit'],
+                    'partial_value' => round($item['cantidad'] * $item['vr_unit']),
                 ]);
             }
 
@@ -143,23 +163,34 @@ class Budget extends Component
     }
 
     public function deleteChapter($id_capitulo)
-    {
-        try {
-            DB::beginTransaction();
+{
+    try {
+        DB::beginTransaction();
 
-            // Eliminar los ítems asociados al capítulo
-            ItemsBudgets::where('id_capitulo', $id_capitulo)->delete();
+        // Eliminar ítems del presupuesto
+        ItemsBudgets::where('id_capitulo', $id_capitulo)->delete();
 
-            // Eliminar el capítulo
-            Chapter::where('id_capitulo', $id_capitulo)->delete();
+        // Buscar el capítulo de avance de obra asociado
+        $progressChapter = WorkProgressChapter::where('id_capitulo', $id_capitulo)->first();
 
-            DB::commit();
-            $this->dispatch('alert', type: 'success', title: 'Presupuesto', message: 'Capítulo y ítems eliminados correctamente.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            $this->dispatch('alert', type: 'error', title: 'Presupuesto', message: 'Error al eliminar el capítulo y sus ítems: ' . $e->getMessage());
+        if ($progressChapter) {
+            // Eliminar detalles de avance de obra
+            WorkProgressChapterDetail::where('chapter_id', $progressChapter->id)->delete();
+
+            // Eliminar capítulo de avance de obra
+            $progressChapter->delete();
         }
+
+        // Eliminar capítulo de presupuesto
+        Chapter::where('id_capitulo', $id_capitulo)->delete();
+
+        DB::commit();
+        $this->dispatch('alert', type: 'success', title: 'Presupuesto', message: 'Capítulo e ítems eliminados correctamente.');
+    } catch (\Exception $e) {
+        DB::rollBack();
+        $this->dispatch('alert', type: 'error', title: 'Presupuesto', message: 'Error al eliminar: ' . $e->getMessage());
     }
+}
 
     // Funciones para edición
     public function editChapter($id_capitulo)
@@ -174,6 +205,7 @@ class Budget extends Component
             'numero_capitulo' => $chapter->numero_capitulo,
             'nombre_capitulo' => $chapter->nombre_capitulo,
         ];
+        
 
         $this->editItems = [];
         foreach ($chapter->items as $item) {
@@ -185,6 +217,7 @@ class Budget extends Component
                 'cantidad' => $item->cantidad,
                 'vr_unit' => $item->vr_unit,
             ];
+        
         }
 
         $this->dispatch('open-modal', 'editChapterModal');
@@ -253,6 +286,35 @@ class Budget extends Component
             }
 
             DB::commit();
+            $chapter->update([
+    'numero_capitulo' => $this->editCapitulo['numero_capitulo'],
+    'nombre_capitulo' => $this->editCapitulo['nombre_capitulo'],
+]);
+
+// Actualizar capítulo en avance de obra
+$progressChapter = WorkProgressChapter::where('id_capitulo', $chapter->id_capitulo)->first();
+if ($progressChapter) {
+    $progressChapter->update([
+        'chapter_number' => $this->editCapitulo['numero_capitulo'],
+        'chapter_name' => $this->editCapitulo['nombre_capitulo'],
+    ]);
+
+    // Eliminar detalles actuales
+    WorkProgressChapterDetail::where('chapter_id', $progressChapter->id)->delete();
+
+    // Crear nuevos detalles con los ítems editados
+    foreach ($this->editItems as $itemData) {
+        WorkProgressChapterDetail::create([
+            'chapter_id' => $progressChapter->id,
+            'item' => $itemData['numero_item'],
+            'description' => $itemData['descripcion'],
+            'unit' => $itemData['und'],
+            'contracted_quantity' => $itemData['cantidad'],
+            'unit_value' => $itemData['vr_unit'],
+            'partial_value' => round($itemData['cantidad'] * $itemData['vr_unit']),
+        ]);
+    }
+}
 
             $this->resetEditForm();
             $this->dispatch('close-modal', 'editChapterModal');
