@@ -23,7 +23,7 @@
                         </tr>
                         <tr>
                             <th class="fixed-column">Items</th>
-                            <th class="fixed-column border-right">Descripcion</th>
+                            <th class="fixed-column border-right text-center">Descripcion</th>
                             <th>Unidad</th>
                             <th>Cantidad</th>
                             <th>Valor Unitario</th>
