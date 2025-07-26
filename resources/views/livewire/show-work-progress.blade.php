@@ -46,8 +46,7 @@
                         @foreach($chapter->workProgressChapter->details as $detail)
                         <tr>
                             <!-- Columnas fijas -->
-                            <td class="fixed-column">{{ number_format($detail->item, 0) }}</td>
-
+                            <td class="fixed-column">{{ $detail->item }}</td>
                             <td class="fixed-column">{{ $detail->description }}</td>
                             
                             <!-- Columnas desplazables -->
