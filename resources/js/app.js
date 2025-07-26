@@ -29,6 +29,7 @@ window.addEventListener("resetSelect", (event) => {
 document.addEventListener("livewire:init", function () {
     window.addEventListener("alertConfirmation", (event) => {
         let data = event.detail;
+		console.log(data);
         Swal.fire({
             title: data.title,
             text: data.message,
@@ -38,8 +39,11 @@ document.addEventListener("livewire:init", function () {
             cancelButtonColor: "#d33",
             confirmButtonText: "Sí",
         }).then((result) => {
+			console.log(result);
             if (result.isConfirmed) {
                 Livewire.dispatch(data.emit, { id: data.id, secondparameters: data.secondparameters });
+            }else if(result.isDismissed && data.rejectEmit) {
+                Livewire.dispatch(data.rejectEmit, { id: data.id, secondparameters: data.secondparameters });
             }
         });
     });

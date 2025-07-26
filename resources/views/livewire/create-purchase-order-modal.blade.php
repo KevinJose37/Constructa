@@ -1,13 +1,11 @@
 <div>
-
     <ol class="breadcrumb m-0">
         <li class="breadcrumb-item">
             <!-- Div a la derecha -->
-            <button type="button" class="btn btn-primary" wire:click="$set('orderForm.open', true)">
-                Añadir nuevo item
+            <button type="button" class="btn btn-primary" wire:click="$set('orderForm.open', true)" id="createNewItemBtn">
+                Añadir nuevo producto
             </button>
         </li>
-
     </ol>
     <x-dialog-modal wire:model="orderForm.open" maxWidth="md" id="new-item" :scrollable="true">
         <x-slot name="title"></x-slot>
@@ -19,14 +17,20 @@
                 <div class="modal-body px-4 pb-4 pt-0">
                     <div class="row">
                         <div class="col-12">
-                            <div class="mb-3">
-                                <div class="col" wire:ignore>
-                                    <select name="item-select" id="item-select" class="form-select select2">
+                            <div class="mb-3" wire:key="items-{{ $iteration }}">
+                                <div class="col d-flex align-items-1center" wire:ignore>
+                                    <select name="item-select" id="item-select"
+                                        class="form-select select2 me-2 flex-grow-1">
                                         <option disabled selected>Seleccione una opción...</option>
                                         @foreach ($items as $item)
                                             <option value='{{ $item->id }}'>{{ $item->name }}</option>
                                         @endforeach
                                     </select>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#createMaterialModal">
+                                        <i class="ri-add-line"></i>
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
@@ -153,30 +157,38 @@
 
 @push('scripts')
     <script type="module">
-        $(document).ready(function() {
-            $('#item-select').select2({
+        function initSelect2() {
+            const $select = $('#item-select');
+            if ($select.hasClass('select2-hidden-accessible')) {
+                $select.select2('destroy');
+            }
+            $select.select2({
                 dropdownParent: $('#modal-id-new-item')
             });
-
-            $('#item-select').on('change', function(e) {
+            $select.on('change', function(e) {
                 @this.set('orderForm.currentSelect', e.target.value);
                 @this.call('getUnit');
             });
+        }
 
-            $(document).on("keyup", `#priceUnit`, (function(e) {
-                $(e.target).val(function(index, value) {
-
-                    let formattedValue = $(e.target).val(function(index, value) {
-                        return value.replace(/\D/g, "").replace(/^0+/,
-                            "").replace(/^(\d+)(\d{2})$/, "$1,$2").replace(
-                            /\B(?=(\d{3})+(?!\d))/g, ".");
-                    }).val();
-
-                    @this.set('orderForm.priceUnit', formattedValue);
-
-                    return formattedValue;
-                });
-            }));
+        // Inicializar select2 solo al abrir el modal
+        $('#createNewItemBtn').on('click', function() {
+            setTimeout(initSelect2, 100);
         });
+
+        // Si necesitas reinicializar tras crear material:
+        Livewire.on('materialCreated', () => {
+            setTimeout(initSelect2, 100);
+        });
+
+        $(document).on("keyup", `#priceUnit`, (function(e) {
+            $(e.target).val(function(index, value) {
+                let formattedValue = $(e.target).val(function(index, value) {
+                    return value.replace(/\D/g, "").replace(/^0+/,"").replace(/^(\d+)(\d{2})$/, "$1,$2").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                }).val();
+                @this.set('orderForm.priceUnit', formattedValue);
+                return formattedValue;
+            });
+        }));
     </script>
 @endpush

@@ -245,7 +245,11 @@
                         </table>
                     </div>
                 </div>
-
+            @else
+                <div class="card mt-4 border-0 shadow-sm p-4">
+                    <h5 class="card-title mb-4">Productos</h5>
+                    <p class="text-muted">No hay productos seleccionados</p>
+                </div>
             @endif
 
             <!-- end row -->
