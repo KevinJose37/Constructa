@@ -5,12 +5,9 @@
             <div class="col-lg-6 w-25">
                 <!-- Div a la izquierda -->
                 <div class="input-group">
-                <button class="btn btn-primary" wire:click="searchMaterials"><i class="ri-search-line"></i></button>
-                <input type="text" 
-       name="filter" 
-       class="form-control" 
-       placeholder="Buscar Material" 
-       wire:model.live.debounce.300ms="search">
+                    <button class="btn btn-primary" wire:click="searchMaterials"><i class="ri-search-line"></i></button>
+                    <input type="text" name="filter" class="form-control" placeholder="Buscar Material"
+                        wire:model.live.debounce.300ms="search">
                     <button class="btn" id="clear-filter" wire:click="$set('search', '')"><i
                             class="ri-close-line"></i></button>
                 </div>

@@ -46,8 +46,6 @@ class Item extends Model
 		});
 	}
 
-
-
 	public function invoiceDetails()
 	{
 		return $this->hasMany(InvoiceDetail::class, 'id_item');
