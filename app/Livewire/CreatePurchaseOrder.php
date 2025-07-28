@@ -399,7 +399,7 @@ class CreatePurchaseOrder extends Component
 
 			$this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se guardó correctamente la orden de compra');
 			sleep(1);
-			$this->redirect(route('purchaseorder.view', ['id' => $this->project_id]));
+			$this->redirect(route('purchaseorder.redirect', ['id' => $invoiceHeader->id]));
 			$this->clearProjectCache();
 		} catch (\Exception $e) {
 			DB::rollBack();

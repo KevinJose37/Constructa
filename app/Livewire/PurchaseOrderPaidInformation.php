@@ -227,7 +227,7 @@ class PurchaseOrderPaidInformation extends Component
 
             $this->handleSuccessfulUpdate($purchaseService, 'Se asignó correctamente la información de pago');
             $this->form->reset(['name', 'method', 'how', 'date']);
-            $this->redirect(route('purchaseorder.redirect', ['id' => $this->order->id]));
+            $this->redirect(route('purchaseorder.view', ['id' => $this->order->project_id]));
         } else {
             $this->dispatch(
                 'alert',
