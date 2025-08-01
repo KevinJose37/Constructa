@@ -1,12 +1,65 @@
 <div>
     <x-page-title title="Progreso de obra"></x-page-title>
+    <div class="row mb-2">
+        {{-- Chips de semanas seleccionadas --}}
+        <div class="col-auto">
+            <div class="d-flex flex-wrap align-items-center" style="gap: 0.5rem;">
+                @foreach ($filterWeeks as $selectedWeekId)
+                    @php
+                        $selectedWeek = $weeks->firstWhere('id', $selectedWeekId);
+                    @endphp
+                    @if ($selectedWeek)
+                        <span class="badge bg-primary d-flex align-items-center">
+                            Semana {{ $selectedWeek->number_week }} - {{ $selectedWeek->string_date }}
+                            <button type="button" wire:click="removeWeek({{ $selectedWeek->id }})"
+                                class="btn-close btn-close-white btn-sm ms-2" aria-label="Eliminar"
+                                style="font-size: 0.6rem;"></button>
+                        </span>
+                    @endif
+                @endforeach
+            </div>
+        </div>
 
+    </div>
+    <div class="row align-items-center mb-3 g-2">
+        {{-- Select de semanas y botón filtrar --}}
+        <div class="col-auto">
+            <div class="input-group">
+                <button type="button" class="btn btn-warning" id="filter-week-btn">
+                    <i class="ri-search-line me-1"></i> Filtrar semana
+                </button>
+                <select id="filter-week" class="form-select" wire:model.live="selectedWeek" style="min-width: 200px;">
+                    <option value="">Selecciona una semana</option>
+                    @foreach ($weeks as $week)
+                        @if (!in_array($week->id, $filterWeeks))
+                            <option value="{{ $week->id }}"> Semana {{ $week->number_week }} -
+                                {{ $week->string_date }}
+                            </option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        {{-- Botón crear semana --}}
+        <div class="col-auto">
+            <div class="d-flex align-items-center">
+                <livewire:work-progress-week :projectId="$projectId" />
+            </div>
+        </div>
+
+        {{-- Botón exportar Excel --}}
+        <div class="col-auto">
+            <button type="button" class="btn btn-success">
+                <i class="ri-file-excel-line"></i> Exportar Excel
+            </button>
+        </div>
+    </div>
     @foreach ($chapters as $chapter)
         @if ($chapter->workProgressChapter && $chapter->workProgressChapter->details)
             <div class="table-title">
                 {{ $chapter->workProgressChapter->chapter_number }}.{{ $chapter->workProgressChapter->chapter_name }}
             </div>
-
             <x-table>
                 <div class="table-container">
                     <div class="table-responsive">
@@ -18,7 +71,7 @@
                                     <th colspan="4" class="text-center">Condiciones contratadas</th>
                                     <th colspan="3" class="text-center">Balance mayores y menores</th>
                                     <th colspan="2" class="text-center">Cantidades ajustadas balance</th>
-                                    <th colspan="3" class="text-center">Avance semana</th>
+                                    <th colspan="{{ $filterWeeks ? '4' : '1' }}" class="text-center">Avance semana</th>
                                     <th colspan="4" class="text-center">Resumen</th>
                                 </tr>
                                 <tr>
@@ -27,15 +80,18 @@
                                     <th>Unidad</th>
                                     <th>Cantidad</th>
                                     <th>Valor Unitario</th>
-                                    <th class="border-right">Valor Parcial</th>
+                                    <th class="border-right">Valor Total</th>
                                     <th>Cantidad</th>
                                     <th>Valor Total</th>
                                     <th class="border-right"></th>
                                     <th>Cantidad</th>
                                     <th class="border-right">Valor Total</th>
-                                    <th>Cantidad</th>
-                                    <th>Valor total</th>
-                                    <th class="border-right">% Repr.</th>
+                                    @if ($filterWeeks)
+                                        <th>Cantidad</th>
+                                        <th>Valor total</th>
+                                        <th>% Repr.</th>
+                                    @endif
+                                    <th class="border-right"></th>
                                     <th>Total Cantidad</th>
                                     <th>Saldo a ejecutar</th>
                                     <th>Valor ejecutado</th>
@@ -58,11 +114,13 @@
 
                                         {{-- Verificamos si ya existen un balance y de qué tipo --}}
                                         @if ($detail->balance_quantity && $detail->balance_adjustment)
-											{{-- Cantidad --}}
-                                            <td class="text-center text-{{$detail->balance_adjustment == 'up' ? 'success' : 'danger'}}"><i
-                                                    class="ri-arrow-{{ $detail->balance_adjustment }}-line">
-                                                    {{ number_format($detail->balance_quantity, 0) }}</td>
-											{{-- Valor total --}}
+                                            {{-- Cantidad --}}
+                                            <td
+                                                class="text-center text-{{ $detail->balance_adjustment == 'up' ? 'success' : 'danger' }}">
+                                                <i class="ri-arrow-{{ $detail->balance_adjustment }}-line">
+                                                    {{ number_format($detail->balance_quantity, 0) }}
+                                            </td>
+                                            {{-- Valor total --}}
                                             <td class="text-center">
                                                 $ {{ number_format($detail->balance_value, 2) }}</td>
                                         @else
@@ -77,13 +135,31 @@
                                         {{--  --}}
                                         <td>{{ number_format($detail->adjusted_quantity, 0) ?? '-' }}</td>
                                         <td>$ {{ number_format($detail->adjusted_value, 2) ?? '-' }}</td>
-                                        <td>{{ $detail->week_quantity ?? '-' }}</td>
-                                        <td>{{ $detail->week_total ?? '-' }}</td>
-                                        <td>{{ $detail->representation_percentage ?? '-' }}%</td>
-                                        <td>{{ $detail->total_quantity ?? '-' }}</td>
-                                        <td>{{ $detail->remaining_quantity ?? '-' }}</td>
-                                        <td>{{ $detail->executed_value ?? '-' }}</td>
-                                        <td>{{ $detail->executed_percentage ?? '-' }}</td>
+                                        @if ($filterWeeks)
+                                            <td>
+                                                {{ number_format($detail->executed_quantity_sum, 0) ?? '-' }}
+                                            </td>
+                                            <td>$
+                                                {{ number_format($detail->executed_total_sum, 2) ?? '-' }}
+                                            </td>
+                                            <td>{{ $detail->execute_percentage_sum ?? '-' }}%
+                                            </td>
+                                        @endif
+                                        <td>
+                                            <livewire:progress-week :detail="$detail" :workProgress="$chapter->workProgressChapter"
+                                                :week="$filterWeeks" :wire:key="'progress-'.$detail->id.$selectedWeek" />
+                                        </td>
+                                        <td>{{ number_format($detail->resume_quantity, 0) ?? '-' }}</td>
+                                        <td>
+                                            @if ($detail->resume_execute_value < 0)
+                                                <span class="badge bg-danger">Se superó la cantidad contratada</span>
+                                            @else
+                                                ${{ number_format($detail->resume_execute_value, 2) ?? '-' }}
+                                            @endif
+                                        </td>
+
+                                        <td>${{ number_format($detail->resume_value, 2) ?? '-' }}</td>
+                                        <td>{{ $detail->resume_execute_percentage ?? '-' }}%</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -164,3 +240,16 @@
         }
     </style>
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.querySelector('#filter-week');
+            select.style.display = 'none';
+            document.querySelector('#filter-week-btn').addEventListener('click', function() {
+                select.style.display = (select.style.display === 'none') ? 'block' : 'none';
+            });
+
+        });
+    </script>
+@endpush

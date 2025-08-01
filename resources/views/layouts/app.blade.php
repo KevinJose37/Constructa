@@ -31,29 +31,36 @@
     <!-- Page Heading -->
 
     <!-- Page Content -->
-        <div class="wrapper">
-            <!-- Topbar -->
-            @include('Templates.topbar')
-            <!-- Topbar -->
+    <div class="wrapper">
+        <!-- Topbar -->
+        @include('Templates.topbar')
+        <!-- Topbar -->
 
-            <!-- Sidebar -->
-            @include('Templates.sidebar')
-            <!-- Sidebar -->
-            <div class="content-page">
-                <div class="content">
-                    {{ $slot }}
-                </div>
+        <!-- Sidebar -->
+        @include('Templates.sidebar')
+        <!-- Sidebar -->
+        <div class="content-page">
+            <div class="content">
+                {{ $slot }}
             </div>
         </div>
+    </div>
 
 
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <!-- Flatpickr Timepicker Plugin js -->
     <script src="{{ asset('assets/vendor/flatpickr/flatpickr.min.js') }}"></script>
+    <link href="{{ asset('assets/vendor/flatpickr/flatpickr.min.css') }}" rel="stylesheet">
     <!-- Timepicker Demo js -->
     <script src="{{ asset('assets/js/pages/demo.flatpickr.js') }}"></script>
     {{-- App script --}}
     <script src="{{ asset('assets/js/app.min.js') }}"></script>
+    @once
+        @push('scripts')
+            <script src="{{ asset('assets/vendor/flatpickr/l10n/es.js') }}"></script>
+        @endpush
+    @endonce
+
     @stack('scripts')
 
 </body>

@@ -38,7 +38,7 @@ class BalanceWorkprogress extends Component
 
 		try {
 			if ($this->action == "down") {
-				$tmpResult = intval($this->detail->unit ?? 0) - intval($this->quantity);
+				$tmpResult = intval($this->detail->contracted_quantity ?? 0) - intval($this->quantity);
 				if ($tmpResult < 0) {
 					$this->dispatch('alert', type: 'error', title: 'Balance', message: 'La cantidad a disminuír no puede ser mayor que la cantidad balanceada.');
 					return;
