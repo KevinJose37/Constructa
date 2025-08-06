@@ -45,8 +45,12 @@ class WeekProject extends Model
 	}
 
 	public function weeklyProgresses()
-{
-    return $this->hasMany(weeklyProgresses::class, 'week_project_id');
-}
+	{
+		return $this->hasMany(weeklyProgresses::class, 'week_project_id');
+	}
 
+	public function weeklyProgressImages()
+	{
+		return $this->hasMany(WeeklyProgressImages::class, 'week_project_id');
+	}
 }

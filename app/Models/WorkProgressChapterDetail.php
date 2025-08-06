@@ -77,6 +77,11 @@ class WorkProgressChapterDetail extends Model
 		return $this->hasMany(weeklyProgresses::class, 'chapter_detail_id');
 	}
 
+	public function weeklyProgressImages()
+	{
+		return $this->hasMany(WeeklyProgressImages::class, 'chapter_detail_id');
+	}
+
 	public function setWeekContext(array $weeks)
 	{
 		$this->weekContext = $weeks;

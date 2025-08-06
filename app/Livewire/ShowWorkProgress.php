@@ -32,7 +32,7 @@ class ShowWorkProgress extends Component
 		$this->originalChapters = $this->chapters;
 
 		$this->weeks = \App\Models\WeekProject::where('project_id', $id)
-			->orderBy('start_date')
+			->orderBy('number_week')
 			->get();
 	}
 
@@ -77,12 +77,16 @@ class ShowWorkProgress extends Component
 		$this->refilterWeeks();
 	}
 
+	public function reloadData(){
+		$this->mount($this->projectId);
+	}
 
 	protected function getListeners()
 	{
 		return [
 			'workProgressUpdate' => '$refresh',
 			'weeklyProgressCreated' => 'refilterWeeks',
+			'createWeek' => 'reloadData'
 		];
 	}
 

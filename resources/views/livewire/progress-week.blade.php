@@ -3,7 +3,7 @@
         <span><i class="ri-bar-chart-fill"></i></span>
     </button>
 
-    <x-dialog-modal wire:model="open" maxWidth="md" id="{{ $detail->id }}-balance-details">
+    <x-dialog-modal wire:model="open" maxWidth="md" id="{{ $detail->id }}-balance-details-week">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
             <div class="row">

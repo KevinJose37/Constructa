@@ -70,6 +70,7 @@ class WorkProgressWeek extends Component
 
 			$this->dispatch('alert', type: 'success', title: 'Éxito', message: 'Semana de avance creada exitosamente.');
 			$this->reset(['weekDate', 'numberWeek']);
+			$this->dispatch('createWeek')->to(ShowWorkProgress::class);
 		} catch (Exception $th) {
 			$this->dispatch('alert', type: 'error', title: 'Éxito', message: 'Ocurrió un error al crear la semana de avance: ' . $th->getMessage());
 		}
@@ -91,6 +92,7 @@ class WorkProgressWeek extends Component
 		$deleteWeek = WeekProject::find($id)?->delete();
 		if ($deleteWeek === true) {
 			$this->dispatch('alert', type: 'success', title: 'Éxito', message: "Se eliminó correctamente la semana de avance");
+			$this->dispatch('createWeek')->to(ShowWorkProgress::class);
 			return;
 		}
 

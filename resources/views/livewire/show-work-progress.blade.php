@@ -72,6 +72,7 @@
                                     <th colspan="3" class="text-center">Balance mayores y menores</th>
                                     <th colspan="2" class="text-center">Cantidades ajustadas balance</th>
                                     <th colspan="{{ $filterWeeks ? '4' : '1' }}" class="text-center">Avance semana</th>
+                                    <th colspan="1" class="text-center">Evidencias</th>
                                     <th colspan="4" class="text-center">Resumen</th>
                                 </tr>
                                 <tr>
@@ -91,6 +92,9 @@
                                         <th>Valor total</th>
                                         <th>% Repr.</th>
                                     @endif
+                                    {{-- Avance semana --}}
+                                    <th class="border-right"></th>
+                                    {{-- Evidencias --}}
                                     <th class="border-right"></th>
                                     <th>Total Cantidad</th>
                                     <th>Saldo a ejecutar</th>
@@ -132,6 +136,7 @@
                                             <livewire:balance-workprogress :detail="$detail" :workProgress="$chapter->workProgressChapter"
                                                 :wire:key="'balance-'.$detail->id" />
                                         </td>
+
                                         {{--  --}}
                                         <td>{{ number_format($detail->adjusted_quantity, 0) ?? '-' }}</td>
                                         <td>$ {{ number_format($detail->adjusted_value, 2) ?? '-' }}</td>
@@ -147,7 +152,13 @@
                                         @endif
                                         <td>
                                             <livewire:progress-week :detail="$detail" :workProgress="$chapter->workProgressChapter"
-                                                :week="$filterWeeks" :wire:key="'progress-'.$detail->id.$selectedWeek" />
+                                                :week="$filterWeeks"
+                                                :wire:key="'progress-'.$detail->id.md5(serialize($filterWeeks))" />
+                                        </td>
+                                        <td>
+                                            <livewire:weekly-progress-images :detail="$detail" :workProgress="$chapter->workProgressChapter"
+                                                :filterWeeks="$filterWeeks"
+                                                :wire:key="'images-progress-'.$detail->id.md5(serialize($filterWeeks))" />
                                         </td>
                                         <td>{{ number_format($detail->resume_quantity, 0) ?? '-' }}</td>
                                         <td>
@@ -169,7 +180,6 @@
             </x-table>
         @endif
     @endforeach
-
     <style>
         .table-title {
             margin-bottom: 0px;

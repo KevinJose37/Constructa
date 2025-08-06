@@ -28,8 +28,18 @@ class ProgressWeek extends Component
 		$this->detail = $detail;
 		$this->workProgress = $workProgress;
 		$this->week = $week;
+
 		if ($week && (is_array($week) && count($week) == 1)) {
 			$this->weekModel = WeekProject::find($this->week[array_key_first($this->week)]);
+
+			$weekId = $this->week[array_key_first($this->week)];
+			$existingProgress = weeklyProgresses::where('chapter_detail_id', $this->detail->id)
+				->where('week_project_id', $weekId)
+				->first();
+
+			if ($existingProgress && $existingProgress->executed_quantity) {
+				$this->quantity = intval($existingProgress->executed_quantity);
+			}
 		}
 
 		$this->weeksSelect = \App\Models\WeekProject::where('project_id', $workProgress->project_id)
@@ -59,7 +69,6 @@ class ProgressWeek extends Component
 					'executed_quantity' => $this->quantity
 				]
 			);
-
 
 			$this->reset(['quantity']);
 			$this->dispatch('weeklyProgressCreated');
