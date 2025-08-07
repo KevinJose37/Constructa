@@ -30,12 +30,9 @@
                 <table class="table table-bordered table-centered mb-0">
                     <thead>
                         <tr>
-                            <th class="text-center" colspan="1">#ITEM</th>
-                            <th class="text-center" colspan="3">DESCRIPCIÓN</th>
-							<th class="text-center" colspan="2">AVANCE FÍSICO (%)</th>
-							<th class="text-center" colspan="2">AVANCE FINANCIERO (%)</th>
-							<th class="text-center" colspan="1">ALERTA</th>
-                            <th class="text-center" colspan="3">ACCIONES</th>
+                            <th class="text-center" colspan="2">#ITEM</th>
+                            <th class="text-center" colspan="6">DESCRIPCIÓN</th>
+                            <th class="text-center" colspan="4">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,17 +63,14 @@
                                     $sumTotal = bcadd($sumTotal, $item->total, 2);
                                 @endphp
                                 <tr>
-                                    <td class="text-center" colspan="1">{{ $item->item_number }}</td>
-                                    <td colspan="3">{{ $item->description }}</td>
-									<td colspan="2"></td>
-									<td colspan="2"></td>
-									<td colspan="1"></td>
-                                    <td colspan="3" class="text-end"> <button
-                                            wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
+                                    <td class="text-center" colspan="2">{{ $item->item_number }}</td>
+                                    <td colspan="6">{{ $item->description }}</td>
+                                    <td colspan="4" class="text-end">
+                                        <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
                                             type="button" class="btn btn-info btn-sm">
                                             <i class="ri-eye-line"></i> Ver información item
-                                        </button></td>
-                                    {{-- <td class="text-end">${{ number_format($item->total, 2) }}</td> --}}
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                             <tr class="table-light">
