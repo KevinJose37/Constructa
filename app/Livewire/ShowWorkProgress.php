@@ -49,7 +49,9 @@ class ShowWorkProgress extends Component
 			return;
 		}
 
-		$this->chapters = Chapter::where('id_presupuesto', $this->projectId)
+		$this->chapters = Chapter::whereHas('BudgetHeader', function ($query) {
+			$query->where('id_proyecto', $this->projectId);
+		})
 			->with([
 				'workProgressChapter.details',
 				'workProgressChapter.details.weeklyProgresses' => function ($q) {
@@ -58,6 +60,7 @@ class ShowWorkProgress extends Component
 			])
 			->orderBy('numero_capitulo')
 			->get();
+
 
 		foreach ($this->chapters as $chapter) {
 			foreach ($chapter->workProgressChapter->details as $detail) {
