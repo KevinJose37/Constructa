@@ -62,10 +62,9 @@ class WorkProgressWeek extends Component
 			}
 
 			if ($start->diffInDays($end) > 7) {
-				$this->dispatch('alert', type: 'error', title: 'Error', message: 'Los máximos días a seleccionar son (7)');
-				return; 
+				$this->dispatch('alert', type: 'error', title: 'Error', message: 'Los días máximos a seleccionar son (7)');
+				return;
 			}
-
 
 			$existWeekNumber = $this->project->weekProjects()
 				->where('number_week', $this->numberWeek)
