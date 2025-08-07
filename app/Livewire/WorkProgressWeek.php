@@ -54,6 +54,19 @@ class WorkProgressWeek extends Component
 				return;
 			}
 
+			try {
+				$start = \Carbon\Carbon::createFromFormat('d-m-Y', $startDate);
+				$end = \Carbon\Carbon::createFromFormat('d-m-Y', $endDate);
+			} catch (\Exception $e) {
+				throw new \Exception('Las fechas deben tener el formato correcto (d-m-Y).');
+			}
+
+			if ($start->diffInDays($end) > 7) {
+				$this->dispatch('alert', type: 'error', title: 'Error', message: 'Los máximos días a seleccionar son (7)');
+				return; 
+			}
+
+
 			$existWeekNumber = $this->project->weekProjects()
 				->where('number_week', $this->numberWeek)
 				->exists();
