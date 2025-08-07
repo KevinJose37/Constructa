@@ -28,9 +28,12 @@ class ShowWorkProgress extends Component
 
 		// Cargar todos los capítulos con sus avances y detalles
 		$this->chapters = Chapter::with('workProgressChapter.details', 'workProgressChapter.details.weeklyProgresses')
-			->where('id_presupuesto', $id)
-			->orderBy('numero_capitulo') // si tienes este campo
+			->whereHas('BudgetHeader', function ($query) use ($id) {
+				$query->where('project_id', $id);
+			})
+			->orderBy('numero_capitulo')
 			->get();
+
 
 		$this->originalChapters = $this->chapters;
 
