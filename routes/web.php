@@ -30,37 +30,39 @@ Route::post('/login', [LoginController::class, 'login']);
 // Grupo de rutas protegidas por autenticación
 Route::middleware(['auth'])->group(function () {
 
-    // Rutas relacionadas con la orden de compra
-    Route::get('/purchaseorder/{projectId?}', QueryPurchaseOrder::class)->name('purchaseorder.view');
-    Route::get('/purchaseorder/view/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
-    Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
-    Route::get('/purchaseorder/edit/{id}', EditPurchaseOrder::class)->name('purchaseorder.edit');
-    Route::get('/purchaseorder/redirect/{id}', RedirectMaterials::class)->name('purchaseorder.redirect');
+	// Rutas relacionadas con la orden de compra
+	Route::get('/purchaseorder/{projectId?}', QueryPurchaseOrder::class)->name('purchaseorder.view');
+	Route::get('/purchaseorder/view/{id}', ViewPurchaseOrderId::class)->name('purchaseorder.get');
+	Route::get('/purchaseorder/create/{id}', CreatePurchaseOrder::class)->name('purchaseorder.save');
+	Route::get('/purchaseorder/edit/{id}', EditPurchaseOrder::class)->name('purchaseorder.edit');
+	Route::get('/purchaseorder/redirect/{id}', RedirectMaterials::class)->name('purchaseorder.redirect');
 
 
-    // Consolidado
-    Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
+	// Consolidado
+	Route::get('/consolidated/{id}', QueryConsolidated::class)->name('consolidated.view');
 
-    Route::get('/attachments/{invoiceHeaderId}', AttachmentsPage::class)->name('attachments.page');
-    Route::get('/download-attachment/{id}', [AttachmentsPage::class, 'download'])->name('download.attachment');
-    Route::get('/materiales', Materials::class)->name('materials.page');
-
-
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+	Route::get('/attachments/{invoiceHeaderId}', AttachmentsPage::class)->name('attachments.page');
+	Route::get('/download-attachment/{id}', [AttachmentsPage::class, 'download'])->name('download.attachment');
+	Route::get('/materiales', Materials::class)->name('materials.page');
 
 
-    // Rutas relacionadas con proyectos
-    Route::get('/proyectos', ShowProjects::class)->name('projects.index');
-    Route::get('/budget/{id_presupuesto}', Budget::class)->name('budget');
-    Route::get('/proyecto-real/{id}', ProyectoReal::class)->name('proyecto-real');
-
-    Route::get('/chat', ChatComponent::class)->name('chatprojects');
-    Route::get('/chat/project/{id}', ChatComponent::class)->where('id', '[0-9]+')->name('chatbyid.get');
+	Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
 
-    // Rutas relacionadas con usuarios
-    Route::get('/usuarios', ShowUsers::class)->name('usuarios.index');
+	// Rutas relacionadas con proyectos
+	Route::get('/proyectos', ShowProjects::class)->name('projects.index');
+	Route::get('/budget/{id_presupuesto}', Budget::class)->name('budget');
+	Route::get('/proyecto-real/{id}', ProyectoReal::class)->name('proyecto-real');
 
-    // Rutas relacionadas con el avance de obra
-    Route::get('/workprogress/{id}', ShowWorkProgress::class)->name('workprogress.index');
+	Route::get('/chat', ChatComponent::class)->name('chatprojects');
+	Route::get('/chat/project/{id}', ChatComponent::class)->where('id', '[0-9]+')->name('chatbyid.get');
+
+
+	// Rutas relacionadas con usuarios
+	Route::get('/usuarios', ShowUsers::class)->name('usuarios.index');
+
+	// Rutas relacionadas con el avance de obra
+	Route::get('/workprogress/{id}', ShowWorkProgress::class)->name('workprogress.index');
+	Route::get('/workprogress/report/{projectId}', \App\Livewire\WorkProgressReport::class)
+		->name('printable.report');
 });

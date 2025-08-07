@@ -2,10 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Models\Chapter;
 use Livewire\Component;
+use App\Models\WeekProject;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
-use App\Models\Chapter;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ChapterWorkProgressExport;
 
 class ShowWorkProgress extends Component
 {
@@ -39,7 +42,7 @@ class ShowWorkProgress extends Component
 	public function refilterWeeks()
 	{
 		if (!$this->filterWeeks) {
-			$this->mount($this->projectId);
+			$this->reloadData();
 			return;
 		}
 
@@ -77,8 +80,19 @@ class ShowWorkProgress extends Component
 		$this->refilterWeeks();
 	}
 
-	public function reloadData(){
+	public function reloadData()
+	{
 		$this->mount($this->projectId);
+	}
+
+	public function exportExcel()
+	{
+		$this->refilterWeeks();
+
+		return Excel::download(
+			new ChapterWorkProgressExport($this->chapters, $this->filterWeeks),
+			'avance_obra.xlsx'
+		);
 	}
 
 	protected function getListeners()
@@ -89,6 +103,7 @@ class ShowWorkProgress extends Component
 			'createWeek' => 'reloadData'
 		];
 	}
+
 
 	public function render()
 	{

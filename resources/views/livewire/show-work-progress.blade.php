@@ -47,6 +47,20 @@
                 <livewire:work-progress-week :projectId="$projectId" />
             </div>
         </div>
+
+        {{-- Botón exportar Excel --}}
+        <div class="col-auto">
+            <button type="button" class="btn btn-success" wire:click="exportExcel">
+                <i class="ri-file-excel-line"></i> Exportar Excel
+            </button>
+        </div>
+        <div class="col-auto">
+            <a href="{{ route('printable.report', ['projectId' => $projectId]) }}{{ $filterWeeks ? '?filterWeeks[]=' . implode('&filterWeeks[]=', $filterWeeks) : '' }}"
+                target="_blank" class="btn btn-danger">
+                <i class="ri-file-pdf-line"></i> Informe
+            </a>
+        </div>
+
     </div>
     @foreach ($chapters as $chapter)
         @if ($chapter->workProgressChapter && $chapter->workProgressChapter->details)
