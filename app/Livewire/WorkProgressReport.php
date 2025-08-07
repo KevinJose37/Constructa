@@ -24,14 +24,15 @@ class WorkProgressReport extends Component
 			->orderBy('number_week')
 			->get();
 
-		$this->chapters = Chapter::where('id_presupuesto', $this->projectId)
+		$this->chapters = Chapter::whereHas('BudgetHeader', function ($query) {
+			$query->where('id_proyecto', $this->projectId);
+		})
 			->with([
 				'workProgressChapter.details.weeklyProgresses' => function ($q) {
 					if ($this->filterWeeks) {
 						$q->whereIn('week_project_id', $this->filterWeeks);
 					}
 				},
-				// Precarga las imágenes filtradas por semana
 				'workProgressChapter.details.weeklyProgressImages' => function ($q) {
 					if (!empty($this->filterWeeks)) {
 						$q->whereIn('week_project_id', $this->filterWeeks);
@@ -41,6 +42,7 @@ class WorkProgressReport extends Component
 			])
 			->orderBy('numero_capitulo')
 			->get();
+
 
 		foreach ($this->chapters as $chapter) {
 			if (!$chapter->workProgressChapter) continue;
