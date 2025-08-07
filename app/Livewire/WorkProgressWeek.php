@@ -20,7 +20,8 @@ class WorkProgressWeek extends Component
 
 	public function mount($projectId)
 	{
-		$this->project = Project::find($projectId)->with('weekProjects')->first();
+
+		$this->project = Project::with('weekProjects')->find($projectId);
 		if (!$this->project) {
 			$this->dispatch('alert', type: 'error', title: 'Error', message: 'Proyecto no encontrado.');
 			return;
