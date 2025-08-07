@@ -47,13 +47,6 @@
                 <livewire:work-progress-week :projectId="$projectId" />
             </div>
         </div>
-
-        {{-- Botón exportar Excel --}}
-        <div class="col-auto">
-            <button type="button" class="btn btn-success">
-                <i class="ri-file-excel-line"></i> Exportar Excel
-            </button>
-        </div>
     </div>
     @foreach ($chapters as $chapter)
         @if ($chapter->workProgressChapter && $chapter->workProgressChapter->details)
