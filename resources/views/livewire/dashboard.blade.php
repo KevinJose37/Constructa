@@ -1,7 +1,8 @@
 <div>
 <div class="mt-2">
-    <select wire:model="selectedProjectId" wire:change="loadMessages"
-        class="form-select form-select-sm w-25 d-inline-block mb-3">
+    <select wire:model="selectedProjectId"
+        class="form-select d-inline-block mb-3"
+        style="width: 400px; font-size: 1rem; height: 70px;">
         <option value="">Proyección general</option>
         <option value="1">Proyecto 1</option>
         <option value="2">Proyecto 2</option>

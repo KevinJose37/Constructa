@@ -94,23 +94,3 @@
     </div>
 </div>
 <!-- ========== Left Sidebar End ========== -->
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-    let settings = localStorage.getItem("theme-settings");
-
-    if (settings) {
-        let parsedSettings = JSON.parse(settings);
-        
-        // Asegurar que el menú siempre sea claro
-        parsedSettings.menu = parsedSettings.menu || {};
-        parsedSettings.menu.color = "light";
-
-        // Guardar de nuevo en localStorage
-        localStorage.setItem("theme-settings", JSON.stringify(parsedSettings));
-
-        // Aplicar los cambios al body (si es necesario)
-        document.body.setAttribute("data-menu-color", "light");
-    }
-});
-</script>

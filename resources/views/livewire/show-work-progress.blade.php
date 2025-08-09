@@ -11,7 +11,7 @@
                 <div class="table-container">
                     <div class="table-responsive">
                         <table class="table table-striped table-centered mb-0">
-                            <thead>
+                            <thead class="table-dark">
                                 <tr>
                                     <!-- Usamos colspan para que el título abarque las columnas deseadas -->
                                     <th colspan="2" class="fixed-column text-center"></th>

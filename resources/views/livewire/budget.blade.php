@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="table-responsive-sm mb-3">
             <table class="table table-bordered table-centered mb-3">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th colspan="5" class="text-center">PRESUPUESTO GENERAL DE OBRA</th>
                     </tr>
@@ -33,7 +33,7 @@
             <!-- Tabla principal de capítulos e ítems -->
             <div class="table-responsive-sm mb-3">
                 <table class="table table-bordered table-centered mb-0">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th class="text-center">#ITEM</th>
                             <th class="text-center">DESCRIPCIÓN</th>

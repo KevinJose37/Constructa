@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="table-responsive-sm mb-3">
             <table class="table table-bordered table-centered mb-3">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th colspan="12" class="text-center">PROYECTO REAL DE OBRA.</th>
                     </tr>
@@ -28,7 +28,7 @@
             <!-- Tabla de capítulos e ítems existentes -->
             <div class="table-responsive-sm mb-3">
                 <table class="table table-bordered table-centered mb-0">
-                    <thead>
+                    <thead class="table-dark">
                         <tr>
                             <th class="text-center" colspan="2">#ITEM</th>
                             <th class="text-center" colspan="6">DESCRIPCIÓN</th>
