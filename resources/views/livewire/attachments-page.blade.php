@@ -166,7 +166,7 @@
     document.addEventListener('livewire:load', function() {
         Livewire.on('alertConfirmation', (data) => {
             if (confirm(data.message)) {
-                Livewire.emit(data.emit, data.id);
+                Livewire.dispatch(data.emit, data.id);
             }
         });
     });

@@ -1,5 +1,6 @@
 <div>
     <x-page-title title="Tabla de órdenes de compra"></x-page-title>
+
     <x-table>
         <div class="row w-100">
             <div class="col-lg-6 w-25 mb-3">
@@ -11,8 +12,13 @@
                             class="ri-close-line"></i></button>
                 </div>
             </div>
+            {{-- Botón exportar Excel --}}
+            <div class="col-auto">
+                <button type="button" class="btn btn-success" wire:click="exportExcel">
+                    <i class="ri-file-excel-line"></i> Exportar Excel
+                </button>
+            </div>
         </div>
-
         <div class="table-responsive">
             <table class="table table-striped table-centered mb-0">
                 <thead class="table-dark">
@@ -79,7 +85,7 @@
                             {{-- Creador --}}
                             <td class="col-md-1">
                                 <livewire:purchase-order-paid-information :order="$order"
-                                    :wire:key="'purchase-order-paid-' . $order->id" />
+                                    :wire:key="'purchase-order-paid-' . md5($order->id . '-' . $order->updated_at)" />
                             </td>
                             <td class="col-md-1">
                                 <div class="dropdown">
@@ -149,8 +155,9 @@
                             </td>
 
                             {{-- Editar --}}
-                            <livewire:edit-purchase-order-info :wire:key="'edit-purchase-order-' . $order->id"
-                                :orderId="$order->id" />
+                            {{-- <livewire:edit-purchase-order-info
+                                :wire:key="'edit-purchase-order-' . md5($order->id . '-' . $order->updated_at)"
+                                :orderId="$order->id" /> --}}
                         </tr>
 
                         <!-- Fila de detalles -->

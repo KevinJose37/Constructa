@@ -36,7 +36,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @dd($chapters) --}}
                         @forelse ($chapters as $chapter)
                             <tr class="table-primary">
                                 <td colspan="8">
@@ -61,18 +60,17 @@
                             @endphp
                             @foreach ($chapter->items as $item)
                                 @php
-                                    // var_dump($item->total);
                                     $sumTotal = bcadd($sumTotal, $item->total, 2);
                                 @endphp
                                 <tr>
                                     <td class="text-center" colspan="2">{{ $item->item_number }}</td>
                                     <td colspan="6">{{ $item->description }}</td>
-                                    <td colspan="4" class="text-end"> <button
-                                            wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
+                                    <td colspan="4" class="text-end">
+                                        <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
                                             type="button" class="btn btn-info btn-sm">
                                             <i class="ri-eye-line"></i> Ver información item
-                                        </button></td>
-                                    {{-- <td class="text-end">${{ number_format($item->total, 2) }}</td> --}}
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                             <tr class="table-light">
@@ -126,6 +124,8 @@
                                             <tr>
                                                 <th>#ITEM</th>
                                                 <th>DESCRIPCIÓN</th>
+                                                <th>UMBRAL FÍSICO (%)</th>
+                                                <th>UMBRAL FINANCIERO (%)</th>
                                                 {{-- <th>VR. TOTAL.</th> --}}
                                                 <th width="100">Acciones</th>
                                             </tr>
@@ -142,6 +142,16 @@
                                                         <input type="text"
                                                             wire:model="items.{{ $index }}.description"
                                                             class="form-control" placeholder="Descripción">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text"
+                                                            wire:model="items.{{ $index }}.umbral_fisico"
+                                                            class="form-control" placeholder="Porcentaje %">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text"
+                                                            wire:model="items.{{ $index }}.umbral_financiero"
+                                                            class="form-control" placeholder="Porcentaje %">
                                                     </td>
                                                     {{-- <td>
                                                         <input type="number" step="0.01"
@@ -216,6 +226,8 @@
                                     <tr>
                                         <th>#ITEM</th>
                                         <th>DESCRIPCIÓN</th>
+                                        <th>UMBRAL FÍSICO (%)</th>
+                                        <th>UMBRAL FINANCIERO (%)</th>
                                         {{-- <th>VR. UNIT.</th> --}}
                                         <th width="100">Acciones</th>
                                     </tr>
@@ -239,6 +251,24 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
+                                            <td>
+                                                <input type="number" class="form-control"
+                                                    wire:model.defer="editItems.{{ $index }}.umbral_fisico"
+                                                    placeholder="Porcentaje %">
+                                                @error("editItems.$index.umbral_fisico")
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control"
+                                                    wire:model.defer="editItems.{{ $index }}.umbral_financiero"
+                                                    placeholder="Porcentaje %">
+                                                @error("editItems.$index.umbral_financiero")
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+
+
                                             {{-- <td>
                                                 <input type="number" step="0.01" class="form-control"
                                                     wire:model.defer="editItems.{{ $index }}.total"

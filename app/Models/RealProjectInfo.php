@@ -9,7 +9,7 @@ class RealProjectInfo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['real_project_id', 'item_number', 'description', 'total'];
+    protected $fillable = ['real_project_id', 'item_number', 'description', 'total', 'umbral_fisico', 'umbral_financiero'];
 
     public function chapter()
     {

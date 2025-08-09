@@ -3,7 +3,7 @@
         <span><i class="ri-settings-line"></i></span>
     </button>
 
-    <x-dialog-modal wire:model="open" maxWidth="md" id="{{ $detail->id }}-view-user">
+    <x-dialog-modal wire:model="open" maxWidth="md" id="{{ $detail->id }}-balance-details">
         <x-slot name="title"></x-slot>
         <x-slot name="content">
             <div class="row">

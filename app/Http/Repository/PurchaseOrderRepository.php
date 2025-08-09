@@ -82,7 +82,7 @@ class PurchaseOrderRepository implements IRepository
 
 
 
-    public function PurchaseOrderByProject($id, $searchValue = null)
+    public function PurchaseOrderByProject($id, $searchValue = null, $paginate = true)
     {
         $query = InvoiceHeader::with('invoiceDetails.item', 'project', 'paidInformation', 'purchaseOrderState')
             ->where('project_id', $id);
@@ -106,6 +106,6 @@ class PurchaseOrderRepository implements IRepository
         }
 
         // Aplicar paginación y devolver los resultados
-        return $query->paginate(10);
+        return ($paginate) ? $query->paginate(10) : $query->get();
     }
 }

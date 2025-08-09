@@ -13,44 +13,48 @@ use App\Services\ProjectUserServices;
 
 class ShowProjects extends Component
 {
-    use WithPagination;
-    public $search = "";
+	use WithPagination;
+	public $search = "";
 
-    #[Layout('layouts.app')]
-    #[Title('Proyectos')]
-    #[On('projectRefresh')]
-    public function render(ProjectServices $projectServices, ProjectUserServices $projectUserServices)
-    {
+	#[Layout('layouts.app')]
+	#[Title('Proyectos')]
+	#[On('projectRefresh')]
+	public function render(ProjectServices $projectServices, ProjectUserServices $projectUserServices)
+	{
 
-        $user = Auth::user();
-        if($user->hasRole('Residente')){
-            $projects = $projectUserServices->getProjectsByUserId($user->id);
-        } else {
-            $projects = $projectServices->getAllPaginate($this->search);
-        }
+		$user = Auth::user();
+		if ($user->hasRole('Residente')) {
+			$projects = $projectUserServices->getProjectsByUserId($user->id);
+		} else {
+			$projects = $projectServices->getAllPaginate($this->search);
+		}
 
-        return view('livewire.show-projects',  compact('projects'));
-    }
+		return view('livewire.show-projects',  compact('projects'));
+	}
 
-    #[On('destroy-project')] 
-    public function destroy($id, ProjectUserServices $projectUserServices){
-        $deleteProject = $projectUserServices->Delete($id);
-        if($deleteProject === true){
-            $this->dispatch('projectRefresh')->to(ShowProjects::class);
-            $this->dispatch('alert', type: 'success', title: 'Proyectos',message: "Se eliminó correctamente el proyecto");
-            return;
-        }
+	#[On('destroy-project')]
+	public function destroy($id, ProjectUserServices $projectUserServices)
+	{
+		$deleteProject = $projectUserServices->Delete($id);
+		if ($deleteProject === true) {
+			$this->dispatch('projectRefresh')->to(ShowProjects::class);
+			$this->dispatch('alert', type: 'success', title: 'Proyectos', message: "Se eliminó correctamente el proyecto");
+			return;
+		}
 
-        $message = $deleteProject['message'];
-        $this->dispatch('alert', type: 'error', title: 'Proyectos',message: $message);
-    }
+		$message = $deleteProject['message'];
+		$this->dispatch('alert', type: 'error', title: 'Proyectos', message: $message);
+	}
 
-    public function destroyAlert($id, $name){
-        $this->dispatch('alertConfirmation',
-        id: $id,
-        type: 'warning',
-        title: 'Proyectos',
-        message: "¿estás seguro de eliminar el proyecto {$name}?",
-        emit: 'destroy-project',
-    );}
+	public function destroyAlert($id, $name)
+	{
+		$this->dispatch(
+			'alertConfirmation',
+			id: $id,
+			type: 'warning',
+			title: 'Proyectos',
+			message: "¿estás seguro de eliminar el proyecto {$name}?",
+			emit: 'destroy-project',
+		);
+	}
 }

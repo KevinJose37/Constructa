@@ -8,44 +8,49 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    use HasFactory, SoftDeletes;
+	use HasFactory, SoftDeletes;
 
-    protected $table = "projects";
+	protected $table = "projects";
 
-    protected $fillable = [
-        'project_name',
-        'project_description',
-        'project_status_id',
-        'project_start_date',
-        'project_estimated_end',
-        'nit',
-        'contratista',
-        'entidad_contratante',  // Nuevo campo
-        'contract_number'      // Nuevo campo
-    ];
+	protected $fillable = [
+		'project_name',
+		'project_description',
+		'project_status_id',
+		'project_start_date',
+		'project_estimated_end',
+		'nit',
+		'contratista',
+		'entidad_contratante',  // Nuevo campo
+		'contract_number'      // Nuevo campo
+	];
 
-    public function projectStatus()
-    {
-        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
-    }
+	public function projectStatus()
+	{
+		return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+	}
 
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id')->withTimestamps();
-    }
+	public function users()
+	{
+		return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id')->withTimestamps();
+	}
 
-    public function invoiceHeaders()
-    {
-        return $this->hasMany(InvoiceHeader::class);
-    }
+	public function invoiceHeaders()
+	{
+		return $this->hasMany(InvoiceHeader::class);
+	}
 
-    public function budget()
-    {
-        return $this->hasOne(BudgetHeader::class, 'id_proyecto', 'id');
-    }
+	public function budget()
+	{
+		return $this->hasOne(BudgetHeader::class, 'id_proyecto', 'id');
+	}
 
-    public function realproject()
-    {
-        return $this->hasOne(RealProjectInfo::class, 'id_proyecto_real', 'id');
-    }
+	public function realproject()
+	{
+		return $this->hasOne(RealProjectInfo::class, 'id_proyecto_real', 'id');
+	}
+
+	public function weekProjects()
+	{
+		return $this->hasMany(WeekProject::class);
+	}
 }

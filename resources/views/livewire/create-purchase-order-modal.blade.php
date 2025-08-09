@@ -68,8 +68,10 @@
                                 <div class="mb-3">
                                     <label class="control-label form-label">Precio unitario</label>
                                     <input type="text" class="form-control form-control-sm" id="priceUnit"
-                                        wire:model.lazy="orderForm.priceUnit" placeholder="Ingrese el precio"
-                                        wire:keydown="setTotal">
+                                        inputmode="decimal" placeholder="Ingrese el precio"
+                                        oninput="window.formatPrice(this)" wire:model.defer="orderForm.priceUnit">
+
+
                                     @error('orderForm.priceUnit')
                                         <div
                                             class="invalid-feedback {{ $errors->has('orderForm.priceUnit') ? 'd-block' : '' }}">
@@ -181,14 +183,29 @@
             setTimeout(initSelect2, 100);
         });
 
-        $(document).on("keyup", `#priceUnit`, (function(e) {
-            $(e.target).val(function(index, value) {
-                let formattedValue = $(e.target).val(function(index, value) {
-                    return value.replace(/\D/g, "").replace(/^0+/,"").replace(/^(\d+)(\d{2})$/, "$1,$2").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                }).val();
-                @this.set('orderForm.priceUnit', formattedValue);
-                return formattedValue;
+        window.formatPrice = function(input) {
+            let value = input.value.replace(/\D/g, '');
+            let numericValue = parseFloat(value) / 100;
+
+            if (isNaN(numericValue)) {
+                input.value = '';
+                return;
+            }
+
+            const formatter = new Intl.NumberFormat('es-CO', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
             });
-        }));
+
+            const formatted = formatter.format(numericValue);
+            input.value = formatted;
+
+            // Actualizar el valor en Livewire manualmente
+            const livewireComponent = input.closest('[wire\\:id]');
+            if (livewireComponent) {
+                const component = Livewire.find(livewireComponent.getAttribute('wire:id'));
+                component.set('orderForm.priceUnit', formatted);
+            }
+        };
     </script>
 @endpush
