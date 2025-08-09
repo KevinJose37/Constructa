@@ -126,7 +126,7 @@
                                                 <th>DESCRIPCIÓN</th>
                                                 <th>UMBRAL FÍSICO (%)</th>
                                                 <th>UMBRAL FINANCIERO (%)</th>
-                                                {{-- <th>VR. TOTAL.</th> --}}
+                                                <th>VR. TOTAL.</th>
                                                 <th width="100">Acciones</th>
                                             </tr>
                                         </thead>
@@ -153,11 +153,11 @@
                                                             wire:model="items.{{ $index }}.umbral_financiero"
                                                             class="form-control" placeholder="Porcentaje %">
                                                     </td>
-                                                    {{-- <td>
+                                                    <td>
                                                         <input type="number" step="0.01"
                                                             wire:model="items.{{ $index }}.total"
                                                             class="form-control" placeholder="Total">
-                                                    </td> --}}
+                                                    </td>
                                                     <td>
                                                         <button type="button"
                                                             wire:click="removeItem({{ $index }})"

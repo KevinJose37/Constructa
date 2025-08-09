@@ -9,7 +9,16 @@ class RealProject extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['project_id', 'chapter_number', 'chapter_name'];
+    protected $table = 'real_projects';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
+
+     protected $fillable = [
+        'project_id',
+        'id_capitulo',
+        'chapter_number',
+        'chapter_name'
+    ];
 
     public function project()
     {
@@ -17,6 +26,11 @@ class RealProject extends Model
     }
 
     public function items()
+    {
+        return $this->hasMany(RealProjectInfo::class, 'real_project_id');
+    }
+
+    public function details()
     {
         return $this->hasMany(RealProjectInfo::class, 'real_project_id');
     }

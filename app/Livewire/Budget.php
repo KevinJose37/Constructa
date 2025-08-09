@@ -182,7 +182,10 @@ class Budget extends Component
 			}
 
 			// Eliminar capítulo de presupuesto
-			Chapter::where('id_capitulo', $id_capitulo)->delete();
+			$chapter = Chapter::find($id_capitulo);
+			if ($chapter) {
+				$chapter->delete(); // Aquí sí se disparan los eventos y cascadas
+			}
 
 			DB::commit();
 			$this->dispatch('alert', type: 'success', title: 'Presupuesto', message: 'Capítulo e ítems eliminados correctamente.');
@@ -269,7 +272,10 @@ class Budget extends Component
 			]);
 
 			// Eliminar ítems existentes
-			ItemsBudgets::where('id_capitulo', $chapter->id_capitulo)->delete();
+			$items = ItemsBudgets::where('id_capitulo', $chapter->id_capitulo)->get();
+			foreach ($items as $item) {
+				$item->delete(); // Aquí sí se dispara el evento deleted
+			}
 
 			// Crear/actualizar ítems
 			foreach ($this->editItems as $itemData) {
