@@ -175,7 +175,7 @@ class WorkProgressChapterDetail extends Model
 			return $detail->executed_total_sum;
 		});
 
-		Log::debug('Calculating execute percentage', [
+		Log::debug('debug', [
 			'executed_total' => $executedTotal,
 			'total_project_sum' => $totalProjectSum,
 		]);
@@ -203,10 +203,16 @@ class WorkProgressChapterDetail extends Model
 
 	public function getResumeExecutePercentageAttribute()
 	{
+
+		$quantity = $this->adjusted_quantity;
 		if (!$this->adjusted_quantity || $this->adjusted_quantity == 0) {
+			$quantity = $this->contracted_quantity;
+		} 
+
+		if (!$quantity || $quantity == 0) {
 			return 0;
 		}
 
-		return round(($this->resume_quantity / $this->adjusted_quantity) * 100, 2);
+		return round(($this->resume_quantity / $quantity) * 100, 2);
 	}
 }
