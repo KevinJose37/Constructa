@@ -44,7 +44,7 @@ class BudgetHeader extends Model
 
         // Actualizar duplicado en real_projects
         static::updated(function ($budget) {
-            $realProject = RealProject::where('id_proyecto', $budget->id_proyecto)->first();
+            $realProject = RealProject::where('id', $budget->id_proyecto)->first();
             if ($realProject) {
                 $realProject->update([
                     'descripcion_obra'=> $budget->descripcion_obra,
@@ -67,7 +67,7 @@ class BudgetHeader extends Model
 
         // Eliminar duplicado en real_projects
         static::deleted(function ($budget) {
-            $realProject = RealProject::where('id_proyecto', $budget->id_proyecto)->first();
+            $realProject = RealProject::where('id', $budget->id_proyecto)->first();
             if ($realProject) {
                 $realProject->details()->delete();
                 $realProject->delete();
