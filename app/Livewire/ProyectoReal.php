@@ -39,13 +39,25 @@ class ProyectoReal extends Component
 		'nombre_capitulo' => '',
 	];
 	public $editItems = [];
+
 	// Ver items por item
 	public $currentItemsRedirect = [];
+	public $totalItemsRedirect = 0;
 
 	public function mount(int $id)
 	{
 		$this->project = Project::findOrFail($id);
 		$this->addItem();
+		$this->loadItemsRedirect(); // Cargar datos y total desde el inicio
+	}
+
+	public function loadItemsRedirect()
+	{
+		$this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])->get();
+
+		$this->totalItemsRedirect = collect($this->currentItemsRedirect)->sum(function ($item) {
+			return $item->invoiceDetail->total_price_iva ?? 0;
+		});
 	}
 
 	public function addItem()
@@ -62,9 +74,9 @@ class ProyectoReal extends Component
 		unset($this->items[$index]);
 		$this->items = array_values($this->items);
 	}
+
 	public function saveChapter()
 	{
-		// Validar campos
 		$this->validate([
 			'chapter_number' => 'required|string',
 			'chapter_name' => 'required|string',
@@ -76,7 +88,7 @@ class ProyectoReal extends Component
 			// 'items.*.total' => 'required|numeric',
 		]);
 
-		// Crear capítulo
+				// Crear capítulo
 		$chapter = RealProject::create([
 			'project_id' => $this->project->id,
 			'chapter_number' => $this->chapter_number,
@@ -94,28 +106,22 @@ class ProyectoReal extends Component
 			]);
 		}
 
-		// Reiniciar campos
 		$this->reset(['chapter_number', 'chapter_name', 'items']);
 		$this->addItem();
 
-		// Emitir evento para actualizar tabla
-		// $this->dispatch('chapterSaved');
 		$this->dispatch('alert', type: 'success', title: 'Proyecto real', message: 'Capítulo e ítems creados correctamente.');
-
-		// Cerrar el modal
 		$this->dispatch('close-modal', 'chapterModal');
 	}
 
 	public function deleteChapter($chapterId)
 	{
 		$chapter = RealProject::findOrFail($chapterId);
-		$chapter->items()->delete(); // Elimina los ítems asociados
-		$chapter->delete(); // Elimina el capítulo
+		$chapter->items()->delete();
+		$chapter->delete();
 
 		$this->dispatch('chapterDeleted');
 	}
 
-	// Funciones para edición
 	public function editChapter($id_capitulo)
 	{
 		$chapter = RealProject::with('items')->findOrFail($id_capitulo);
@@ -135,7 +141,7 @@ class ProyectoReal extends Component
 				'id' => $current->id,
 				'item_number' => $current->item_number,
 				'description' => $current->description,
-				'umbral_fisico' =>number_format( $current->umbral_fisico),
+				'umbral_fisico' => number_format($current->umbral_fisico),
 				'umbral_financiero' => number_format($current->umbral_financiero),
 				'total' => 0,
 			];
@@ -156,41 +162,31 @@ class ProyectoReal extends Component
 		], [
 			'editCapitulo.numero_capitulo.required' => 'El número de capítulo es obligatorio.',
 			'editCapitulo.numero_capitulo.string' => 'El número de capítulo debe ser un texto.',
-
 			'editCapitulo.nombre_capitulo.required' => 'El nombre del capítulo es obligatorio.',
 			'editCapitulo.nombre_capitulo.string' => 'El nombre del capítulo debe ser un texto.',
-
 			'editItems.*.item_number.required' => 'El número de ítem es obligatorio.',
 			'editItems.*.item_number.string' => 'El número de ítem debe ser un texto.',
-
 			'editItems.*.description.required' => 'La descripción del ítem es obligatoria.',
 			'editItems.*.description.string' => 'La descripción del ítem debe ser un texto.',
-
 			'editItems.*.umbral_fisico.required' => 'La unidad física del ítem es obligatoria.',
 			'editItems.*.umbral_fisico.numeric' => 'La unidad física del ítem debe ser numérica.',
 			'editItems.*.umbral_fisico.min' => 'La unidad física del ítem no puede ser negativa.',
-
 			'editItems.*.umbral_financiero.required' => 'La unidad financiera del ítem es obligatoria.',
 			'editItems.*.umbral_financiero.numeric' => 'La unidad financiera del ítem debe ser numérica.',
 			'editItems.*.umbral_financiero.min' => 'La unidad financiera del ítem no puede ser negativa.',
 		]);
 
-
 		try {
 			DB::beginTransaction();
 
-			// Actualizar el capítulo
 			$chapter = RealProject::findOrFail($this->editCapitulo['id_capitulo']);
 			$chapter->update([
 				'chapter_number' => $this->editCapitulo['numero_capitulo'],
 				'chapter_name' => $this->editCapitulo['nombre_capitulo'],
 			]);
 
-			// Eliminar ítems existentes
 			RealProjectInfo::where('real_project_id', $chapter->id)->delete();
 
-
-			// Crear/actualizar ítems
 			foreach ($this->editItems as $itemData) {
 				RealProjectInfo::create([
 					'real_project_id' => $chapter->id,
@@ -254,7 +250,6 @@ class ProyectoReal extends Component
 	}
 
 	// Ver items redireccionados
-
 	public function viewInfoItem($itemId, $chapterId)
 	{
 		$this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])
@@ -262,7 +257,9 @@ class ProyectoReal extends Component
 			->where('item_id', $itemId)
 			->get();
 
-		// dd($this->currentItemsRedirect);
+		$this->totalItemsRedirect = $this->currentItemsRedirect->sum(function ($item) {
+			return $item->invoiceDetail->total_price_iva ?? 0;
+		});
 
 		if (!$this->currentItemsRedirect && $this->currentItemsRedirect->isEmpty()) {
 			$this->dispatch('alert', [
@@ -276,13 +273,11 @@ class ProyectoReal extends Component
 		$this->dispatch('open-modal', 'itemsModal');
 	}
 
-
 	public function render()
 	{
 		$chapters = RealProject::where('project_id', $this->project->id)
 			->with('items')
 			->get();
-		// dump(RealProject::where('project_id', $this->project->id)->with('items')->toSql());
 
 		return view('livewire.proyecto-real', compact('chapters'));
 	}
