@@ -280,7 +280,7 @@
                     <p class="fs-13"><strong>Retención: </strong> <span>
                             ${{ number_format(floatval(str_replace(',', '.', $retencion)), 2, ',', '.') }}</span></p>
                     <p class="fs-13"><strong>Valor por pagar: </strong> <span>
-                            ${{ number_format(floatval(str_replace(',', '.', $totalPay)), 2, ',', '.') }}</span></p>
+                            ${{ number_format(floatval(str_replace(',', '.', $totalPurchaseIva)), 2, ',', '.') }}</span></p>
                 </div> <!-- end col-->
 
                 <div class="col-4">
