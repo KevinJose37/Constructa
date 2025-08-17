@@ -37,52 +37,52 @@
                     </thead>
                     <tbody>
                         @forelse ($chapters as $chapter)
-                            <tr class="table-primary">
-                                <td colspan="8">
-                                    <strong>Cap. {{ $chapter->chapter_number }}:</strong> {{ $chapter->chapter_name }}
-                                </td>
-                                <td class="text-end" colspan="4">
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-warning btn-sm"
-                                            wire:click="editChapter({{ $chapter->id }})" title="Editar capítulo">
-                                            <i class="ri-pencil-line"></i> Editar
-                                        </button>
-                                        <button wire:click="deleteChapter({{ $chapter->id }})" type="button"
-                                            class="btn btn-danger btn-sm">
-                                            <i class="ri-delete-bin-line"></i> Eliminar Capítulo
-                                        </button>
-                                    </div>
-                                </td>
+                        <tr class="table-primary">
+                            <td colspan="8">
+                                <strong>Cap. {{ $chapter->chapter_number }}:</strong> {{ $chapter->chapter_name }}
+                            </td>
+                            <td class="text-end" colspan="4">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-warning btn-sm"
+                                        wire:click="editChapter({{ $chapter->id }})" title="Editar capítulo">
+                                        <i class="ri-pencil-line"></i> Editar
+                                    </button>
+                                    <button wire:click="deleteChapter({{ $chapter->id }})" type="button"
+                                        class="btn btn-danger btn-sm">
+                                        <i class="ri-delete-bin-line"></i> Eliminar Capítulo
+                                    </button>
+                                </div>
+                            </td>
 
-                            </tr>
-                            @php
-                                $sumTotal = 0;
-                            @endphp
-                            @foreach ($chapter->items as $item)
-                                @php
-                                    $sumTotal = bcadd($sumTotal, $item->total, 2);
-                                @endphp
-                                <tr>
-                                    <td class="text-center" colspan="2">{{ $item->item_number }}</td>
-                                    <td colspan="6">{{ $item->description }}</td>
-                                    <td colspan="4" class="text-end">
-                                        <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
-                                            type="button" class="btn btn-info btn-sm">
-                                            <i class="ri-eye-line"></i> Ver información item
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            <tr class="table-light">
-                                <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
-                                <td class="text-end" colspan="4">
-                                    <strong>{{ number_format($sumTotal, 2) }} $</strong>
-                                </td>
-                            </tr>
+                        </tr>
+                        @php
+                        $sumTotal = 0;
+                        @endphp
+                        @foreach ($chapter->items as $item)
+                        @php
+                        $sumTotal = bcadd($sumTotal, $item->total, 2);
+                        @endphp
+                        <tr>
+                            <td class="text-center" colspan="2">{{ $item->item_number }}</td>
+                            <td colspan="6">{{ $item->description }}</td>
+                            <td colspan="4" class="text-end">
+                                <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
+                                    type="button" class="btn btn-info btn-sm">
+                                    <i class="ri-eye-line"></i> Ver información item
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                        <tr class="table-light">
+                            <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
+                            <td class="text-end" colspan="4">
+                                <strong>{{ number_format($sumTotal, 2) }} $</strong>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="12" class="text-center">No hay capítulos registrados aún.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="12" class="text-center">No hay capítulos registrados aún.</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -133,40 +133,47 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($items as $index => $item)
-                                                <tr wire:key="item-{{ $index }}">
-                                                    <td>
-                                                        <input type="text"
-                                                            wire:model="items.{{ $index }}.item_number"
-                                                            class="form-control" placeholder="Ej: 1.1">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text"
-                                                            wire:model="items.{{ $index }}.description"
-                                                            class="form-control" placeholder="Descripción">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text"
-                                                            wire:model="items.{{ $index }}.umbral_fisico"
-                                                            class="form-control" placeholder="Porcentaje %">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text"
-                                                            wire:model="items.{{ $index }}.umbral_financiero"
-                                                            class="form-control" placeholder="Porcentaje %">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" step="0.01"
-                                                            wire:model="items.{{ $index }}.total"
-                                                            class="form-control" placeholder="Total">
-                                                    </td>
-                                                    <td>
-                                                        <button type="button"
-                                                            wire:click="removeItem({{ $index }})"
-                                                            class="btn btn-danger btn-sm">
-                                                            <i class="ri-delete-bin-line"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                            <tr wire:key="item-{{ $index }}">
+                                                <td>
+                                                    <input type="text"
+                                                        wire:model="items.{{ $index }}.item_number"
+                                                        class="form-control" placeholder="Ej: 1.1">
+                                                </td>
+                                                <td>
+                                                    <input type="text"
+                                                        wire:model="items.{{ $index }}.description"
+                                                        class="form-control" placeholder="Descripción">
+                                                </td>
+                                                <td>
+                                                    <input type="text"
+                                                        wire:model="items.{{ $index }}.umbral_fisico"
+                                                        class="form-control" placeholder="Porcentaje %">
+                                                </td>
+                                                <td>
+                                                    <input type="text"
+                                                        wire:model="items.{{ $index }}.umbral_financiero"
+                                                        class="form-control" placeholder="Porcentaje %">
+                                                </td>
+                                                <td x-data>
+                                                    <input type="text"
+                                                        x-on:input="$el.value = $el.value 
+            ? new Intl.NumberFormat('es-CO').format($el.value.replace(/\./g, '').replace(',', '.')) 
+            : ''"
+                                                        wire:model.defer="items.{{ $index }}.total"
+                                                        class="form-control text-end"
+                                                        placeholder="Total">
+                                                    @error("items.$index.total")
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                        wire:click="removeItem({{ $index }})"
+                                                        class="btn btn-danger btn-sm">
+                                                        <i class="ri-delete-bin-line"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -207,7 +214,7 @@
                                 wire:model.defer="editCapitulo.numero_capitulo"
                                 placeholder="Ingrese el número de capítulo">
                             @error('editCapitulo.numero_capitulo')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
@@ -216,7 +223,7 @@
                                 wire:model.defer="editCapitulo.nombre_capitulo"
                                 placeholder="Ingrese el nombre del capítulo">
                             @error('editCapitulo.nombre_capitulo')
-                                <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -235,56 +242,56 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($editItems as $index => $item)
-                                        <tr>
-                                            <td>
-                                                <input type="text" class="form-control"
-                                                    wire:model.defer="editItems.{{ $index }}.item_number"
-                                                    placeholder="Ej: 1.1">
-                                                @error("editItems.$index.item_number")
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control"
-                                                    wire:model.defer="editItems.{{ $index }}.description"
-                                                    placeholder="Descripción">
-                                                @error("editItems.$index.description")
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control"
-                                                    wire:model.defer="editItems.{{ $index }}.umbral_fisico"
-                                                    placeholder="Porcentaje %">
-                                                @error("editItems.$index.umbral_fisico")
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control"
-                                                    wire:model.defer="editItems.{{ $index }}.umbral_financiero"
-                                                    placeholder="Porcentaje %">
-                                                @error("editItems.$index.umbral_financiero")
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="form-control"
+                                                wire:model.defer="editItems.{{ $index }}.item_number"
+                                                placeholder="Ej: 1.1">
+                                            @error("editItems.$index.item_number")
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control"
+                                                wire:model.defer="editItems.{{ $index }}.description"
+                                                placeholder="Descripción">
+                                            @error("editItems.$index.description")
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control"
+                                                wire:model.defer="editItems.{{ $index }}.umbral_fisico"
+                                                placeholder="Porcentaje %">
+                                            @error("editItems.$index.umbral_fisico")
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control"
+                                                wire:model.defer="editItems.{{ $index }}.umbral_financiero"
+                                                placeholder="Porcentaje %">
+                                            @error("editItems.$index.umbral_financiero")
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
 
 
-                                            {{-- <td>
+                                        {{-- <td>
                                                 <input type="number" step="0.01" class="form-control"
                                                     wire:model.defer="editItems.{{ $index }}.total"
-                                                    placeholder="0.00">
-                                                @error("editItems.$index.total")
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td> --}}
-                                            <td>
-                                                <button type="button" class="btn btn-danger btn-sm"
-                                                    wire:click.prevent="removeEditItem({{ $index }})">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        placeholder="0.00">
+                                        @error("editItems.$index.total")
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                        </td> --}}
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                wire:click.prevent="removeEditItem({{ $index }})">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -334,20 +341,20 @@
                             </thead>
                             <tbody>
                                 @forelse ($currentItemsRedirect as $item)
-                                    <tr>
-                                        <td>{{ $item->purchase_order_id ?? 'N/A' }}</td>
-                                        <td>{{ $item->invoiceDetail->id_item ?? 'N/A' }}</td>
-                                        <td class="text-start">{{ $item->invoiceDetail->item->name ?? 'Sin nombre' }}
-                                        </td>
-                                        <td>{{ number_format($item->invoiceDetail->quantity ?? 0, 2) }}</td>
-                                        <td>{{ $item->invoiceDetail->item->unit_measurement ?? '-' }}</td>
-                                        <td>${{ number_format($item->invoiceDetail->total_price_iva ?? 0, 2) }}</td>
-                                    </tr>
+                                <tr>
+                                    <td>{{ $item->purchase_order_id ?? 'N/A' }}</td>
+                                    <td>{{ $item->invoiceDetail->id_item ?? 'N/A' }}</td>
+                                    <td class="text-start">{{ $item->invoiceDetail->item->name ?? 'Sin nombre' }}
+                                    </td>
+                                    <td>{{ number_format($item->invoiceDetail->quantity ?? 0, 2) }}</td>
+                                    <td>{{ $item->invoiceDetail->item->unit_measurement ?? '-' }}</td>
+                                    <td>${{ number_format($item->invoiceDetail->total_price_iva ?? 0, 2) }}</td>
+                                </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="text-muted text-center py-3">No hay materiales
-                                            asociados a este ítem.</td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="6" class="text-muted text-center py-3">No hay materiales
+                                        asociados a este ítem.</td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -365,28 +372,28 @@
 </div>
 
 @push('scripts')
-    <script>
-        document.addEventListener('livewire:initialized', () => {
-            // Escuchar el evento 'close-modal' y cerrar el modal
-            Livewire.on('close-modal', (modalId) => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-                if (modal) {
-                    modal.hide();
-                }
-            });
-
-            // Escuchar el evento 'open-modal' y abrir el modal
-            Livewire.on('open-modal', (modalId) => {
-                const modal = new bootstrap.Modal(document.getElementById(modalId));
-                modal.show();
-            });
-
-            // Prevenir el envío del formulario al presionar Enter en los inputs
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
-                    e.preventDefault();
-                }
-            });
+<script>
+    document.addEventListener('livewire:initialized', () => {
+        // Escuchar el evento 'close-modal' y cerrar el modal
+        Livewire.on('close-modal', (modalId) => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
+            if (modal) {
+                modal.hide();
+            }
         });
-    </script>
+
+        // Escuchar el evento 'open-modal' y abrir el modal
+        Livewire.on('open-modal', (modalId) => {
+            const modal = new bootstrap.Modal(document.getElementById(modalId));
+            modal.show();
+        });
+
+        // Prevenir el envío del formulario al presionar Enter en los inputs
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
 @endpush
