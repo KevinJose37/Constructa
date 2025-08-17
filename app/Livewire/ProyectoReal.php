@@ -88,7 +88,7 @@ class ProyectoReal extends Component
 			// 'items.*.total' => 'required|numeric',
 		]);
 
-				// Crear capítulo
+		// Crear capítulo
 		$chapter = RealProject::create([
 			'project_id' => $this->project->id,
 			'chapter_number' => $this->chapter_number,
@@ -257,11 +257,13 @@ class ProyectoReal extends Component
 			->where('item_id', $itemId)
 			->get();
 
+		// Calcular total
 		$this->totalItemsRedirect = $this->currentItemsRedirect->sum(function ($item) {
 			return $item->invoiceDetail->total_price_iva ?? 0;
 		});
 
-		if (!$this->currentItemsRedirect && $this->currentItemsRedirect->isEmpty()) {
+		// Verificar si no hay resultados
+		if ($this->currentItemsRedirect->isEmpty()) {
 			$this->dispatch('alert', [
 				'type' => 'info',
 				'title' => 'Proyecto real',

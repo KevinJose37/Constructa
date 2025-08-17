@@ -43,7 +43,7 @@
                                         <td>{{ $detail->item }}</td>
                                         <td>{{ $detail->description }}</td>
                                         <td>{{ $detail->unit }}</td>
-                                        <td>{{ number_format($detail->contracted_quantity, 0) }}</td>
+                                        <td>{{ number_format($detail->executed_quantity_sum, 0) }}</td>
                                     </tr>
                                 </tbody>
                             </table>

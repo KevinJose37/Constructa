@@ -76,8 +76,8 @@
                             <tr class="table-light">
                                 <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
                                 <td class="text-end" colspan="4">
-    <strong>{{ number_format($totalItemsRedirect, 2) }}</strong>
-</td>
+                                    <strong>{{ number_format($sumTotal, 2) }} $</strong>
+                                </td>
                             </tr>
                         @empty
                             <tr>
