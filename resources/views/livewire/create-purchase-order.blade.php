@@ -9,7 +9,7 @@
                 <input type="text" class="form-control" id="inputApodo" placeholder="Identifique esta orden de compra"
                     wire:model="order_name">
                 @error('order_name')
-                    <div class="invalid-feedback d-block">
+                    <div class="invalid-feedback d-block ">
                         {{ $message }}
                     </div>
                 @enderror

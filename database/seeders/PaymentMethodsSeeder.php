@@ -18,6 +18,7 @@ class PaymentMethodsSeeder extends Seeder
             ['payment_name' => 'Efectivo'],
             ['payment_name' => 'Crédito'],
             ['payment_name' => 'PSE'],
+            ['payment_name' => 'Cheque'],
         ]);
     }
 }
