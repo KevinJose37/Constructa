@@ -116,11 +116,11 @@ class AttachmentsPage extends Component
                 return;
             }
 
-            if (count($this->attachments) > 3) {
-                $this->addError('attachments', 'Por favor seleccione hasta 3 archivos.');
-                $this->dispatch('attachmentsStatus', false);
-                return;
-            }
+            // if (count($this->attachments) > 10) {
+            //     $this->addError('attachments', 'Por favor seleccione hasta 3 archivos.');
+            //     $this->dispatch('attachmentsStatus', false);
+            //     return;
+            // }
 
             $this->validate();
 
