@@ -46,47 +46,52 @@
         </div>
         <!--- Sidemenu -->
         <ul class="side-nav">
+            @can('view.dashboard')
+                <li class="side-nav-title mt-1"> Principal</li>
+                <li class="side-nav-item">
+                    <a href="{{ route('dashboard') }}" class="side-nav-link">
+                        <i class="ri-dashboard-2-fill"></i>
+                        <span> Dashboard </span>
+                    </a>
+                </li>
+            @endcan
 
-            <li class="side-nav-title mt-1"> Principal</li>
-
-            <li class="side-nav-item">
-                <a href="{{ route('dashboard') }}" class="side-nav-link">
-                    <i class="ri-dashboard-2-fill"></i>
-                    <span> Dashboard </span>
-                </a>
-            </li>
 
             <li class="side-nav-title mt-1">Gestion</li>
 
-            <li class="side-nav-item">
-                <a href="{{ route('projects.index') }}" class="side-nav-link">
-                    <i class="ri-stack-fill"></i>
-                    <span> Proyectos</span>
-                </a>
-            </li>
-            @can('view.users')
-            <li class="side-nav-item">
-                <a href="{{ route('usuarios.index') }}" class="side-nav-link">
-                    <i class="ri-user-fill"></i>
-                    <span> Usuarios </span>
-                </a>
-            </li>
+            @can('view.project')
+                <li class="side-nav-item">
+                    <a href="{{ route('projects.index') }}" class="side-nav-link">
+                        <i class="ri-stack-fill"></i>
+                        <span> Proyectos</span>
+                    </a>
+                </li>
             @endcan
-            <li class="side-nav-item">
-                <a href="{{ route('purchaseorder.view') }}" class="side-nav-link">
-                    <i class="ri-shopping-cart-2-fill"></i>
-                    <span> Órdenes de compra </span>
-                </a>
-            </li>
 
-
-            <li class="side-nav-item">
-                <a href="{{ route('materials.page') }}" class="side-nav-link">
-                    <i class="ri-clipboard-fill"></i>
-                    <span> Materiales </span>
-                </a>
-            </li> 
-
+            @can('view.users')
+                <li class="side-nav-item">
+                    <a href="{{ route('usuarios.index') }}" class="side-nav-link">
+                        <i class="ri-user-fill"></i>
+                        <span> Usuarios </span>
+                    </a>
+                </li>
+            @endcan
+            @can('view.purchase')
+                <li class="side-nav-item">
+                    <a href="{{ route('purchaseorder.view') }}" class="side-nav-link">
+                        <i class="ri-shopping-cart-2-fill"></i>
+                        <span> Órdenes de compra </span>
+                    </a>
+                </li>
+            @endcan
+            @can('view.materials')
+                <li class="side-nav-item">
+                    <a href="{{ route('materials.page') }}" class="side-nav-link">
+                        <i class="ri-clipboard-fill"></i>
+                        <span> Materiales </span>
+                    </a>
+                </li>
+            @endcan
         </ul>
         <!--- End Sidemenu -->
 

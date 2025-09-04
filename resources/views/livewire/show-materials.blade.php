@@ -17,11 +17,14 @@
             </div>
         </div>
         <!-- Botón para crear un capítulo -->
-        <div class="d-flex flex-wrap gap-2 mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMaterialModal">
-                Crear material
-            </button>
-        </div>
+        @can('store.materials')
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMaterialModal">
+                    Crear material
+                </button>
+            </div>
+        @endcan
+
         <table class="table table-striped table-centered mb-3">
             <thead class="table-dark">
                 <tr>
@@ -29,7 +32,9 @@
                     <th>Código</th>
                     <th>Unidad de Medida</th>
                     <th>Categoría</th>
-                    <th>Acciones</th>
+                    @can('delete.materials')
+                        <th>Acciones</th>
+                    @endcan
                 </tr>
             </thead>
             <tbody>
@@ -39,12 +44,14 @@
                         <td>{{ $material->cod }}</td>
                         <td>{{ $material->unit_measurement }}</td>
                         <td>{{ $material->categoryItems->description ?? 'Sin categoría' }}</td>
-                        <td>
-                            <a href="javascript:void(0);" wire:click="deleteMaterial({{ $material->id }})">
-                                <i class="ri-delete-bin-2-line"></i>
-                            </a>
-                        </td>
-                    </tr>
+                        @can('delete.materials')
+                            <td>
+                                <a href="javascript:void(0);" wire:click="deleteMaterial({{ $material->id }})">
+                                    <i class="ri-delete-bin-2-line"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endcan
                 @endforeach
             </tbody>
         </table>
@@ -52,4 +59,3 @@
     </x-table>
 
     <livewire:create-material-modal />
-

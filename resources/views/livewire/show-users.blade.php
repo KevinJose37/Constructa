@@ -12,7 +12,7 @@
                             class="ri-close-line"></i></button>
                 </div>
             </div>
-            @can(abilities: 'store.project')
+            @can('store.users')
                 <livewire:create-user></livewire:create-user>
             @endcan
         </div>
@@ -33,10 +33,12 @@
                         <td>{{ $user->fullname }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->rol->name }}</td>
+                        <td>{{ $user->rol->name ?? 'Sin rol' }}</td>
                         <td style="display: flex; align-items: center;">
-                            <livewire:show-projects-user :$user
-                                :wire:key="'show-projects-' . $user->id"></livewire:show-projects-user>
+                            @can('assign.user.project')
+                                <livewire:show-projects-user :$user
+                                    :wire:key="'show-projects-' . $user->id"></livewire:show-projects-user>
+                            @endcan
                             @can('delete.users')
                                 <a href="#" class="text-reset fs-19 px-1 delete-user-btn"
                                     wire:click.prevent="destroyAlertUser({{ $user->id }}, '{{ $user->fullname }}')">
@@ -45,7 +47,6 @@
                             @can('update.users')
                                 <livewire:update-user :$user :wire:key="'update-user-' . $user->id"></livewire:update-user>
                             @endcan
-
                         </td>
                     </tr>
                 @endforeach
