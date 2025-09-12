@@ -36,6 +36,7 @@
                                         <th>DESCRIPCIÓN</th>
                                         <th>UNIDAD</th>
                                         <th>CANTIDAD</th>
+                                        <th>% {{ $filterWeeks ? 'de representación' : 'ejecutado' }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,6 +45,8 @@
                                         <td>{{ $detail->description }}</td>
                                         <td>{{ $detail->unit }}</td>
                                         <td>{{ number_format($detail->executed_quantity_sum, 0) }}</td>
+                                        <td> {{ $filterWeeks ? $detail->execute_percentage_sum : $detail->resume_execute_percentage }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
