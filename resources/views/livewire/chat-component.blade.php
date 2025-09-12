@@ -1,5 +1,6 @@
 <div>
-    <x-page-title title="{{ $project ? 'Chat del proyecto ' . $project->project_name : 'Chat por proyectos' }}"></x-page-title>
+    <x-page-title
+        title="{{ $project ? 'Chat del proyecto ' . $project->project_name : 'Chat por proyectos' }}"></x-page-title>
 
     <div class="row">
         <div class="col-xl-8 col-lg-7">
@@ -40,16 +41,17 @@
                         @endif
                     </div>
 
-                    <form wire:submit.prevent="saveMessage" class="comment-area-box">
-                        <input type="hidden" wire:model="selectedProjectId" name="projectId">
-                        <textarea wire:model="newMessage" rows="3" class="form-control border-0 resize-none mt-3 "
-                            placeholder="Agregar comentario"></textarea>
-                        <div class="p-2 bg-light d-flex justify-content-between align-items-center">
-                            <button type="submit" class="btn btn-sm btn-success"><i
-                                    class="ri-send-plane-2 me-1"></i>ENVIAR</button>
-                        </div>
-                    </form>
-
+                    @can('use.chat')
+                        <form wire:submit.prevent="saveMessage" class="comment-area-box">
+                            <input type="hidden" wire:model="selectedProjectId" name="projectId">
+                            <textarea wire:model="newMessage" rows="3" class="form-control border-0 resize-none mt-3 "
+                                placeholder="Agregar comentario"></textarea>
+                            <div class="p-2 bg-light d-flex justify-content-between align-items-center">
+                                <button type="submit" class="btn btn-sm btn-success"><i
+                                        class="ri-send-plane-2 me-1"></i>ENVIAR</button>
+                            </div>
+                        </form>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -90,24 +92,27 @@
                         @endif
                     </div>
 
-                    <!-- Formulario para cargar nuevos archivos adjuntos -->
-                    <form wire:submit.prevent="saveMessage" class="dropzone" id="myAwesomeDropzone"
-                        data-plugin="dropzone" data-previews-container="#file-previews"
-                        data-upload-preview-template="#uploadPreviewTemplate">
-                        <div class="fallback">
-                            <input wire:model="attachments" type="file" multiple />
-                        </div>
+                    @can('attachment.purchase')
+                        <!-- Formulario para cargar nuevos archivos adjuntos -->
+                        <form wire:submit.prevent="saveMessage" class="dropzone" id="myAwesomeDropzone"
+                            data-plugin="dropzone" data-previews-container="#file-previews"
+                            data-upload-preview-template="#uploadPreviewTemplate">
+                            <div class="fallback">
+                                <input wire:model="attachments" type="file" multiple />
+                            </div>
 
-                        <div class="dz-message needsclick">
-                            <i class="fs-36 text-muted ri-upload-cloud-line"></i>
-                            <h4>Arrastra el archivo acá o presiona para subir</h4>
-                        </div>
-                    </form>
+                            <div class="dz-message needsclick">
+                                <i class="fs-36 text-muted ri-upload-cloud-line"></i>
+                                <h4>Arrastra el archivo acá o presiona para subir</h4>
+                            </div>
+                        </form>
 
-                    <!-- Vista previa de archivos adjuntos -->
-                    <div class="dropzone-previews mt-3" id="file-previews"></div>
-                    <button wire:click="saveAttachments" class="btn btn-sm btn-primary"><i
-                            class="ri-attachment-line me-1"></i>GUARDAR ADJUNTO</button>
+
+                        <!-- Vista previa de archivos adjuntos -->
+                        <div class="dropzone-previews mt-3" id="file-previews"></div>
+                        <button wire:click="saveAttachments" class="btn btn-sm btn-primary"><i
+                                class="ri-attachment-line me-1"></i>GUARDAR ADJUNTO</button>
+                    @endcan
 
                     <!-- Plantilla de vista previa de archivos adjuntos -->
                     <div class="d-none" id="uploadPreviewTemplate">
@@ -136,6 +141,7 @@
 
             </div>
         </div>
+
     </div>
 
 

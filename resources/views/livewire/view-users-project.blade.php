@@ -70,7 +70,7 @@
                                         <tr>
                                             <td>{{ $user->fullname }}</td>
                                             <td>{{ $user->email }}</td>
-                                            <td>{{ $user->rol->name }}</td>
+                                            <td>{{ $user->rol->name  ?? 'Sin rol'}}</td>
                                             @can('unassign.user.project')
                                                 <td><a class="text-reset fs-19 px-1 delete-user-project-btn"
                                                         data-id-user="{{ $user->id }}"

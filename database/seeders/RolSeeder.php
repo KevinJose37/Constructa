@@ -3,95 +3,104 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        // Roles
-        $role_admin = Role::firstOrCreate(['name' => 'Director']);
-        $role_gerente = Role::firstOrCreate(['name' => 'Tesorero']);
-        $role_contador = Role::firstOrCreate(['name' => 'Contador']);
-        $role_empleado = Role::firstOrCreate(['name' => 'Residente']);
+	/**
+	 * Run the database seeds.
+	 */
+	public function run(): void
+	{
+		// Roles
+		// Crear roles
+		$role_contador   = Role::firstOrCreate(['name' => 'Contador']);
+		$role_director   = Role::firstOrCreate(['name' => 'Director']);
+		$role_gerente    = Role::firstOrCreate(['name' => 'Gerente']);
+		$role_residente  = Role::firstOrCreate(['name' => 'Residente']);
+		$role_subgerente = Role::firstOrCreate(['name' => 'Subgerente']);
+		$role_tesoreria  = Role::firstOrCreate(['name' => 'Tesoreria']);
+		$role_visitante  = Role::firstOrCreate(['name' => 'Visitante']);
 
-        // Permisos
+		// Definir permisos según el CSV
+		$permissions = [
+			// PROYECTOS
+			'store.project'      => ['GERENTE', 'SUBGERENTE'],
+			'update.project'     => ['GERENTE', 'SUBGERENTE'],
+			'assign.user.project' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
+			'unassign.user.project' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
+			'view.project'       => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'SUBGERENTE', 'VISITANTE'],
 
-        // Proyectos
-        $store_project = Permission::firstOrCreate(['name' => 'store.project']);
-        $update_project = Permission::firstOrCreate(['name' => 'update.project']);
-        $delete_project = Permission::firstOrCreate(['name' => 'delete.project']);
-        $view_project = Permission::firstOrCreate(['name' => 'view.project']);
-        $assign_user_project = Permission::firstOrCreate(['name' => 'assign.user.project']);
-        $unassign_user_project = Permission::firstOrCreate(['name' => 'unassign.user.project']);
+			// PRESUPUESTO
+			'store.budget'       => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'view.budget'        => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'VISITANTE'],
+			'update.budget'      => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'delete.budget'      => ['GERENTE', 'RESIDENTE', 'SUBGERENTE'],
 
-        // Usuarios
-        $store_users = Permission::firstOrCreate(['name' => 'store.users']);
-        $update_users = Permission::firstOrCreate(['name' => 'update.users']);
-        $delete_users = Permission::firstOrCreate(['name' => 'delete.users']);
-        $view_users = Permission::firstOrCreate(['name' => 'view.users']);
-        $change_rol_users = Permission::firstOrCreate(['name' => 'change.rol.users']);
+			// CHAT
+			'view.chat'          => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'TESORERIA', 'VISITANTE'],
+			'use.chat'           => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'TESORERIA'],
 
-        // Órdenes de compra
-        $store_purchase_order = Permission::firstOrCreate(['name' => 'store.purchase']);
-        $view_purchase_order = Permission::firstOrCreate(['name' => 'view.purchase']);
-        $approved_tech = Permission::firstOrCreate(['name' => 'approved_tech.purchase']);
-        $approved_account = Permission::firstOrCreate(['name' => 'approved_account.purchase']);
-        $paid_account = Permission::firstOrCreate(['name' => 'paid.purchase']);
+			// USUARIOS
+			'store.users'        => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
+			'update.users'       => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
+			'view.users'         => ['DIRECTOR', 'GERENTE', 'SUBGERENTE', 'VISITANTE'],
+			'delete.users'       => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
 
-        // Asignar permisos a roles
-        $role_admin->syncPermissions([
-            $store_project,
-            $update_project,
-            $delete_project,
-            $view_project,
-            $assign_user_project,
-            $unassign_user_project,
-            $store_users,
-            $update_users,
-            $delete_users,
-            $view_users,
-            $change_rol_users,
-            $store_purchase_order,
-            $view_purchase_order,
-            $approved_tech,
-            $approved_account,
-            $paid_account,
-        ]);
+			// MATERIALES
+			'store.materials'    => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'update.materials'   => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'view.materials'     => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'VISITANTE'],
+			'delete.materials'   => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
 
-        $role_gerente->syncPermissions([
-            $store_project,
-            $update_project,
-            $view_project,
-            $assign_user_project,
-            $unassign_user_project,
-            $store_users,
-            $update_users,
-            $view_users,
-            $store_purchase_order,
-            $view_purchase_order,
-            $approved_tech,
-            $paid_account,
-        ]);
+			// ÓRDENES DE COMPRA
+			'store.purchase'     => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'update.purchase'    => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'view.purchase'      => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'TESORERIA', 'VISITANTE'],
+			'delete.purchase'    => ['GERENTE'],
+			'disable.purchase'   => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'attachment.purchase' => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'TESORERIA'],
+			'info.purchase'      => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'TESORERIA'],
 
-        $role_contador->syncPermissions([
-            $view_project,
-            $view_purchase_order,
-            $store_purchase_order,
-            $approved_account,
-            $paid_account,
-        ]);
+			'approved_tech.purchase' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
+			'approved_account.purchase' => ['CONTADOR'],
+			'paid.purchase' => ['GERENTE', 'TESORERIA'],
 
-        $role_empleado->syncPermissions([
-            $view_project,
-            $view_users,
-            $update_users,
-            $store_purchase_order,
-            $view_purchase_order,
-        ]);
-    }
+			// REDIRECCIONAR
+			'redirect.materials' => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+
+			// CONSOLIDADO
+			'view.consolidated'  => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'VISITANTE'],
+
+			// DASHBOARD
+			'view.dashboard'     => ['GERENTE', 'VISITANTE'],
+
+			// PROYECTO REAL
+			'store.realproject'  => ['GERENTE'],
+			'update.realproject' => ['GERENTE'],
+			'view.realproject'   => ['GERENTE', 'VISITANTE'],
+			'delete.realproject' => ['GERENTE'],
+
+			// AVANCE DE OBRA
+			'balance.progress'   => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'weekly.progress'    => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'store.progress'     => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+			'view.progress'      => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE', 'VISITANTE'],
+			'report.progress'    => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
+		];
+
+		// Crear permisos
+		foreach ($permissions as $perm => $roles) {
+			$permission = Permission::firstOrCreate(['name' => $perm]);
+
+			foreach ($roles as $roleName) {
+				$roleVar = 'role_' . strtolower($roleName);
+				if (isset($$roleVar)) {
+					$$roleVar->givePermissionTo($permission);
+				}
+			}
+		}
+	}
 }

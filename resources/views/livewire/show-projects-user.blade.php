@@ -56,10 +56,10 @@
                                                     {{-- @dd($projectsUser) --}}
                                                     @foreach ($projectsUser as $projectAssing)
                                                         <tr>
-                                                            <td>{{ $projectAssing->project_name }}</td>
+                                                            <td>{{ Str::limit($projectAssing->project_name, 30) }}</td>
                                                             <td>{{ $projectAssing->projectStatus->status_name }}</td>
                                                             <td>{{ $projectAssing->pivot->created_at }}</td>
-                                                            @can(abilities: 'unassign.user.project')
+                                                            @can('unassign.user.project')
                                                                 <td><a class="text-reset fs-19 px-1 delete-user-project-btn"
                                                                         wire:click="destroyAlertProject({{ $projectAssing->id }}, '{{ $projectAssing->project_name }}')">
                                                                         <i class="ri-delete-bin-2-line"></i></a></td>

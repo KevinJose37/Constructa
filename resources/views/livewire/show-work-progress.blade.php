@@ -49,17 +49,20 @@
         </div>
 
         {{-- Botón exportar Excel --}}
-        <div class="col-auto">
-            <button type="button" class="btn btn-success" wire:click="exportExcel">
-                <i class="ri-file-excel-line"></i> Exportar Excel
-            </button>
-        </div>
-        <div class="col-auto">
-            <a href="{{ route('printable.report', ['projectId' => $projectId]) }}{{ $filterWeeks ? '?filterWeeks[]=' . implode('&filterWeeks[]=', $filterWeeks) : '' }}"
-                target="_blank" class="btn btn-danger">
-                <i class="ri-file-pdf-line"></i> Informe
-            </a>
-        </div>
+        @can('report.progress')
+            <div class="col-auto">
+                <button type="button" class="btn btn-success" wire:click="exportExcel">
+                    <i class="ri-file-excel-line"></i> Exportar Excel
+                </button>
+            </div>
+            <div class="col-auto">
+                <a href="{{ route('printable.report', ['projectId' => $projectId]) }}{{ $filterWeeks ? '?filterWeeks[]=' . implode('&filterWeeks[]=', $filterWeeks) : '' }}"
+                    target="_blank" class="btn btn-danger">
+                    <i class="ri-file-pdf-line"></i> Informe
+                </a>
+            </div>
+        @endcan
+
 
     </div>
     @foreach ($chapters as $chapter)
@@ -76,9 +79,14 @@
                                     <!-- Usamos colspan para que el título abarque las columnas deseadas -->
                                     <th colspan="2" class="fixed-column text-center"></th>
                                     <th colspan="4" class="text-center">Condiciones contratadas</th>
-                                    <th colspan="3" class="text-center">Balance mayores y menores</th>
+                                    @can('balance.progress')
+                                        <th colspan="3" class="text-center">Balance mayores y menores</th>
+                                    @endcan
                                     <th colspan="2" class="text-center">Cantidades ajustadas balance</th>
-                                    <th colspan="{{ $filterWeeks ? '4' : '1' }}" class="text-center">Avance semana</th>
+                                    @can('weekly.progress')
+                                        <th colspan="{{ $filterWeeks ? '4' : '1' }}" class="text-center">Avance semana</th>
+                                    @endcan
+
                                     <th colspan="1" class="text-center">Evidencias</th>
                                     <th colspan="4" class="text-center">Resumen</th>
                                 </tr>
@@ -123,26 +131,28 @@
                                         <td>${{ number_format($detail->partial_value, 2) }}</td>
                                         {{-- Balance de mayores y menores --}}
 
-                                        {{-- Verificamos si ya existen un balance y de qué tipo --}}
-                                        @if ($detail->balance_quantity && $detail->balance_adjustment)
-                                            {{-- Cantidad --}}
-                                            <td
-                                                class="text-center text-{{ $detail->balance_adjustment == 'up' ? 'success' : 'danger' }}">
-                                                <i class="ri-arrow-{{ $detail->balance_adjustment }}-line">
-                                                    {{ number_format($detail->balance_quantity, 0) }}
-                                            </td>
-                                            {{-- Valor total --}}
-                                            <td class="text-center">
-                                                $ {{ number_format($detail->balance_value, 2) }}</td>
-                                        @else
-                                            <td>{{ number_format($detail->balance_quantity, 0) ?? '-' }}</td>
-                                            <td>$ {{ number_format($detail->balance_value, 2) ?? '-' }}</td>
-                                        @endif
+                                        @can('balance.progress')
+                                            {{-- Verificamos si ya existen un balance y de qué tipo --}}
+                                            @if ($detail->balance_quantity && $detail->balance_adjustment)
+                                                {{-- Cantidad --}}
+                                                <td
+                                                    class="text-center text-{{ $detail->balance_adjustment == 'up' ? 'success' : 'danger' }}">
+                                                    <i class="ri-arrow-{{ $detail->balance_adjustment }}-line">
+                                                        {{ number_format($detail->balance_quantity, 0) }}
+                                                </td>
+                                                {{-- Valor total --}}
+                                                <td class="text-center">
+                                                    $ {{ number_format($detail->balance_value, 2) }}</td>
+                                            @else
+                                                <td>{{ number_format($detail->balance_quantity, 0) ?? '-' }}</td>
+                                                <td>$ {{ number_format($detail->balance_value, 2) ?? '-' }}</td>
+                                            @endif
 
-                                        <td>
-                                            <livewire:balance-workprogress :detail="$detail" :workProgress="$chapter->workProgressChapter"
-                                                :wire:key="'balance-'.$detail->id" />
-                                        </td>
+                                            <td>
+                                                <livewire:balance-workprogress :detail="$detail" :workProgress="$chapter->workProgressChapter"
+                                                    :wire:key="'balance-'.$detail->id" />
+                                            </td>
+                                        @endcan
 
                                         {{--  --}}
                                         <td>{{ number_format($detail->adjusted_quantity, 0) ?? '-' }}</td>
@@ -157,11 +167,14 @@
                                             <td>{{ $detail->execute_percentage_sum ?? '-' }}%
                                             </td>
                                         @endif
-                                        <td>
-                                            <livewire:progress-week :detail="$detail" :workProgress="$chapter->workProgressChapter"
-                                                :week="$filterWeeks"
-                                                :wire:key="'progress-'.$detail->id.md5(serialize($filterWeeks))" />
-                                        </td>
+                                        {{-- Avance semana --}}
+                                        @can('weekly.progress')
+                                            <td>
+                                                <livewire:progress-week :detail="$detail" :workProgress="$chapter->workProgressChapter"
+                                                    :week="$filterWeeks"
+                                                    :wire:key="'progress-'.$detail->id.md5(serialize($filterWeeks))" />
+                                            </td>
+                                        @endcan
                                         <td>
                                             <livewire:weekly-progress-images :detail="$detail" :workProgress="$chapter->workProgressChapter"
                                                 :filterWeeks="$filterWeeks"

@@ -36,6 +36,9 @@
                 </thead>
                 <tbody>
                     @foreach ($purchaseOrder as $order)
+                        @php
+                            $estado = $order->purchaseOrderState?->status;
+                        @endphp
                         <tr id="purchaseOrderRow_{{ $order->id }}" class="d-flex">
                             {{-- Id de la orden --}}
                             <td class="col-md-1" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
@@ -94,70 +97,82 @@
                                         Acciones
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="#" class="dropdown-item text-reset"
-                                                wire:click.prevent="destroyAlert({{ $order->id }})">
-                                                <i class="ri-delete-bin-2-line me-2"></i> Eliminar orden de compra
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="dropdown-item text-reset"
-                                                wire:click.prevent="activeAlert({{ $order->id }})">
-                                                <i
-                                                    class="{{ $order->is_active == true ? 'ri-close-line' : 'ri-check-line' }} me-2"></i>
-                                                {{ $order->is_active == true ? 'Desactivar' : 'Activar' }} orden de
-                                                compra
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}"
-                                                class="dropdown-item text-reset">
-                                                <i class="ri-search-eye-line me-2"></i> Ver orden de compra
-                                            </a>
-                                        </li>
-                                        <li>
-                                            @php
-                                                $estado = $order->purchaseOrderState?->status;
-                                            @endphp
-
-                                            {{-- @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO && auth()->user()->hasRole('Director')) --}}
+                                        @can('delete.purchase')
+                                            <li>
+                                                <a href="#" class="dropdown-item text-reset"
+                                                    wire:click.prevent="destroyAlert({{ $order->id }})">
+                                                    <i class="ri-delete-bin-2-line me-2"></i> Eliminar orden de compra
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('disable.purchase')
                                             @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO)
-                                                <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
-                                                    class="dropdown-item text-reset">
-                                                    <i class="ri-pencil-fill me-2"></i> Editar orden de compra
-                                                </a>
+                                                <li>
+                                                    <a href="#" class="dropdown-item text-reset"
+                                                        wire:click.prevent="activeAlert({{ $order->id }})">
+                                                        <i
+                                                            class="{{ $order->is_active == true ? 'ri-close-line' : 'ri-check-line' }} me-2"></i>
+                                                        {{ $order->is_active == true ? 'Desactivar' : 'Activar' }} orden de
+                                                        compra
+                                                    </a>
+                                                </li>
                                             @endif
-
-                                            @if ($estado == \App\Models\PurchaseOrderState::STATUS_PAGADO)
-                                                <a href="{{ route('purchaseorder.redirect', ['id' => $order->id]) }}"
+                                        @endcan
+                                        @can('view.purchase')
+                                            <li>
+                                                <a href="{{ route('purchaseorder.get', ['id' => $order->id]) }}"
                                                     class="dropdown-item text-reset">
-                                                    <i class="ri-arrow-right-line me-2"></i> Redireccionar materiales
+                                                    <i class="ri-search-eye-line me-2"></i> Ver orden de compra
                                                 </a>
-                                            @endif
-
-
-                                        </li>
+                                            </li>
+                                        @endcan
                                         <li>
-                                            <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}"
-                                                class="dropdown-item text-reset">
-                                                <i class="ri-file-upload-fill me-2"></i> Adjuntos
-                                            </a>
+                                            {{-- @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO && auth()->user()->hasRole('Director')) --}}
+                                            @can('update.purchase')
+                                                @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO)
+                                                    <a href="{{ route('purchaseorder.edit', ['id' => $order->id]) }}"
+                                                        class="dropdown-item text-reset">
+                                                        <i class="ri-pencil-fill me-2"></i> Editar orden de compra
+                                                    </a>
+                                                @endif
+                                            @endcan
+                                            @can('redirect.materials')
+                                                @if ($estado == \App\Models\PurchaseOrderState::STATUS_PAGADO)
+                                                    <a href="{{ route('purchaseorder.redirect', ['id' => $order->id]) }}"
+                                                        class="dropdown-item text-reset">
+                                                        <i class="ri-arrow-right-line me-2"></i> Redireccionar materiales
+                                                    </a>
+                                                @endif
+                                            @endcan
                                         </li>
-                                        <li>
-                                            <a href="#" class="dropdown-item text-reset"
-                                                wire:click="$dispatch('setOrderId', { orderId: {{ $order->id }} })"
-                                                data-bs-toggle="modal" data-bs-target="#editPurchaseOrderInfoModal">
-                                                <i class="ri-information-fill me-2"></i> Información
-                                            </a>
-                                        </li>
+                                        @can('attachment.purchase')
+                                            <li>
+                                                <a href="{{ route('attachments.page', ['invoiceHeaderId' => $order->id]) }}"
+                                                    class="dropdown-item text-reset">
+                                                    <i class="ri-file-upload-fill me-2"></i> Adjuntos
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can('info.purchase')
+                                            <li>
+                                                <a href="#" class="dropdown-item text-reset"
+                                                    wire:click="$dispatch('setOrderId', { orderId: {{ $order->id }} })"
+                                                    data-bs-toggle="modal" data-bs-target="#editPurchaseOrderInfoModal">
+                                                    <i class="ri-information-fill me-2"></i> Información
+                                                </a>
+                                            </li>
+                                        @endcan
                                     </ul>
                                 </div>
                             </td>
 
                             {{-- Editar --}}
-                            {{-- <livewire:edit-purchase-order-info
-                                :wire:key="'edit-purchase-order-' . md5($order->id . '-' . $order->updated_at)"
-                                :orderId="$order->id" /> --}}
+                            @can('info.purchase')
+                                <livewire:edit-purchase-order-info
+                                    :wire:key="'edit-purchase-order-' . md5($order->id . '-' . $order->updated_at)"
+                                    :orderId="$order->id" />
+                            @endcan
+
                         </tr>
 
                         <!-- Fila de detalles -->

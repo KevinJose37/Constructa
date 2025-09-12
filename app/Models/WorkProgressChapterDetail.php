@@ -59,7 +59,7 @@ class WorkProgressChapterDetail extends Model
 				$m->balance_value = $m->unit_value * $m->balance_quantity;
 				// Actualizamos las cantidades ajustadas al balance
 				// [Cantidades contratadas + o - cantidades balance * valor unitario] fórmula tmb
-				$m->adjusted_quantity = $m->contracted_quantity + ($m->balance_adjustment == 'up' ? $m->balance_quantity : -$m->balance_quantity);
+				$m->adjusted_quantity = ( $m->adjusted_quantity ? $m->adjusted_quantity : $m->contracted_quantity )+ ($m->balance_adjustment == 'up' ? $m->balance_quantity : -$m->balance_quantity);
 				$m->adjusted_value = $m->adjusted_quantity * $m->unit_value;
 			}
 			$m->saveQuietly();
@@ -198,7 +198,11 @@ class WorkProgressChapterDetail extends Model
 
 	public function getResumeExecuteValueAttribute()
 	{
-		return $this->resume_value - $this->adjusted_value;
+		if($this->adjusted_quantity){
+			return $this->adjusted_value - $this->resume_value;
+		}
+
+		return $this->partial_value - $this->resume_value;
 	}
 
 	public function getResumeExecutePercentageAttribute()

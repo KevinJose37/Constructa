@@ -20,8 +20,8 @@
                             <label for="colFormLabelSm" class="col col-form-label col-form-label-sm">Retención
                                 %</label>
                             <div class="col-sm-6 d-flex align-items-center">
-                                <input type="number" class="form-control form-control-sm" id="inputRetencion" value="{{ $currentOrder->retention_value }}"
-                                    @disabled(true)>
+                                <input type="number" class="form-control form-control-sm" id="inputRetencion"
+                                    value="{{ $currentOrder->retention_value }}" @disabled(true)>
                             </div>
                         </div>
 
@@ -168,22 +168,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-    @foreach ($currentOrder->invoiceDetails as $index => $detail)
-        <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>
-                <b>{{ $detail->item->name }}</b> <br />
-            </td>
-            <td>{{ $detail->quantity }}</td>
-            <td>{{ $detail->item->unit_measurement }}</td>
-            <td>${{ number_format($detail->price, 2, ',', '.') }}</td>
-            <td>${{ number_format($detail->total_price, 2, ',', '.') }}</td>
-            <td>${{ number_format($detail->iva, 2, ',', '.') }}</td>
-            <td>${{ number_format($detail->price_iva, 2, ',', '.') }}</td>
-            <td>${{ number_format($detail->total_price_iva, 2, ',', '.') }}</td>
-        </tr>
-    @endforeach
-</tbody>
+                                    @foreach ($currentOrder->invoiceDetails as $index => $detail)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>
+                                                <b>{{ $detail->item->name }}</b> <br />
+                                            </td>
+                                            <td>{{ $detail->quantity }}</td>
+                                            <td>{{ $detail->item->unit_measurement }}</td>
+                                            <td>${{ number_format($detail->price, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->total_price, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->iva, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->price_iva, 2, ',', '.') }}</td>
+                                            <td>${{ number_format($detail->total_price_iva, 2, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div> <!-- end table-responsive-->
                     </div> <!-- end col -->
@@ -201,27 +201,27 @@
                     </div> <!-- end col-->
 
                     <div class="col-4">
-    <h6 class="text-muted">Valor antes de IVA:</h6>
-    <p class="fs-13"><strong>Subtotal: </strong> <span>
-        ${{ number_format($currentOrder->subtotal_before_iva, 2, ',', '.') }}</span></p>
-    <p class="fs-13"><strong>IVA: </strong> <span>
-        ${{ number_format($currentOrder->total_iva, 2, ',', '.') }}</span></p>
-    <p class="fs-13"><strong>Valor total: </strong> <span>
-        ${{ number_format($currentOrder->total_with_iva, 2, ',', '.') }}</span></p>
-    <p class="fs-13"><strong>Retención: </strong> <span>
-        ${{ number_format($currentOrder->retention, 2, ',', '.') }}</span></p>
-    <p class="fs-13"><strong>Valor por pagar: </strong> <span>
-        ${{ number_format($currentOrder->total_payable, 2, ',', '.') }}</span></p>
-</div> <!-- end col-->
+                        <h6 class="text-muted">Valor antes de IVA:</h6>
+                        <p class="fs-13"><strong>Subtotal: </strong> <span>
+                                ${{ number_format($currentOrder->subtotal_before_iva, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>IVA: </strong> <span>
+                                ${{ number_format($currentOrder->total_iva, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>Valor total: </strong> <span>
+                                ${{ number_format($currentOrder->total_with_iva, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>Retención: </strong> <span>
+                                ${{ number_format($currentOrder->retention, 2, ',', '.') }}</span></p>
+                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
+                                ${{ number_format($currentOrder->total_payable, 2, ',', '.') }}</span></p>
+                    </div> <!-- end col-->
 
-<div class="col-4">
-    <div class="text-sm-end">
-        <h6 class="text-muted">Valor después de IVA:</h6>
-        <p><b>Sub-total:</b> <span class="float-end">
-            ${{ number_format($currentOrder->total_with_iva, 2, ',', '.') }}</span></p>
-        <h3>${{ number_format($currentOrder->total_payable, 2, ',', '.') }} COP</h3>
-    </div>
-</div> <!-- end col-->
+                    <div class="col-4">
+                        <div class="text-sm-end">
+                            <h6 class="text-muted">Valor después de IVA:</h6>
+                            <p><b>Sub-total:</b> <span class="float-end">
+                                    ${{ number_format($currentOrder->total_with_iva, 2, ',', '.') }}</span></p>
+                            <h3>${{ number_format($currentOrder->total_payable, 2, ',', '.') }} COP</h3>
+                        </div>
+                    </div> <!-- end col-->
 
                 </div>
                 <!-- end row-->
