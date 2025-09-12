@@ -198,7 +198,11 @@ class WorkProgressChapterDetail extends Model
 
 	public function getResumeExecuteValueAttribute()
 	{
-		return $this->resume_value - $this->adjusted_value;
+		if($this->adjusted_quantity){
+			return $this->adjusted_value - $this->resume_value;
+		}
+
+		return $this->partial_value - $this->resume_value;
 	}
 
 	public function getResumeExecutePercentageAttribute()
