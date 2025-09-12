@@ -66,6 +66,20 @@
                         @if ($orderForm->currentSelect)
                             <div class="col-12">
                                 <div class="mb-3">
+                                    <label class="control-label form-label">Cantidad</label>
+                                    <input type="number" class="form-control form-control-sm" id="quantityItem"
+                                        wire:model.live="orderForm.quantityItem" placeholder="Ingrese la cantidad"
+                                        wire:keydown="setTotal">
+                                    @error('orderForm.quantityItem')
+                                        <div
+                                            class="invalid-feedback {{ $errors->has('orderForm.quantityItem') ? 'd-block' : '' }}">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
                                     <label class="control-label form-label">Precio unitario</label>
                                     <input type="text" class="form-control form-control-sm" id="priceUnit"
                                         inputmode="decimal" placeholder="Ingrese el precio"
@@ -75,20 +89,6 @@
                                     @error('orderForm.priceUnit')
                                         <div
                                             class="invalid-feedback {{ $errors->has('orderForm.priceUnit') ? 'd-block' : '' }}">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label class="control-label form-label">Cantidad</label>
-                                    <input type="number" class="form-control form-control-sm" id="quantityItem"
-                                        wire:model.live="orderForm.quantityItem" placeholder="Ingrese la cantidad"
-                                        wire:keydown="setTotal">
-                                    @error('orderForm.quantityItem')
-                                        <div
-                                            class="invalid-feedback {{ $errors->has('orderForm.quantityItem') ? 'd-block' : '' }}">
                                             {{ $message }}
                                         </div>
                                     @enderror

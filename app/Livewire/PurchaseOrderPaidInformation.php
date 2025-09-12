@@ -102,6 +102,10 @@ class PurchaseOrderPaidInformation extends Component
 
 		// Lógica específica basada en el estado actual
 		$paid = $this->order->paidInformation;
+		if($this->orderState->status === PurchaseOrderState::STATUS_PAGADO){
+			return false; // Ya está pagado, no puede hacer click
+		}
+
 		if ($this->orderState->status === PurchaseOrderState::STATUS_PENDIENTE && $paid) {
 			// Para usuarios técnicos (no Residente ni Contador)
 			if ($user->can('approved_tech.purchase')) {
