@@ -36,6 +36,9 @@
                 </thead>
                 <tbody>
                     @foreach ($purchaseOrder as $order)
+                        @php
+                            $estado = $order->purchaseOrderState?->status;
+                        @endphp
                         <tr id="purchaseOrderRow_{{ $order->id }}" class="d-flex">
                             {{-- Id de la orden --}}
                             <td class="col-md-1" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
@@ -103,15 +106,17 @@
                                             </li>
                                         @endcan
                                         @can('disable.purchase')
-                                            <li>
-                                                <a href="#" class="dropdown-item text-reset"
-                                                    wire:click.prevent="activeAlert({{ $order->id }})">
-                                                    <i
-                                                        class="{{ $order->is_active == true ? 'ri-close-line' : 'ri-check-line' }} me-2"></i>
-                                                    {{ $order->is_active == true ? 'Desactivar' : 'Activar' }} orden de
-                                                    compra
-                                                </a>
-                                            </li>
+                                            @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO)
+                                                <li>
+                                                    <a href="#" class="dropdown-item text-reset"
+                                                        wire:click.prevent="activeAlert({{ $order->id }})">
+                                                        <i
+                                                            class="{{ $order->is_active == true ? 'ri-close-line' : 'ri-check-line' }} me-2"></i>
+                                                        {{ $order->is_active == true ? 'Desactivar' : 'Activar' }} orden de
+                                                        compra
+                                                    </a>
+                                                </li>
+                                            @endif
                                         @endcan
                                         @can('view.purchase')
                                             <li>
@@ -122,10 +127,6 @@
                                             </li>
                                         @endcan
                                         <li>
-                                            @php
-                                                $estado = $order->purchaseOrderState?->status;
-                                            @endphp
-
                                             {{-- @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO && auth()->user()->hasRole('Director')) --}}
                                             @can('update.purchase')
                                                 @if ($estado !== \App\Models\PurchaseOrderState::STATUS_PAGADO)
