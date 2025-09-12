@@ -13,7 +13,7 @@ class RealProject extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-     protected $fillable = [
+    protected $fillable = [
         'project_id',
         'id_capitulo',
         'chapter_number',
@@ -34,4 +34,9 @@ class RealProject extends Model
     {
         return $this->hasMany(RealProjectInfo::class, 'real_project_id');
     }
+    public function workProgressChapters()
+    {
+        return $this->hasMany(\App\Models\WorkProgressChapter::class, 'id_capitulo', 'id_capitulo');
+    }
+
 }

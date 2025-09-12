@@ -3,12 +3,19 @@
     <select wire:model="selectedProjectId"
         class="form-select d-inline-block mb-3"
         style="width: 400px; font-size: 1rem; height: 70px;">
+        
         <option value="">Proyección general</option>
-        <option value="1">Proyecto 1</option>
-        <option value="2">Proyecto 2</option>
-        <option value="3">Proyecto 3</option>
+        
+        @foreach($projects as $project)
+            <option value="{{ $project->id }}">
+                {{ $project->project_name }} ({{ $project->entidad_contratante }})
+            </option>
+        @endforeach
     </select>
+    
 </div>
+
+
 <div class="row row-cols-1 row-cols-xxl-6 row-cols-lg-3 row-cols-md-2">
 
 
