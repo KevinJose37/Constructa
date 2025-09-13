@@ -66,6 +66,7 @@
                         @foreach ($chapter->items as $item)
                         @php
                         $sumTotal = bcadd($sumTotal, $item->total, 2);
+
                         $hasAlert = false;
                         $textAlert = '';
 
@@ -95,7 +96,7 @@
                             $hasAlertFisico = true;
                             $textAlertFisico = "El avance físico del ítem {$item->item_number} está por debajo del umbral de {$item->umbral_fisico}%. Avance actual: ".number_format($avanceFisico, 2)."%";
                             }
-                            
+                            }
                             @endphp
                             <tr>
                                 <td class="text-center" colspan="2">{{ $item->item_number }}</td>
