@@ -41,5 +41,9 @@ class WorkProgressChapter extends Model
     {
         return $this->belongsTo(Chapter::class, 'id_capitulo', 'id_capitulo');
     }
+    public function realProject()
+    {
+        return $this->belongsTo(RealProject::class, 'id_capitulo', 'id_capitulo');
+    }
 }
 
