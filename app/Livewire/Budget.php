@@ -20,6 +20,7 @@ class Budget extends Component
 	#[Title('Presupuesto')]
 
 	public $budget;
+	public $project;
 	public $localizacion;
 	public $modalCapitulo = [
 		'numero_capitulo' => '',
@@ -43,8 +44,10 @@ class Budget extends Component
 	{
 		$this->budget = BudgetHeader::where('id_proyecto', $id_presupuesto)->first();
 
+		$project = Project::findOrFail($id_presupuesto);
+		$this->project = $project;
 		if (!$this->budget) {
-			$project = Project::findOrFail($id_presupuesto);
+
 			$this->budget = BudgetHeader::create([
 				'id_proyecto' => $project->id,
 				'descripcion_obra' => $project->project_description,

@@ -1,6 +1,16 @@
 <div>
-    <x-page-title
-        title="{{ $project ? 'Chat del proyecto ' . $project->project_name : 'Chat por proyectos' }}"></x-page-title>
+    <div class="mb-4 d-flex align-items-center gap-3 flex-wrap">
+        <x-page-title title="{{ $project ? 'Chat' : 'Chat por proyectos' }}">
+        </x-page-title>
+
+        @if ($project)
+            <span class="badge bg-primary text-white fs-6 shadow-sm px-3 py-2 rounded-pill"
+                style="font-weight: 600; letter-spacing: 0.05em;">
+                Proyecto: {{ $project->project_name }}
+            </span>
+        @endif
+    </div>
+
 
     <div class="row">
         <div class="col-xl-8 col-lg-7">

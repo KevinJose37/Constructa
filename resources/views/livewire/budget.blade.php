@@ -1,5 +1,14 @@
 <div class="card">
     <div class="card-body">
+        @if ($project)
+            <div class="mb-4 d-flex align-items-center gap-3 flex-wrap">
+                <span class="badge bg-primary text-white fs-6 shadow-sm px-3 py-2 rounded-pill"
+                    style="font-weight: 600; letter-spacing: 0.05em;">
+                    Proyecto: {{ $project->project_name }}
+                </span>
+
+            </div>
+        @endif
         <div class="table-responsive-sm mb-3">
             <table class="table table-bordered table-centered mb-3">
                 <thead class="table-dark">
