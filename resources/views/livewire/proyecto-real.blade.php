@@ -62,10 +62,34 @@
                             @php
                                 $sumTotal = 0;
                             @endphp
-							{{-- @dd($chapter->workProgressChapters); --}}
+                            {{-- @dd($chapter->workProgressChapters); --}}
                             @foreach ($chapter->items as $item)
                                 @php
                                     $sumTotal = bcadd($sumTotal, $item->total, 2);
+									$hasAlert = false;
+									$textAlert = '';
+
+									$hasAlertFisico = false;
+									$textAlertFisico = '';
+
+									// Cálculo umbral financiero
+									$div = ($item->workProgressDetails->adjusted_value) ?? $item->workProgressDetails->partial_value;
+									// Valor ejecutado / (valor total ajustado si existe o valor contratado) ¨* 100
+									$avanceFinanciero = ($sumTotal / $div) * 100;
+									if($avanceFinanciero > $item->umbral_financiero){
+										$hasAlert = true;
+										$textAlert = 'El avance financiero del ítem ' . $item->item_number . ' ha superado el umbral financiero del ' . $item->umbral_financiero . '%. Avance actual: ' . number_format($avanceFinanciero, 2) . '%.';
+									}
+
+									// Cálculo umbral físico
+									$divFisico = ($item->workProgressDetails->adjusted_quantity) ?? $item->workProgressDetails->contracted_quantity;
+									// Cantidad ejecutada / (cantidad total ajustada si existe o cantidad contratada) * 100
+									$avanceFisico = ($item->workProgressDetails->resume_quantity / $divFisico) * 100;
+									if($avanceFisico < $item->umbral_fisico){
+										$hasAlertFisico = true;
+										$textAlertFisico = 'El avance físico del ítem ' . $item->item_number . ' está por debajo del umbral físico del ' . $item->umbral_fisico . '%. Avance actual: ' . number_format($avanceFisico, 2) . '%.';
+									}
+
                                 @endphp
                                 <tr>
                                     <td class="text-center" colspan="2">{{ $item->item_number }}</td>
