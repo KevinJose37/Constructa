@@ -82,6 +82,10 @@ class ProgressWeek extends Component
 
 	public function render()
 	{
+		$this->weeksSelect = \App\Models\WeekProject::where('project_id', $this->workProgress->project_id)
+			->orderBy('start_date')
+			->get();
+
 		return view('livewire.progress-week');
 	}
 }
