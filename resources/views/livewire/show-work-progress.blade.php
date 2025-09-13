@@ -1,5 +1,13 @@
 <div>
-    <x-page-title title="Progreso de obra"></x-page-title>
+    <div class="mb-4 d-flex align-items-center gap-3 flex-wrap">
+        <x-page-title title="Progreso de obra"></x-page-title>
+        @if ($project)
+            <span class="badge bg-primary text-white fs-6 shadow-sm px-3 py-2 rounded-pill"
+                style="font-weight: 600; letter-spacing: 0.05em;">
+                Proyecto: {{ $project->project_name }}
+            </span>
+        @endif
+    </div>
     <div class="row mb-2">
         {{-- Chips de semanas seleccionadas --}}
         <div class="col-auto">

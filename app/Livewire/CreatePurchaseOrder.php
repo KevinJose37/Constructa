@@ -23,6 +23,7 @@ class CreatePurchaseOrder extends Component
 	public $selectedItems = [];
 	public $attachmentsValid = false; // Propiedad para saber si los archivos son válidos
 	public $isViewMode = false;
+	public $project;
 	// [CACHE]
 	public $hasCache = false;
 	public $cacheProperties = ['attachmentsValid', 'isViewMode', 'order', 'invoiceHeader'];
@@ -42,6 +43,7 @@ class CreatePurchaseOrder extends Component
 		$this->project_id = $id;
 		$this->responsible_name = Auth::user()->name;
 		$currentProject = $projectServices->getById($this->project_id);
+		$this->project = $currentProject;
 
 		if (!$currentProject || is_null($currentProject)) {
 			$this->redirect('/proyectos');

@@ -1,4 +1,13 @@
 <div class="container my-4">
+    @if (isset($project))
+        <div class="mb-4 d-flex align-items-center gap-3 flex-wrap">
+            <span class="badge bg-primary text-white fs-6 shadow-sm px-3 py-2 rounded-pill"
+                style="font-weight: 600; letter-spacing: 0.05em;">
+                Proyecto: {{ $project->project_name }}
+            </span>
+
+        </div>
+    @endif
     <div class="card shadow rounded-4">
         <div class="card-body p-4">
             <h3 class="mb-4">
@@ -12,8 +21,9 @@
             <!-- Order Name -->
             <div class="mb-4">
                 <label for="inputApodo" class="form-label">Nombre de la orden</label>
-                <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputApodo" placeholder="Identifique esta orden de compra"
-                    wire:model.lazy="order_name" @disabled($isViewMode)>
+                <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputApodo"
+                    placeholder="Identifique esta orden de compra" wire:model.lazy="order_name"
+                    @disabled($isViewMode)>
                 @error('order_name')
                     <div class="invalid-feedback d-block">
                         {{ $message }}
@@ -73,8 +83,8 @@
 
                         <div class="mb-3">
                             <label for="inputRetencion" class="form-label">Retención (%)</label>
-                            <input type="number" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputRetencion"
-                                wire:model.lazy="retencionPercentage" @disabled($isViewMode)
+                            <input type="number" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                                id="inputRetencion" wire:model.lazy="retencionPercentage" @disabled($isViewMode)
                                 @if (!$isViewMode) wire:keydown="updateTotals" @endif>
                             @error('retencionPercentage')
                                 <div class="invalid-feedback d-block">
@@ -92,8 +102,8 @@
 
                         <div class="mb-3">
                             <label for="inputEmpresa" class="form-label">Empresa</label>
-                            <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputEmpresa" wire:model.lazy="company_name"
-                                @disabled($isViewMode)>
+                            <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                                id="inputEmpresa" wire:model.lazy="company_name" @disabled($isViewMode)>
                             @error('company_name')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -103,8 +113,8 @@
 
                         <div class="mb-3">
                             <label for="inputSNit" class="form-label">NIT Empresa</label>
-                            <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputSNit" wire:model.lazy="company_nit"
-                                @disabled($isViewMode)>
+                            <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                                id="inputSNit" wire:model.lazy="company_nit" @disabled($isViewMode)>
                             @error('company_nit')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -114,8 +124,8 @@
 
                         <div class="mb-3">
                             <label for="inputTele" class="form-label">Teléfono</label>
-                            <input type="tel" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputTele" wire:model.lazy="phone"
-                                @disabled($isViewMode)>
+                            <input type="tel" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                                id="inputTele" wire:model.lazy="phone" @disabled($isViewMode)>
                             @error('phone')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -125,8 +135,8 @@
 
                         <div class="mb-3">
                             <label for="inputDestin" class="form-label">Destino Material</label>
-                            <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputDestin"
-                                wire:model.lazy="material_destination" @disabled($isViewMode)>
+                            <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                                id="inputDestin" wire:model.lazy="material_destination" @disabled($isViewMode)>
                             @error('material_destination')
                                 <div class="invalid-feedback d-block">
                                     {{ $message }}
@@ -164,8 +174,8 @@
 
                     <div class="col-md-4">
                         <label for="inputBank" class="form-label">Banco</label>
-                        <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputBank" wire:model.lazy="bank_name"
-                            @disabled($isViewMode)>
+                        <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                            id="inputBank" wire:model.lazy="bank_name" @disabled($isViewMode)>
                         @error('bank_name')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -175,8 +185,8 @@
 
                     <div class="col-md-2">
                         <label for="inputAccountType" class="form-label">Tipo de Cuenta</label>
-                        <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputAccountType"
-                            wire:model.lazy="account_type" @disabled($isViewMode)>
+                        <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                            id="inputAccountType" wire:model.lazy="account_type" @disabled($isViewMode)>
                         @error('account_type')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
@@ -186,8 +196,8 @@
 
                     <div class="col-md-2">
                         <label for="inputAccountNumber" class="form-label">N° Cuenta</label>
-                        <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10" id="inputAccountNumber"
-                            wire:model.lazy="account_number" @disabled($isViewMode)>
+                        <input type="text" class="form-control bg-primary p-2 text-dark bg-opacity-10"
+                            id="inputAccountNumber" wire:model.lazy="account_number" @disabled($isViewMode)>
                         @error('account_number')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}

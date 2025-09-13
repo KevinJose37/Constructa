@@ -101,13 +101,20 @@
 
         <!-- Totales alineados a la derecha, con espacio y responsive -->
         <div class="d-flex justify-content-end flex-column flex-sm-row gap-3 mt-3">
-            <h5 class="mb-0">Total órdenes de compra:
-                <strong>${{ number_format($totalPayable, 2, '.', ',') }}</strong>
+            <h5 class="mb-0">
+                Total órdenes de compra:
+                <span class="badge bg-primary fs-5">
+                    ${{ number_format($totalPayable, 2, '.', ',') }}
+                </span>
             </h5>
-            <h5 class="mb-0">Valor parcial incluido IVA:
-                <strong>${{ number_format($totalPriceIva, 2, '.', ',') }}</strong>
+            <h5 class="mb-0">
+                Valor parcial incluido IVA:
+                <span class="badge bg-success fs-5">
+                    ${{ number_format($totalPriceIva, 2, '.', ',') }}
+                </span>
             </h5>
         </div>
+
 
         <!-- Paginación centrada -->
         <div class="mt-3 d-flex justify-content-center">

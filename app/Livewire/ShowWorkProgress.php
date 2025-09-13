@@ -17,6 +17,7 @@ class ShowWorkProgress extends Component
 	public $chapters = [];
 	public $originalChapters;
 	public $projectId;
+	public $project;
 	public $weeks = [];
 	public array $filterWeeks = [];
 	public $selectedWeek = null;
@@ -25,6 +26,8 @@ class ShowWorkProgress extends Component
 	public function mount($id)
 	{
 		$this->projectId = $id;
+		$this->project = \App\Models\Project::find($id);
+
 
 		// Cargar todos los capítulos con sus avances y detalles
 		$this->chapters = Chapter::with('workProgressChapter.details', 'workProgressChapter.details.weeklyProgresses')
