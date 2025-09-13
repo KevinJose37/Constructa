@@ -1,0 +1,11 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/tecnoato/testing.tecnoatom.com/
+    - /bin/cp -R * $DEPLOYPATH
+    - cd $DEPLOYPATH
+    - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+    - php artisan migrate --force
+    - php artisan config:clear
+    - php artisan route:clear
+    - php artisan cache:clear
+    - php artisan view:clear
