@@ -123,14 +123,14 @@
                                                 <span class="text-danger mx-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="{{ $textAlert }}"
                                                     style="cursor: help;">
-                                                    <i class="ri-error-warning-line"></i>
+                                                    <i class="ri-error-warning-fill"></i>
                                                 </span>
                                             @endif
                                             @if ($hasAlertFisico)
                                                 <span class="text-warning mx-1" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title="{{ $textAlertFisico }}"
                                                     style="cursor: help;">
-                                                    <i class="ri-error-warning-line"></i>
+                                                    <i class="ri-error-warning-fill"></i>
                                                 </span>
                                             @endif
                                         @else
