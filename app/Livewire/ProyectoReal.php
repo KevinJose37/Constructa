@@ -255,6 +255,7 @@ class ProyectoReal extends Component
 		$this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])
 			->where('chapter_id', $chapterId)
 			->where('item_id', $itemId)
+			->has('invoiceDetail')
 			->get();
 
 		// Calcular total
@@ -264,14 +265,10 @@ class ProyectoReal extends Component
 
 		// Verificar si no hay resultados
 		if ($this->currentItemsRedirect->isEmpty()) {
-			$this->dispatch('alert', [
-				'type' => 'info',
-				'title' => 'Proyecto real',
-				'message' => 'Este Item aún no tiene materiales direccionados'
-			]);
+			$this->dispatch('alert', type: 'error', title: 'Proyecto real', message: 'No hay items redireccionados para este ítem.');
+
 			return;
 		}
-
 		$this->dispatch('open-modal', 'itemsModal');
 	}
 
@@ -279,6 +276,7 @@ class ProyectoReal extends Component
 	{
 		$chapters = RealProject::where('project_id', $this->project->id)
 			->with('items')
+			->with('workProgressChapters.details')
 			->get();
 
 		return view('livewire.proyecto-real', compact('chapters'));

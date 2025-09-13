@@ -62,6 +62,7 @@
                             @php
                                 $sumTotal = 0;
                             @endphp
+							{{-- @dd($chapter->workProgressChapters); --}}
                             @foreach ($chapter->items as $item)
                                 @php
                                     $sumTotal = bcadd($sumTotal, $item->total, 2);

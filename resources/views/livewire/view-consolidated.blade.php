@@ -1,18 +1,37 @@
 <div>
-    <x-page-title title="Tabla de consolidado"></x-page-title>
+    <div class="mb-4 d-flex align-items-center gap-3 flex-wrap">
+        <x-page-title title="Tabla de consolidado"></x-page-title>
+        @if ($project)
+            <span class="badge bg-primary text-white fs-6 shadow-sm px-3 py-2 rounded-pill"
+                style="font-weight: 600; letter-spacing: 0.05em;">
+                Proyecto: {{ $project->project_name }}
+            </span>
+        @endif
+    </div>
+
+
     <x-table>
-        <div class="row w-100 w-25">
-            <div class="col-lg-6 w-25">
+        <!-- Fila para el filtro de búsqueda: centrado y con tamaño optimizado -->
+        <div class="row mb-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                 <div class="input-group">
-                    <button class="btn btn-primary"><i class="ri-search-line"></i></button>
-                    <input type="text" name="filter" class="form-control" placeholder="Buscar material" wire:model.live="search">
-                    <button class="btn" id="clear-filter" wire:click="$set('search', '')"><i class="ri-close-line"></i></button>
+                    <button class="btn btn-primary" type="button" aria-label="Buscar">
+                        <i class="ri-search-line"></i>
+                    </button>
+                    <input type="text" name="filter" class="form-control" placeholder="Buscar material"
+                        wire:model.live="search" aria-label="Buscar material">
+                    <button class="btn btn-danger" id="clear-filter" wire:click="$set('search', '')" type="button"
+                        aria-label="Limpiar búsqueda">
+                        <i class="ri-close-line"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="table-responsive" >
-            <table class="table table-striped table-centered mb-0">
-                <thead class="table-dark">
+
+        <!-- Tabla responsive con scroll horizontal -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-centered mb-0 align-middle">
+                <thead class="table-dark text-nowrap">
                     <tr>
                         <th>ORDEN DE COMPRA</th>
                         <th>ITEM</th>
@@ -24,7 +43,7 @@
                         <th>IVA (%)</th>
                         <th>VALOR UNITARIO INCLUIDO IVA</th>
                         <th>VALOR PARCIAL INCLUIDO IVA</th>
-                        <th>RETENCIÓN (%)</th> <!-- Nueva columna -->
+                        <th>RETENCIÓN (%)</th>
                         <th>VALOR RETENCIÓN</th>
                         <th>VALOR TOTAL INCLUIDO IVA Y RETENCIÓN</th>
                         <th>EMPRESA</th>
@@ -39,7 +58,7 @@
                         <th>Es Caja Menor?</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-nowrap">
                     @foreach ($purchaseOrder as $order)
                         @php $itemCounter = 1; @endphp
                         @foreach ($order->invoiceDetails as $detail)
@@ -59,14 +78,15 @@
                                 <td>{{ $detail->iva }}</td>
                                 <td>${{ number_format($detail->price_iva, 2, '.', ',') }}</td>
                                 <td>${{ number_format($detail->total_price_iva, 2, '.', ',') }}</td>
-                                <td>{{ $retentionPercentage }}%</td> <!-- Muestra el porcentaje de retención -->
+                                <td>{{ $retentionPercentage }}%</td>
                                 <td>${{ number_format($retentionValue, 2, '.', ',') }}</td>
                                 <td>${{ number_format($totalWithRetention, 2, '.', ',') }}</td>
                                 <td>{{ $order->company_name }}</td>
                                 <td>{{ $order->phone }}</td>
                                 <td>{{ $order->material_destination }}</td>
                                 <td>{{ $order->paymentMethod->payment_name }}</td>
-                                <td>{{ $order->bank_name }} - {{ $order->account_type }} - {{ $order->account_number }}</td>
+                                <td>{{ $order->bank_name }} - {{ $order->account_type }} -
+                                    {{ $order->account_number }}</td>
                                 <td>{{ $order->supportType->support_name }}</td>
                                 <td>{{ $order->has_support ? 'Sí' : 'No' }}</td>
                                 <td>{{ $order->payment_date }}</td>
@@ -77,14 +97,21 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="text-end mt-3">
-                <div class="float-end mt-3 mt-sm-0">
-                    <h4>Total órdenes de compra: ${{ number_format($totalPayable, 2, '.', ',') }}</h4>
-                    <h4>Valor parcial incluido IVA: ${{ number_format($totalPriceIva, 2, '.', ',') }}</h4>
-                </div>
-            </div>
         </div>
 
-        {{ $purchaseOrder->links(data: ['scrollTo' => false]) }}
+        <!-- Totales alineados a la derecha, con espacio y responsive -->
+        <div class="d-flex justify-content-end flex-column flex-sm-row gap-3 mt-3">
+            <h5 class="mb-0">Total órdenes de compra:
+                <strong>${{ number_format($totalPayable, 2, '.', ',') }}</strong>
+            </h5>
+            <h5 class="mb-0">Valor parcial incluido IVA:
+                <strong>${{ number_format($totalPriceIva, 2, '.', ',') }}</strong>
+            </h5>
+        </div>
+
+        <!-- Paginación centrada -->
+        <div class="mt-3 d-flex justify-content-center">
+            {{ $purchaseOrder->links(data: ['scrollTo' => false]) }}
+        </div>
     </x-table>
 </div>

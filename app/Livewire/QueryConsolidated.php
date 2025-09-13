@@ -16,10 +16,12 @@ class QueryConsolidated extends Component
     public $totalPayable = 0;
     public $totalPriceIva = 0;
     public $project_id;
+	public $project;
 
     public function mount($id)
     {
         $this->project_id = $id;
+		$this->project = \App\Models\Project::find($id);
     }
 
     #[Layout('layouts.app')]

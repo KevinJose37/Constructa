@@ -211,7 +211,7 @@ class WorkProgressChapterDetail extends Model
 		$quantity = $this->adjusted_quantity;
 		if (!$this->adjusted_quantity || $this->adjusted_quantity == 0) {
 			$quantity = $this->contracted_quantity;
-		} 
+		}
 
 		if (!$quantity || $quantity == 0) {
 			return 0;
