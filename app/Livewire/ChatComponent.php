@@ -24,7 +24,8 @@ class ChatComponent extends Component
     use WithFileUploads;
     public $attachments = [];
 
-    public function mount($id = null, ProjectServices $projectServices)
+    public function mount(ProjectServices $projectServices, $id = null)
+
     {
 
         if (!is_null($id) && is_object($id)) {
