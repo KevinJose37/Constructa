@@ -62,6 +62,7 @@
             </tbody>
         </table>
         {{ $materials->links() }}
+
     </x-table>
 
     <livewire:create-material-modal />
