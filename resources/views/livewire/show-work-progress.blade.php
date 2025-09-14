@@ -217,65 +217,50 @@
             text-align: left;
             font-size: 1.5em;
             font-weight: bold;
-            color: #333;
+            color: #49526b;
             border: 1px solid #ddd;
         }
 
-        .border-right {
-            border-right: 1px solid gray;
-        }
+   /* Primera columna (Items) */
+td.fixed-column:first-child,
+th.fixed-column:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    background-color: #fff; /* fallback */
+}
 
-        .text-center {
-            text-align: center;
-        }
+/* Segunda columna (Descripción) */
+td.fixed-column:nth-of-type(2),
+th.fixed-column:nth-of-type(2) {
+    position: sticky;
+    left: 100px; /* ancho de la primera */
+    z-index: 2;
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    background-color: #fff; /* fallback */
+}
 
-        .text-right {
-            text-align: right;
-        }
+/* Colores según stripe */
+.table-striped tbody tr:nth-of-type(odd) td.fixed-column {
+    background-color: #ffffff !important; /* filas blancas */
+}
 
-        /* Estilos para las columnas fijas */
-        .table-container {
-            position: relative;
-            overflow-x: auto;
-            width: 100%;
-        }
+.table-striped tbody tr:nth-of-type(even) td.fixed-column {
+    background-color: #ffffffff !important; /* filas grises de Bootstrap */
+}
 
-        .fixed-column {
-            position: sticky;
-            left: 0;
-            background-color: white;
-            z-index: 1;
-        }
+/* Encabezado sticky */
+thead th.fixed-column {
+    z-index: 3;
+    background-color: #49526b !important; /* tu color de header */
+    color: #fff;
+}
 
-        /* Asegurar que la segunda columna fija esté al lado de la primera */
-        th.fixed-column:nth-child(2),
-        td.fixed-column:nth-child(2) {
-            left: 50px;
-            /* Ajusta este valor según el ancho de tu primera columna */
-        }
-
-        /* Estilo para el thead fijo */
-        thead th.fixed-column {
-            z-index: 2;
-            background-color: #f8f9fa;
-            /* Color de fondo del header */
-        }
-
-        th.fixed-column,
-        td.fixed-column {
-            width: 50px;
-            min-width: 50px;
-            max-width: 70px;
-            word-wrap: break-word;
-        }
-
-        th.fixed-column:nth-child(2),
-        td.fixed-column:nth-child(2) {
-            width: 200px;
-            /* Ancho más grande para la descripción */
-            min-width: 200px;
-            max-width: 200px;
-        }
     </style>
 </div>
 

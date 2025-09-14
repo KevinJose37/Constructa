@@ -1,26 +1,31 @@
 <?php
-use Illuminate\Support\Facades\Artisan;
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
-$app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
-// Obtener token desde query string
+// Token de seguridad
 $token = $_GET['token'] ?? null;
-
-// Leer el token correcto desde el .env
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 $validToken = $_ENV['DEPLOY_SECRET'] ?? null;
 
-// Validar
 if ($token !== $validToken) {
     http_response_code(403);
-    exit("Acceso denegado.");
+    exit("Acceso denegado ❌");
 }
 
-// Ejecutar migraciones
-Artisan::call('migrate', ['--force' => true]);
+// Comando a ejecutar
+$command = $_GET['command'] ?? 'storage:link';
 
-echo "Migraciones ejecutadas correctamente ✅\n";
+try {
+    // ✅ Ejecutar usando el kernel
+    $status = $kernel->call($command);
+    $output = $kernel->output();
+
+    echo "Comando ejecutado: php artisan {$command}\n";
+    echo "<pre>" . htmlspecialchars($output) . "</pre>";
+} catch (\Exception $e) {
+    echo "Error al ejecutar el comando: " . $e->getMessage();
+}
