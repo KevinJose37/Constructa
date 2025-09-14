@@ -6,22 +6,22 @@
             <!-- Topbar Brand Logo -->
             <div class="logo-topbar">
                 <!-- Logo light -->
-                <a href="index.html" class="logo-light">
+                <a href="{{ route('dashboard') }}" class="logo-light">
                     <span class="logo-lg">
                         <img src="{{ asset('assets/images/constructa.png') }}" alt="logo">
                     </span>
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
+                        <img src="{{ asset('assets/images/constructados.png') }}" alt="small logo">
                     </span>
                 </a>
 
                 <!-- Logo Dark -->
-                <a href="index.html" class="logo-dark">
+                <a href="{{ route('dashboard') }}" class="logo-dark">
                     <span class="logo-lg">
                         <img src="{{ asset('assets/images/constructa.png') }}" alt="dark logo">
                     </span>
                     <span class="logo-sm">
-                        <img src="{{ asset('assets/images/logo-sm.png') }}" alt="small logo">
+                        <img src="{{ asset('assets/images/constructados.png') }}" alt="small logo">
                     </span>
                 </a>
             </div>
@@ -42,18 +42,7 @@
         </div>
 
         <ul class="topbar-menu d-flex align-items-center gap-3">
-            <li class="dropdown d-lg-none">
-                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button"
-                    aria-haspopup="false" aria-expanded="false">
-                    <i class="ri-search-line fs-22"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg p-0">
-                    <form class="p-3">
-                        <input type="search" class="form-control" placeholder="Search ..."
-                            aria-label="Recipient's username">
-                    </form>
-                </div>
-            </li>
+            
             <li class="d-none d-sm-inline-block">
                 <div class="nav-link" id="light-dark-mode">
                     <i class="ri-moon-fill fs-22"></i>

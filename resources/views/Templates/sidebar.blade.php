@@ -3,7 +3,7 @@
     <!-- Brand Logo Light -->
     <a href="{{ route('dashboard') }}" class="logo logo-light">
         <span class="logo-lg">
-            <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" width="200">
+            <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" style="width: 200px;  height: 70px;">
         </span>
         <span class="logo-sm">
             <img src="{{ asset('assets/images/constructados.png') }}" alt="small logo">
@@ -13,7 +13,6 @@
     <a href="{{ route('dashboard') }}" class="logo logo-dark">
         <span class="logo-lg">
             <img src="{{ asset('assets/images/constructa.png') }}" alt="logo" style="width: 200px;  height: 70px;">
-            <!-- Ajusta los valores según necesites -->
         </span>
         <span class="logo-sm">
             <img src="{{ asset('assets/images/constructados.png') }}" alt="small logo">
