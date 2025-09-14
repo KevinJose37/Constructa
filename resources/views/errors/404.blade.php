@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Error 500 </title>
+        <title>Error 404 </title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Coderthemes" name="author" />
         <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" />
