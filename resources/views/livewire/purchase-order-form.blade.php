@@ -12,7 +12,7 @@
         <div class="card-body p-4">
             <h3 class="mb-4">
                 @if ($isViewMode)
-                    Orden de compra n°{{ $order->id }}
+                    Orden de compra n°{{ $order->invoice_number }}
                 @else
                     Orden de compra #{{ $lastInvoiceId + 1 }}
                 @endif

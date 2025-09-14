@@ -25,7 +25,7 @@ class BudgetHeader extends Model
         // Crear duplicado en real_projects al crear un presupuesto
         static::created(function ($budget) {
             $realProject = RealProject::create([
-                'id_proyecto'     => $budget->id_proyecto,
+                'project_id'     => $budget->id_proyecto,
                 'descripcion_obra'=> $budget->descripcion_obra,
                 'localizacion'    => $budget->localizacion,
                 'fecha'           => $budget->fecha

@@ -54,7 +54,8 @@ class CreatePurchaseOrder extends Component
 		$this->contractor_nit = $currentProject->nit;
 
 		// Obtener el último ID de la orden de compra para el proyecto específico
-		$this->lastInvoiceId = InvoiceHeader::where('project_id', $this->project_id)->max('id');
+		$this->lastInvoiceId = InvoiceHeader::where('project_id', $this->project_id)->count();
+
 
 		// Verificar si hay cache guardado
 		$hasCacheKey = $this->getCacheKey('hasCache');
@@ -335,7 +336,7 @@ class CreatePurchaseOrder extends Component
 			$totalPayable = floatval($this->clearFormat($this->totalPay));
 
 			$accountType = $this->account_type ?: 'N/A';
-
+			$lastInvoiceId = InvoiceHeader::where('project_id', $this->project_id)->count() + 1;
 			$invoiceHeader = InvoiceHeader::create([
 				'date' => $this->currentDate,
 				'order_name' => $this->order_name,
@@ -358,6 +359,7 @@ class CreatePurchaseOrder extends Component
 				'total_with_iva' => $totalWithIva,
 				'retention' => $retention,
 				'total_payable' => $totalPayable,
+				'invoice_number'  => $lastInvoiceId,
 				'retention_value' => is_numeric($this->retencionPercentage)
 					? floatval(str_replace(',', '.', $this->retencionPercentage))
 					: 0.00,

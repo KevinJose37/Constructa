@@ -43,7 +43,8 @@ class InvoiceHeader extends Model
         'total_payable',
         'payment_info_id',
         'retention_value',
-        'is_active'
+        'is_active',
+        'invoice_number'
     ];
 
     // Definir relaciones si es necesario
