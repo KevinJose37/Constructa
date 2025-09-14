@@ -317,62 +317,51 @@
 
             <!-- end row -->
             <div class="row mt-4">
-                <div class="col-4">
-                    <div class="form-floating">
-                        <textarea class="form-control" placeholder="Deje un comentario aquí" id="floatingTextarea"
-                            wire:model.lazy="general_observations" @disabled($isViewMode)></textarea>
-                        <label for="floatingTextarea">Observaciones Generales</label>
-                        @error('general_observations')
-                            <div class="invalid-feedback d-block">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                </div> <!-- end col-->
+    <!-- Observaciones -->
+    <div class="col-12 col-md-4">
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Deje un comentario aquí" id="floatingTextarea"
+                wire:model.lazy="general_observations" @disabled($isViewMode)></textarea>
+            <label for="floatingTextarea">Observaciones Generales</label>
+            @error('general_observations')
+                <div class="invalid-feedback d-block">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+    </div> <!-- end col-->
 
-                <div class="col-4">
-                    <h6 class="text-muted">Valor antes de IVA:</h6>
-                    @if ($isViewMode)
-                        <p class="fs-13"><strong>Subtotal: </strong> <span>
-                                ${{ number_format($order->subtotal_before_iva, 2, ',', '.') }}</span></p>
-                        <p class="fs-13"><strong>IVA: </strong> <span>
-                                ${{ number_format($order->total_iva, 2, ',', '.') }}</span></p>
-                        <p class="fs-13"><strong>Valor total: </strong> <span>
-                                ${{ number_format($order->total_with_iva, 2, ',', '.') }}</span></p>
-                        <p class="fs-13"><strong>Retención: </strong> <span>
-                                ${{ number_format($order->retention, 2, ',', '.') }}</span></p>
-                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
-                                ${{ number_format($order->total_payable, 2, ',', '.') }}</span></p>
-                    @else
-                        <p class="fs-13"><strong>Subtotal: </strong> <span>
-                                ${{ $totalPurchase }}</span></p>
-                        <p class="fs-13"><strong>IVA: </strong> <span>
-                                ${{ $totalIVA }}</span></p>
-                        <p class="fs-13"><strong>Valor total: </strong> <span>
-                                ${{ $totalPurchaseIva }}</span></p>
-                        <p class="fs-13"><strong>Retención: </strong> <span>
-                                ${{ $retencion }}</span></p>
-                        <p class="fs-13"><strong>Valor por pagar: </strong> <span>
-                                ${{ $totalPay }}</span></p>
-                    @endif
-                </div> <!-- end col-->
+                <!-- Valor antes de IVA -->
+    <div class="col-12 col-md-4 mt-3 mt-md-0">
+        <h6 class="text-muted">Valor antes de IVA:</h6>
+        @if ($isViewMode)
+            <p class="fs-13"><strong>Subtotal: </strong> <span>${{ number_format($order->subtotal_before_iva, 2, ',', '.') }}</span></p>
+            <p class="fs-13"><strong>IVA: </strong> <span>${{ number_format($order->total_iva, 2, ',', '.') }}</span></p>
+            <p class="fs-13"><strong>Valor total: </strong> <span>${{ number_format($order->total_with_iva, 2, ',', '.') }}</span></p>
+            <p class="fs-13"><strong>Retención: </strong> <span>${{ number_format($order->retention, 2, ',', '.') }}</span></p>
+            <p class="fs-13"><strong>Valor por pagar: </strong> <span>${{ number_format($order->total_payable, 2, ',', '.') }}</span></p>
+        @else
+            <p class="fs-13"><strong>Subtotal: </strong> <span>${{ $totalPurchase }}</span></p>
+            <p class="fs-13"><strong>IVA: </strong> <span>${{ $totalIVA }}</span></p>
+            <p class="fs-13"><strong>Valor total: </strong> <span>${{ $totalPurchaseIva }}</span></p>
+            <p class="fs-13"><strong>Retención: </strong> <span>${{ $retencion }}</span></p>
+            <p class="fs-13"><strong>Valor por pagar: </strong> <span>${{ $totalPay }}</span></p>
+        @endif
+    </div> <!-- end col-->
 
-                <div class="col-4">
-                    <div class="text-sm-end">
-                        <h6 class="text-muted">Valor después de IVA:</h6>
-                        @if ($isViewMode)
-                            <p><b>Sub-total:</b> <span class="float-end">
-                                    ${{ number_format($order->total_with_iva, 2, ',', '.') }}</span>
-                            </p>
-                            <h3>${{ number_format($order->total_payable, 2, ',', '.') }} COP</h3>
-                        @else
-                            <p><b>Sub-total:</b> <span class="float-end">
-                                    ${{ $totalPurchaseIva }}</span>
-                            </p>
-                            <h3>${{ $totalPay }} COP</h3>
-                        @endif
-                    </div>
-                </div> <!-- end col-->
+    <!-- Valor después de IVA -->
+    <div class="col-12 col-md-4 mt-3 mt-md-0">
+        <div class="text-md-end">
+            <h6 class="text-muted">Valor después de IVA:</h6>
+            @if ($isViewMode)
+                <p><b>Sub-total:</b> <span>${{ number_format($order->total_with_iva, 2, ',', '.') }}</span></p>
+                <h3>${{ number_format($order->total_payable, 2, ',', '.') }} COP</h3>
+            @else
+                <p><b>Sub-total:</b> <span>${{ $totalPurchaseIva }}</span></p>
+                <h3>${{ $totalPay }} COP</h3>
+            @endif
+        </div>
+    </div> <!-- end col-->
 
                 <div class="d-print-none mt-4">
                     <div class="text-end">
