@@ -1,21 +1,35 @@
 <div>
     <x-page-title title="Tabla de Usuarios"></x-page-title>
+
     <x-table>
-        <div class="row w-100">
-            <div class="col-lg-6 w-25">
-                <!-- Div a la izquierda -->
-                <div class="input-group">
-                    <button class="btn btn-primary" wire:click="searchMaterials"><i class="ri-search-line"></i></button>
-                    <input type="text" name="filter" class="form-control" placeholder="Buscar Material"
+        <div class="row g-2 mb-2">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="input-group w-100">
+                    <button class="btn btn-primary">
+                        <i class="ri-search-line"></i>
+                    </button>
+                    <input type="text"
+                        name="filter"
+                        class="form-control"
+                        placeholder="Buscar usuario"
                         wire:model.live.debounce.300ms="search">
-                    <button class="btn" id="clear-filter" wire:click="$set('search', '')"><i
-                            class="ri-close-line"></i></button>
+                    <button class="btn btn-outline-secondary"
+                        id="clear-filter"
+                        wire:click="$set('search', '')">
+                        <i class="ri-close-line"></i>
+                    </button>
                 </div>
             </div>
-            @can('store.users')
-                <livewire:create-user></livewire:create-user>
-            @endcan
         </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                @can('store.users')
+                <livewire:create-user></livewire:create-user>
+                @endcan
+            </div>
+        </div>
+
         <table class="table table-striped table-centered mb-0">
             <thead class="table-dark">
                 <tr>
@@ -27,34 +41,34 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- @dd($users) --}}
                 @foreach ($users as $user)
-                    <tr id="userRow_{{ $user->id }}">
-                        <td>{{ $user->fullname }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->rol->name ?? 'Sin rol' }}</td>
-                        <td style="display: flex; align-items: center;">
-                            @can('assign.user.project')
-                                <livewire:show-projects-user :$user
-                                    :wire:key="'show-projects-' . $user->id"></livewire:show-projects-user>
-                            @endcan
-                            @can('delete.users')
-                                <a href="#" class="text-reset fs-19 px-1 delete-user-btn"
-                                    wire:click.prevent="destroyAlertUser({{ $user->id }}, '{{ $user->fullname }}')">
-                                    <i class="ri-delete-bin-2-line"></i></a>
-                            @endcan
-                            @can('update.users')
-                                <livewire:update-user :$user :wire:key="'update-user-' . $user->id"></livewire:update-user>
-                            @endcan
-                        </td>
-                    </tr>
+                <tr id="userRow_{{ $user->id }}">
+                    <td>{{ $user->fullname }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->rol->name ?? 'Sin rol' }}</td>
+                    <td class="d-flex align-items-center gap-1">
+                        @can('assign.user.project')
+                        <livewire:show-projects-user :$user :wire:key="'show-projects-' . $user->id" />
+                        @endcan
+
+                        @can('delete.users')
+                        <a href="#"
+                            class="text-reset fs-19 px-1 delete-user-btn"
+                            wire:click.prevent="destroyAlertUser({{ $user->id }}, '{{ $user->fullname }}')">
+                            <i class="ri-delete-bin-2-line"></i>
+                        </a>
+                        @endcan
+                        @can('update.users')
+                        <livewire:update-user :$user :wire:key="'update-user-' . $user->id" />
+                        @endcan
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
         @if ($users->count() > 1)
-            <!-- Solo muestra los enlaces de paginación si hay más de un usuario -->
-            {{ $users->links(data: ['scrollTo' => false]) }}
+        {{ $users->links(data: ['scrollTo' => false]) }}
         @endif
     </x-table>
 </div>
