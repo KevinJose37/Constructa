@@ -10,7 +10,8 @@
     <title>{{ $title ?? config('app.name') }}</title>
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#0d6efd">
     <!-- Theme Config Js -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
 
@@ -62,6 +63,15 @@
     @endonce
 
     @stack('scripts')
+
+    <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("Service Worker registrado"))
+      .catch(err => console.error("Error al registrar SW:", err));
+  }
+</script>
+
 
 </body>
 
