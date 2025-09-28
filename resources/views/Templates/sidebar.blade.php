@@ -75,14 +75,14 @@
                     </a>
                 </li>
             @endcan
-            @can('view.purchase')
+            <!-- @can('view.purchase')
                 <li class="side-nav-item">
                     <a href="{{ route('purchaseorder.view') }}" class="side-nav-link">
                         <i class="ri-shopping-cart-2-fill"></i>
                         <span> Órdenes de compra </span>
                     </a>
                 </li>
-            @endcan
+            @endcan -->
             @can('view.materials')
                 <li class="side-nav-item">
                     <a href="{{ route('materials.page') }}" class="side-nav-link">
