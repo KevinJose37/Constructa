@@ -355,10 +355,10 @@
             <h6 class="text-muted">Valor después de IVA:</h6>
             @if ($isViewMode)
                 <p><b>Sub-total:</b> <span>${{ number_format($order->total_with_iva, 2, ',', '.') }}</span></p>
-                <h3>${{ number_format($order->total_payable, 2, ',', '.') }} COP</h3>
+                <h3>${{ number_format($order->total_with_iva, 2, ',', '.') }} COP</h3>
             @else
                 <p><b>Sub-total:</b> <span>${{ $totalPurchaseIva }}</span></p>
-                <h3>${{ $totalPay }} COP</h3>
+                <h3>${{ $total_with_iva }} COP</h3>
             @endif
         </div>
     </div> <!-- end col-->
