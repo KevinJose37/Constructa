@@ -111,7 +111,6 @@
                                                 number_format($avanceFisico, 2) .
                                                 '%';
                                         }
-
                                     }
                                 @endphp
                                 <tr>
@@ -145,17 +144,6 @@
                                     </td>
                                 </tr>
                             @endforeach
-
-                            @push('scripts')
-                                <script>
-                                    // Inicializar tooltips Bootstrap (requerido para activar tooltips con data-bs-toggle)
-                                    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                                    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                                        return new bootstrap.Tooltip(tooltipTriggerEl)
-                                    })
-                                </script>
-                            @endpush
-
 
                             <tr class="table-light">
                                 <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
@@ -484,6 +472,32 @@
                     e.preventDefault();
                 }
             });
+
+            initTooltips();
+            Livewire.hook('message.processed', (message, component) => {
+                initTooltips()
+            })
+
+            Livewire.hook('morph.updated', () => {
+                initTooltips()
+            });
+
+            function initTooltips() {
+                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+
+                tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+                    // Si ya existe un tooltip, destruirlo primero
+                    if (tooltipTriggerEl._tooltipInstance) {
+                        tooltipTriggerEl._tooltipInstance.dispose();
+                    }
+                    // Crear uno nuevo
+                    tooltipTriggerEl._tooltipInstance = new bootstrap.Tooltip(tooltipTriggerEl, {
+                        container: 'body',
+                        trigger: 'hover focus'
+                    });
+                });
+            }
+
         });
     </script>
 @endpush
