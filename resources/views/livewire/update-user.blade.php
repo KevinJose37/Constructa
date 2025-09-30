@@ -61,7 +61,7 @@
                                 @enderror
                             </div>
                         </div>
-                        @can('change.rol.users')
+                        @can('assign.rol.users')
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label class="control-label form-label">Rol del usuario</label>

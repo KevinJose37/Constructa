@@ -29,6 +29,7 @@ class RolSeeder extends Seeder
 			// PROYECTOS
 			'store.project'      => ['GERENTE', 'SUBGERENTE'],
 			'update.project'     => ['GERENTE', 'SUBGERENTE'],
+			'delete.project'     => ['GERENTE', 'SUBGERENTE'],
 			'assign.user.project' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
 			'unassign.user.project' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
 			'view.project'       => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'SUBGERENTE', 'VISITANTE'],
@@ -48,6 +49,7 @@ class RolSeeder extends Seeder
 			'update.users'       => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
 			'view.users'         => ['DIRECTOR', 'GERENTE', 'SUBGERENTE', 'VISITANTE'],
 			'delete.users'       => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
+			'assign.rol.users'   => ['GERENTE', 'SUBGERENTE'],
 
 			// MATERIALES
 			'store.materials'    => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
