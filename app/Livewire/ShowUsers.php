@@ -22,7 +22,7 @@ class ShowUsers extends Component
     {
         $user = Auth::user();
 
-        if ($user->hasRole('Director') || $user->hasRole('Tesorero')) {
+        if ($user->can('view.users')) {
             $users = $userServices->getAllPaginate($this->search);
         } else {
             $users = collect([$user]);
