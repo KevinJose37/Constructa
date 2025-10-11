@@ -99,8 +99,19 @@ class Budget extends Component
 		$this->modalItems = array_values($this->modalItems);
 	}
 
+	private function sanitizeNumber($value)
+{
+    if (is_null($value) || $value === '') return 0;
+    // Quita puntos de miles y cambia coma decimal por punto
+    return floatval(str_replace(',', '.', str_replace('.', '', $value)));
+}
 	public function saveChapter()
 	{
+		foreach ($this->modalItems as $index => $item) {
+        $this->modalItems[$index]['cantidad'] = $this->sanitizeNumber($item['cantidad']);
+        $this->modalItems[$index]['vr_unit'] = $this->sanitizeNumber($item['vr_unit']);
+    }
+
 		$this->validate([
 			'modalCapitulo.numero_capitulo' => 'required|string',
 			'modalCapitulo.nombre_capitulo' => 'required|string',

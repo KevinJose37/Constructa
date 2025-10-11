@@ -184,9 +184,12 @@
                                                         </td>
                                                         <td x-data>
                                                             <input type="text"
-                                                                x-on:input="$el.value = $el.value 
-            ? new Intl.NumberFormat('es-CO').format($el.value.replace(/\./g, '').replace(',', '.')) 
-            : ''"
+                                                                x-on:blur="
+    let raw = $el.value.replace(/\./g, '').replace(',', '.');
+    if (!isNaN(raw) && raw !== '') {
+        $el.value = new Intl.NumberFormat('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(raw);
+    }
+"
                                                                 class="form-control text-end"
                                                                 wire:model.defer="modalItems.{{ $index }}.cantidad"
                                                                 placeholder="0,00">
@@ -197,9 +200,12 @@
 
                                                         <td x-data>
                                                             <input type="text"
-                                                                x-on:input="$el.value = $el.value 
-            ? new Intl.NumberFormat('es-CO').format($el.value.replace(/\./g, '').replace(',', '.')) 
-            : ''"
+                                                               x-on:blur="
+    let raw = $el.value.replace(/\./g, '').replace(',', '.');
+    if (!isNaN(raw) && raw !== '') {
+        $el.value = new Intl.NumberFormat('es-CO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(raw);
+    }
+"
                                                                 class="form-control text-end"
                                                                 wire:model.defer="modalItems.{{ $index }}.vr_unit"
                                                                 placeholder="0,00">
