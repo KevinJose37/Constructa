@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Livewire\Forms\PurchaseOrderForm;
+use App\Services\ProjectChatLogger;
 
 class CreatePurchaseOrder extends Component
 {
@@ -409,6 +410,9 @@ class CreatePurchaseOrder extends Component
 			DB::rollBack();
 			$this->dispatch('alert', type: 'error', title: 'Error al guardar', message: 'Ocurrió un error: ' . $e->getMessage());
 		}
+		ProjectChatLogger::log(
+    $this->project_id,
+    'creé una nueva orden de compra (' . $invoiceHeader->invoice_number . ') llamada "' . $invoiceHeader->order_name . '" con un valor total de $' . number_format($invoiceHeader->total_with_iva, 2, ',', '.'));
 	}
 
 	public function updated(string $property, $value)

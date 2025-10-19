@@ -17,6 +17,7 @@ use App\Models\PurchaseOrderState;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Services\PurchaseOrderServices;
+use App\Services\ProjectChatLogger;
 
 class EditPurchaseOrder extends Component
 {
@@ -71,6 +72,8 @@ class EditPurchaseOrder extends Component
 
         // Calcular totales
         $this->updateTotals();
+
+        
     }
 
     protected function loadHeaderData()
@@ -250,6 +253,10 @@ class EditPurchaseOrder extends Component
 
         $this->calculateTotal();
         $this->updateTotals();
+        ProjectChatLogger::log(
+    $this->project_id,
+    'agregué o actualicé el ítem "' . $currentItem['name'] . '" (' . $currentItem['unit_measurement'] . ') en la orden de compra "' . $this->order_name . '"'
+);
     }
 
     #[On('destroy-item')]
@@ -279,6 +286,10 @@ class EditPurchaseOrder extends Component
 
         $this->totalPurchaseIva = $this->formatCurrency($this->totalPurchaseIva);
         $this->updateTotals();
+        ProjectChatLogger::log(
+    $this->project_id,
+    'eliminé el ítem "' . $currentItem['name'] . '" de la orden de compra "' . $this->order_name . '"'
+);
     }
 
     public function destroyAlertPurchase($id, $name, $index)
@@ -444,7 +455,11 @@ class EditPurchaseOrder extends Component
                     'project_id' => $this->project_id,
                 ]);
             }
-
+            
+            ProjectChatLogger::log(
+        $this->project_id,
+        'actualicé la orden de compra (' . $invoiceHeader->invoice_number . ') llamada "' . $this->order_name . '" con un valor total de $' . number_format($invoiceHeader->total_with_iva, 2, ',', '.') . ' (IVA incluido)'
+    );
             DB::commit();
 
             $this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se actualizó correctamente la orden de compra');
@@ -454,6 +469,7 @@ class EditPurchaseOrder extends Component
             DB::rollBack();
             $this->dispatch('alert', type: 'error', title: 'Error al actualizar', message: 'Ocurrió un error: ' . $e->getMessage());
         }
+        
     }
 
     public function cancelEdit()
