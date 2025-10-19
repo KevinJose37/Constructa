@@ -39,6 +39,7 @@ class Budget extends Component
 	];
 	public $editItems = [];
 
+	public $totalGeneralPresupuesto = 0;
 
 	public function mount($id_presupuesto)
 	{
@@ -57,6 +58,7 @@ class Budget extends Component
 		}
 
 		$this->localizacion = $this->budget->localizacion;
+		$this->calcularTotalPresupuesto();
 	}
 
 	public function updateLocalizacion()
@@ -362,14 +364,29 @@ class Budget extends Component
 		$this->editItems = [];
 	}
 
+	private function calcularTotalPresupuesto()
+{
+    // Obtener los capítulos del presupuesto actual
+    $capitulos = Chapter::where('id_presupuesto', $this->budget->id_presupuesto)
+        ->pluck('id_capitulo');
+
+    // Calcular la suma de todos los ítems de esos capítulos
+    $this->totalGeneralPresupuesto = ItemsBudgets::whereIn('id_capitulo', $capitulos)
+        ->sum('vr_total');
+}
 	public function render()
-	{
-		return view('livewire.budget', [
-			'budget' => $this->budget,
-			'capitulos' => Chapter::where('id_presupuesto', $this->budget->id_presupuesto)
-				->orderBy('numero_capitulo', 'asc')
-				->with('items')
-				->get()
-		]);
-	}
+{
+    $this->calcularTotalPresupuesto(); // <-- aquí
+
+    $capitulos = Chapter::where('id_presupuesto', $this->budget->id_presupuesto)
+        ->orderBy('numero_capitulo', 'asc')
+        ->with('items')
+        ->get();
+
+    return view('livewire.budget', [
+        'budget' => $this->budget,
+        'capitulos' => $capitulos,
+        'totalGeneralPresupuesto' => $this->totalGeneralPresupuesto,
+    ]);
+}
 }

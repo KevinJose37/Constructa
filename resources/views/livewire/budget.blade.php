@@ -100,6 +100,10 @@
                                 <td class="text-end"><strong>{{ number_format($subtotal, 0) }}</strong></td>
                             </tr>
                         @endforeach
+                        <tr class="table-dark">
+    <td colspan="5" class="text-end"><strong>TOTAL PRESUPUESTO:</strong></td>
+    <td class="text-end"><strong>{{ number_format($totalGeneralPresupuesto, 0) }}</strong></td>
+</tr>
                     </tbody>
                 </table>
             </div>
