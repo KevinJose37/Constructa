@@ -12,7 +12,8 @@ use App\Models\Chapter;
 use App\Models\WorkProgressChapter;
 use App\Models\WorkProgressChapterDetail;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Auth;
+use App\Services\ProjectChatLogger;
 
 class Budget extends Component
 {
@@ -76,6 +77,10 @@ class Budget extends Component
 		// Cerrar el modal y mostrar un mensaje de éxito
 		$this->dispatch('close-modal', 'localizacionModal');
 		$this->dispatch('alert', type: 'success', title: 'Presupuesto', message: 'Localización actualizada correctamente.');
+		ProjectChatLogger::log(
+				$this->project->id,
+				 ' actualicé la localización del presupuesto del proyecto: ' . $this->project->project_name . ' a: "' . $this->localizacion . '"'
+			);
 	}
 
 	public function addItem()
@@ -112,6 +117,7 @@ class Budget extends Component
 		foreach ($this->modalItems as $index => $item) {
         $this->modalItems[$index]['cantidad'] = $this->sanitizeNumber($item['cantidad']);
         $this->modalItems[$index]['vr_unit'] = $this->sanitizeNumber($item['vr_unit']);
+		
     }
 
 		$this->validate([
@@ -176,6 +182,10 @@ class Budget extends Component
 			DB::rollBack();
 			$this->dispatch('alert', type: 'error', title: 'Presupuesto', message: 'Error al guardar capítulo e ítems: ' . $e->getMessage());
 		}
+		ProjectChatLogger::log(
+				$this->project->id,
+				 ' creé el capítulo de presupuesto: "' . $chapter->nombre_capitulo . '"'
+			);
 	}
 
 	public function deleteChapter($id_capitulo)
@@ -209,6 +219,10 @@ class Budget extends Component
 			DB::rollBack();
 			$this->dispatch('alert', type: 'error', title: 'Presupuesto', message: 'Error al eliminar: ' . $e->getMessage());
 		}
+		ProjectChatLogger::log(
+				$this->project->id,
+				 ' eliminé el capítulo de presupuesto: "' . $chapter->nombre_capitulo . '"'
+			);
 	}
 
 	// Funciones para edición
@@ -239,6 +253,11 @@ class Budget extends Component
 		}
 
 		$this->dispatch('open-modal', 'editChapterModal');
+
+		ProjectChatLogger::log(
+				$this->project->id,
+				 ' edité el capítulo de presupuesto: "' . $chapter->nombre_capitulo . '"'
+			);
 	}
 
 	public function addEditItem()
