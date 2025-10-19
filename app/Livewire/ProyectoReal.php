@@ -13,7 +13,7 @@ use App\Models\MaterialRedirections;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
-
+use App\Services\ProjectChatLogger;
 
 #[Layout('layouts.app')]
 #[Title('Proyecto Real')]
@@ -45,11 +45,8 @@ class ProyectoReal extends Component
 	public $totalItemsRedirect = 0;
 
 	public $totalesPorItem = [];
-
 	public $totalGeneral = 0;
-
 	public $porcentajePorItem = [];
-
 
 	public function mount(int $id)
 	{
@@ -57,33 +54,32 @@ class ProyectoReal extends Component
 		$this->addItem();
 		$this->loadItemsRedirect(); 
 		$this->loadTotals();
-
 	}
 
 	public function loadTotals()
-{
-    $this->totalesPorItem = MaterialRedirections::select(
-            'material_redirections.item_id',
-            DB::raw('SUM(invoice_details.total_price_iva) as total')
-        )
-        ->join('invoice_details', 'invoice_details.id', '=', 'material_redirections.invoice_detail_id')
-        ->groupBy('material_redirections.item_id')
-        ->get()
-        ->pluck('total', 'item_id');
+	{
+		$this->totalesPorItem = MaterialRedirections::select(
+				'material_redirections.item_id',
+				DB::raw('SUM(invoice_details.total_price_iva) as total')
+			)
+			->join('invoice_details', 'invoice_details.id', '=', 'material_redirections.invoice_detail_id')
+			->groupBy('material_redirections.item_id')
+			->get()
+			->pluck('total', 'item_id');
 
-    $this->totalGeneral = $this->totalesPorItem->sum();
+		$this->totalGeneral = $this->totalesPorItem->sum();
 
-    $totalGeneral = $this->totalGeneral;
+		$totalGeneral = $this->totalGeneral;
 
-    $this->porcentajePorItem = $this->totalesPorItem->mapWithKeys(function ($valor, $itemId) use ($totalGeneral) {
-        $porcentaje = $totalGeneral > 0 ? ($valor / $totalGeneral) * 100 : 0;
-        return [$itemId => round($porcentaje, 2)];
-    });
-	
+		$this->porcentajePorItem = $this->totalesPorItem->mapWithKeys(function ($valor, $itemId) use ($totalGeneral) {
+			$porcentaje = $totalGeneral > 0 ? ($valor / $totalGeneral) * 100 : 0;
+			return [$itemId => round($porcentaje, 2)];
+		});
+		
+		logger('TOTALES POR ITEM:', $this->totalesPorItem->toArray());
+		logger('PORCENTAJE POR ITEM:', $this->porcentajePorItem->toArray());
+	}
 
-    logger('TOTALES POR ITEM:', $this->totalesPorItem->toArray());
-    logger('PORCENTAJE POR ITEM:', $this->porcentajePorItem->toArray());
-}
 	public function loadItemsRedirect()
 	{
 		$this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])->get();
@@ -118,7 +114,6 @@ class ProyectoReal extends Component
 			'items.*.description' => 'required|string',
 			'items.*.umbral_fisico' => 'required|numeric|min:0',
 			'items.*.umbral_financiero' => 'required|numeric|min:0',
-			// 'items.*.total' => 'required|numeric',
 		]);
 
 		// Crear capítulo
@@ -128,7 +123,7 @@ class ProyectoReal extends Component
 			'chapter_name' => $this->chapter_name,
 		]);
 
-		// Guardar cada ítem
+		// Guardar ítems
 		foreach ($this->items as $item) {
 			$chapter->items()->create([
 				'item_number' => $item['item_number'],
@@ -138,6 +133,12 @@ class ProyectoReal extends Component
 				'total' => 0,
 			]);
 		}
+
+		// Registrar log
+		ProjectChatLogger::log(
+			$this->project->id,
+			'creé un nuevo capítulo (' . $this->chapter_number . ') llamado "' . $this->chapter_name . '" en el proyecto real, con ' . count($this->items) . ' ítems asociados.'
+		);
 
 		$this->reset(['chapter_number', 'chapter_name', 'items']);
 		$this->addItem();
@@ -149,8 +150,17 @@ class ProyectoReal extends Component
 	public function deleteChapter($chapterId)
 	{
 		$chapter = RealProject::findOrFail($chapterId);
+		$chapterName = $chapter->chapter_name;
+		$chapterNumber = $chapter->chapter_number;
+
 		$chapter->items()->delete();
 		$chapter->delete();
+
+		// Registrar log
+		ProjectChatLogger::log(
+			$this->project->id,
+			'eliminé el capítulo (' . $chapterNumber . ') llamado "' . $chapterName . '" del proyecto real.'
+		);
 
 		$this->dispatch('chapterDeleted');
 	}
@@ -233,6 +243,12 @@ class ProyectoReal extends Component
 
 			DB::commit();
 
+			// Registrar log
+			ProjectChatLogger::log(
+				$this->project->id,
+				'actualicé el capítulo (' . $this->editCapitulo['numero_capitulo'] . ') llamado "' . $this->editCapitulo['nombre_capitulo'] . '" y sus ítems asociados en el proyecto real.'
+			);
+
 			$this->resetEditForm();
 			$this->dispatch('close-modal', 'editChapterModal');
 			$this->dispatch('alert', type: 'success', title: 'Proyecto real', message: 'Capítulo e ítems actualizados correctamente.');
@@ -282,7 +298,6 @@ class ProyectoReal extends Component
 		$this->editItems = [];
 	}
 
-	// Ver items redireccionados
 	public function viewInfoItem($itemId, $chapterId)
 	{
 		$this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])
@@ -291,23 +306,20 @@ class ProyectoReal extends Component
 			->has('invoiceDetail')
 			->get();
 
-		// Calcular total
 		$this->totalItemsRedirect = $this->currentItemsRedirect->sum(function ($item) {
 			return $item->invoiceDetail->total_price_iva ?? 0;
 		});
 
-		// Verificar si no hay resultados
 		if ($this->currentItemsRedirect->isEmpty()) {
 			$this->dispatch('alert', type: 'error', title: 'Proyecto real', message: 'No hay items redireccionados para este ítem.');
-
 			return;
 		}
+
 		$this->dispatch('open-modal', 'itemsModal');
 	}
 
 	public function render()
 	{
-		
 		$chapters = RealProject::where('project_id', $this->project->id)
 			->with('items')
 			->with('workProgressChapters.details')

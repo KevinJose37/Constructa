@@ -2,13 +2,12 @@
 
 namespace App\Livewire;
 
-use Log;
 use Exception;
 use Livewire\Component;
 use App\Models\WeekProject;
 use App\Models\weeklyProgresses;
-use Livewire\Attributes\Reactive;
-use App\Models\Week; // Importar tu modelo Week
+use App\Services\ProjectChatLogger;
+use App\Models\Week;
 
 class ProgressWeek extends Component
 {
@@ -60,7 +59,12 @@ class ProgressWeek extends Component
 		]);
 
 		try {
-			weeklyProgresses::updateOrCreate(
+			// Buscar si ya existe un avance previo para saber si es actualización o creación
+			$existing = weeklyProgresses::where('chapter_detail_id', $this->detail->id)
+				->where('week_project_id', $weekId)
+				->first();
+
+			$progress = weeklyProgresses::updateOrCreate(
 				[
 					'chapter_detail_id' => $this->detail->id,
 					'week_project_id' => $weekId
@@ -69,6 +73,23 @@ class ProgressWeek extends Component
 					'executed_quantity' => $this->quantity
 				]
 			);
+
+			// Obtener la semana
+			$weekModel = WeekProject::find($weekId);
+
+			// Construir el mensaje en primera persona
+			$mensaje = $existing
+				? 'actualicé el avance de obra de "' . $this->detail->item_description . '"'
+				: 'registré un avance de obra para "' . $this->detail->item_description . '"';
+
+			$mensaje .= ' con una cantidad ejecutada de ' . $this->quantity . ' unidades';
+			if ($weekModel) {
+				$mensaje .= ' en la semana "' . $weekModel->week_name . '"';
+			}
+			$mensaje .= '.';
+
+			// Registrar en el chat del proyecto
+			ProjectChatLogger::log($this->workProgress->project_id, $mensaje);
 
 			$this->reset(['quantity']);
 			$this->dispatch('weeklyProgressCreated');
