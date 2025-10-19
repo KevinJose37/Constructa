@@ -42,6 +42,8 @@
                             <th class="text-center" colspan="2">#ITEM</th>
                             <th class="text-center" colspan="6">DESCRIPCIÓN</th>
                             <th class="text-center">ALERTA</th>
+                            <th class="text-center">VR.TOTAL</th>
+                            <th class="text-center">% REP.</th>
                             <th class="text-center" colspan="3">ACCIONES</th>
                         </tr>
                     </thead>
@@ -136,6 +138,11 @@
                                             -
                                         @endif
                                     </td>
+                                    <td class="text-end">
+    ${{ number_format($totalesPorItem[$item->id] ?? 0, 2) }}
+</td>
+                                    <td>{{ number_format($porcentajePorItem[$item->id] ?? 0, 2) }}%</td>
+
                                     <td colspan="3" class="text-end">
                                         <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
                                             type="button" class="btn btn-info btn-sm">
@@ -156,6 +163,15 @@
                                 <td colspan="12" class="text-center">No hay capítulos registrados aún.</td>
                             </tr>
                         @endforelse
+
+                        @if ($chapters->count() > 0)
+    <tr class="table-secondary">
+        <td colspan="8" class="text-end"><strong>TOTAL GENERAL DEL PROYECTO:</strong></td>
+        <td class="text-end" colspan="4">
+            <strong>${{ number_format($totalGeneral, 2) }}</strong>
+        </td>
+    </tr>
+@endif
                     </tbody>
                 </table>
             </div>
@@ -426,7 +442,7 @@
                                         </td>
                                         <td>{{ number_format($item->invoiceDetail->quantity ?? 0, 2) }}</td>
                                         <td>{{ $item->invoiceDetail->item->unit_measurement ?? '-' }}</td>
-                                        <td>${{ number_format($item->invoiceDetail->total_price_iva ?? 0, 2) }}</td>
+                                        <td>${{ number_format($item->invoiceDetail->total_price_iva ?? 0, decimals: 2) }}</td>
                                     </tr>
                                 @empty
                                     <tr>

@@ -44,13 +44,46 @@ class ProyectoReal extends Component
 	public $currentItemsRedirect = [];
 	public $totalItemsRedirect = 0;
 
+	public $totalesPorItem = [];
+
+	public $totalGeneral = 0;
+
+	public $porcentajePorItem = [];
+
+
 	public function mount(int $id)
 	{
 		$this->project = Project::findOrFail($id);
 		$this->addItem();
-		$this->loadItemsRedirect(); // Cargar datos y total desde el inicio
+		$this->loadItemsRedirect(); 
+		$this->loadTotals();
+
 	}
 
+	public function loadTotals()
+{
+    $this->totalesPorItem = MaterialRedirections::select(
+            'material_redirections.item_id',
+            DB::raw('SUM(invoice_details.total_price_iva) as total')
+        )
+        ->join('invoice_details', 'invoice_details.id', '=', 'material_redirections.invoice_detail_id')
+        ->groupBy('material_redirections.item_id')
+        ->get()
+        ->pluck('total', 'item_id');
+
+    $this->totalGeneral = $this->totalesPorItem->sum();
+
+    $totalGeneral = $this->totalGeneral;
+
+    $this->porcentajePorItem = $this->totalesPorItem->mapWithKeys(function ($valor, $itemId) use ($totalGeneral) {
+        $porcentaje = $totalGeneral > 0 ? ($valor / $totalGeneral) * 100 : 0;
+        return [$itemId => round($porcentaje, 2)];
+    });
+	
+
+    logger('TOTALES POR ITEM:', $this->totalesPorItem->toArray());
+    logger('PORCENTAJE POR ITEM:', $this->porcentajePorItem->toArray());
+}
 	public function loadItemsRedirect()
 	{
 		$this->currentItemsRedirect = MaterialRedirections::with(['invoiceDetail', 'invoiceDetail.item'])->get();
@@ -274,6 +307,7 @@ class ProyectoReal extends Component
 
 	public function render()
 	{
+		
 		$chapters = RealProject::where('project_id', $this->project->id)
 			->with('items')
 			->with('workProgressChapters.details')
