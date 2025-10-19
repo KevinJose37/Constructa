@@ -358,7 +358,7 @@
                 <h3>${{ number_format($order->total_with_iva, 2, ',', '.') }} COP</h3>
             @else
                 <p><b>Sub-total:</b> <span>${{ $totalPurchaseIva }}</span></p>
-                <h3>${{ $total_with_iva }} COP</h3>
+                <h3>${{ $totalPurchaseIva }} COP</h3>
             @endif
         </div>
     </div> <!-- end col-->
