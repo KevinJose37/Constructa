@@ -26,7 +26,7 @@ class AttachmentsPage extends Component
     protected $listeners = ['saveAttachmentsEvent' => 'saveAttachments', "flashMessage" => 'flashMessage'];
 
     protected $rules = [
-        'attachments.*' => 'file|max:2048',
+        'attachments.*' => 'file|max:50000',
     ];
 
     public function mount($invoiceHeaderId = null)
