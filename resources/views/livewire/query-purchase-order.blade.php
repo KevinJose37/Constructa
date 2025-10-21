@@ -61,7 +61,7 @@
                         <td class="col-md-1" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
                             aria-expanded="false" aria-controls="collapse{{ $order->id }}"
                             style="cursor: pointer;">
-                            {{ $order->id }}
+                            {{ $order->invoice_number }}
                         </td>
                         {{-- Nombre de la orden --}}
                         <td class="col-md-2" data-bs-toggle="collapse" data-bs-target="#collapse{{ $order->id }}"
