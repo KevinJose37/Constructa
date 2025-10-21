@@ -89,13 +89,11 @@ class ProyectoReal extends Component
 }
 
     $this->totalGeneral = $resultados->sum('total');
+logger('TOTAL GENERAL:', [$this->totalGeneral]);
 
     logger('TOTALES POR ITEM (plano):', $this->totalesPorItem->toArray());
     logger('PORCENTAJE POR ITEM (capítulo):', $this->porcentajePorItem->toArray());
 }
-
-
-
 
 	public function loadItemsRedirect()
 	{
