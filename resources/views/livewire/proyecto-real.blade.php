@@ -72,92 +72,91 @@
 
                             </tr>
                             @php
-                                $sumTotal = 0;
-                            @endphp
-                            {{-- @dd($chapter->workProgressChapters); --}}
-                            @foreach ($chapter->items as $item)
-                                @php
-                                    $sumTotal = bcadd($sumTotal, $item->total, 2);
-                                    $hasAlert = false;
-                                    $textAlert = '';
-                                    $hasAlertFisico = false;
-                                    $textAlertFisico = '';
-                                    $progressDetail = null;
-                                    foreach ($chapter->workProgressChapters as $wpChapter) {
-                                        $detail = $wpChapter->details->firstWhere('item', $item->item_number);
-                                        if ($detail) {
-                                            $progressDetail = $detail;
-                                            break;
-                                        }
-                                    }
-                                    if ($progressDetail) {
-                                        $div = $progressDetail->adjusted_value ?? $progressDetail->partial_value;
+    $sumTotal = 0;
+@endphp
 
-                                        $avanceFinanciero = $div > 0 ? ($sumTotal / $div) * 100 : 0;
-                                        if ($avanceFinanciero > $item->umbral_financiero) {
-                                            $hasAlert = true;
-                                            $textAlert =
-                                                "Avance financiero: ítem {$item->item_number} supera umbral {$item->umbral_financiero}%. Actual: " .
-                                                number_format($avanceFinanciero, 2) .
-                                                '%';
-                                        }
-                                        $divFisico =
-                                            $progressDetail->adjusted_quantity ?? $progressDetail->contracted_quantity;
+@foreach ($chapter->items as $item)
+    @php
+        $itemTotal = $totalesPorItem[$item->id] ?? 0;
+        $sumTotal = bcadd($sumTotal, $itemTotal, 2);
 
-                                        $avanceFisico =
-                                            $divFisico > 0 ? ($progressDetail->resume_quantity / $divFisico) * 100 : 0;
-                                        if ($avanceFisico < $item->umbral_fisico) {
-                                            $hasAlertFisico = true;
-                                            $textAlertFisico =
-                                                "Avance físico: ítem {$item->item_number} debajo umbral {$item->umbral_fisico}%. Actual: " .
-                                                number_format($avanceFisico, 2) .
-                                                '%';
-                                        }
-                                    }
-                                @endphp
-                                <tr>
-                                    <td class="text-center" colspan="2">{{ $item->item_number }}</td>
-                                    <td colspan="6">{{ $item->description }}</td>
-                                    <td class="text-center">
-                                        @if ($hasAlert || $hasAlertFisico)
-                                            @if ($hasAlert)
-                                                <span class="text-danger mx-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="{{ $textAlert }}"
-                                                    style="cursor: help;">
-                                                    <i class="ri-error-warning-fill"></i>
-                                                </span>
-                                            @endif
-                                            @if ($hasAlertFisico)
-                                                <span class="text-warning mx-1" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" title="{{ $textAlertFisico }}"
-                                                    style="cursor: help;">
-                                                    <i class="ri-error-warning-fill"></i>
-                                                </span>
-                                            @endif
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                    <td class="text-end">
-    ${{ number_format($totalesPorItem[$item->id] ?? 0, 2) }}
-</td>
-                                    <td>{{ number_format($porcentajePorItem[$item->id] ?? 0, 2) }}%</td>
+        $hasAlert = false;
+        $textAlert = '';
+        $hasAlertFisico = false;
+        $textAlertFisico = '';
+        $progressDetail = null;
 
-                                    <td colspan="3" class="text-end">
-                                        <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})"
-                                            type="button" class="btn btn-info btn-sm">
-                                            <i class="ri-eye-line"></i> Ver información item
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
+        foreach ($chapter->workProgressChapters as $wpChapter) {
+            $detail = $wpChapter->details->firstWhere('item', $item->item_number);
+            if ($detail) {
+                $progressDetail = $detail;
+                break;
+            }
+        }
 
-                            <tr class="table-light">
-                                <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
-                                <td class="text-end" colspan="4">
-                                    <strong>{{ number_format($sumTotal, 2) }} $</strong>
-                                </td>
-                            </tr>
+        if ($progressDetail) {
+            $div = $progressDetail->adjusted_value ?? $progressDetail->partial_value;
+            $avanceFinanciero = $div > 0 ? ($sumTotal / $div) * 100 : 0;
+
+            if ($avanceFinanciero > $item->umbral_financiero) {
+                $hasAlert = true;
+                $textAlert =
+                    "Avance financiero: ítem {$item->item_number} supera umbral {$item->umbral_financiero}%. Actual: " .
+                    number_format($avanceFinanciero, 2) . '%';
+            }
+
+            $divFisico = $progressDetail->adjusted_quantity ?? $progressDetail->contracted_quantity;
+            $avanceFisico = $divFisico > 0 ? ($progressDetail->resume_quantity / $divFisico) * 100 : 0;
+
+            if ($avanceFisico < $item->umbral_fisico) {
+                $hasAlertFisico = true;
+                $textAlertFisico =
+                    "Avance físico: ítem {$item->item_number} debajo umbral {$item->umbral_fisico}%. Actual: " .
+                    number_format($avanceFisico, 2) . '%';
+            }
+        }
+    @endphp
+
+    <tr>
+        <td class="text-center" colspan="2">{{ $item->item_number }}</td>
+        <td colspan="6">{{ $item->description }}</td>
+        <td class="text-center">
+            @if ($hasAlert || $hasAlertFisico)
+                @if ($hasAlert)
+                    <span class="text-danger mx-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{{ $textAlert }}" style="cursor: help;">
+                        <i class="ri-error-warning-fill"></i>
+                    </span>
+                @endif
+                @if ($hasAlertFisico)
+                    <span class="text-warning mx-1" data-bs-toggle="tooltip" data-bs-placement="top"
+                        title="{{ $textAlertFisico }}" style="cursor: help;">
+                        <i class="ri-error-warning-fill"></i>
+                    </span>
+                @endif
+            @else
+                -
+            @endif
+        </td>
+        <td class="text-end">${{ number_format($itemTotal, 2) }}</td>
+<td>{{ number_format($porcentajePorItem[$item->id] ?? 0, 2) }}%</td>
+        <td colspan="3" class="text-end">
+            <button wire:click="viewInfoItem({{ $item->id }}, {{ $chapter->id }})" type="button"
+                class="btn btn-info btn-sm">
+                <i class="ri-eye-line"></i> Ver información item
+            </button>
+        </td>
+    </tr>
+@endforeach
+
+{{-- Subtotal del capítulo --}}
+<tr class="table-light">
+    <td colspan="8" class="text-end"><strong>Subtotal del Capítulo:</strong></td>
+    <td class="text-end" colspan="4">
+        <strong>${{ number_format($sumTotal, 2) }}</strong>
+    </td>
+</tr>
+
                         @empty
                             <tr>
                                 <td colspan="12" class="text-center">No hay capítulos registrados aún.</td>

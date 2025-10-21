@@ -57,28 +57,45 @@ class ProyectoReal extends Component
 	}
 
 	public function loadTotals()
-	{
-		$this->totalesPorItem = MaterialRedirections::select(
-				'material_redirections.item_id',
-				DB::raw('SUM(invoice_details.total_price_iva) as total')
-			)
-			->join('invoice_details', 'invoice_details.id', '=', 'material_redirections.invoice_detail_id')
-			->groupBy('material_redirections.item_id')
-			->get()
-			->pluck('total', 'item_id');
+{
+    $resultados = MaterialRedirections::select(
+            'material_redirections.chapter_id',
+            'material_redirections.item_id',
+            DB::raw('SUM(invoice_details.total_price_iva) as total')
+        )
+        ->join('invoice_details', 'invoice_details.id', '=', 'material_redirections.invoice_detail_id')
+        ->groupBy('material_redirections.chapter_id', 'material_redirections.item_id')
+        ->get();
 
-		$this->totalGeneral = $this->totalesPorItem->sum();
+    // Totales planos por item (sin agrupar)
+    $this->totalesPorItem = $resultados->pluck('total', 'item_id');
 
-		$totalGeneral = $this->totalGeneral;
+    // Para cálculo de porcentajes, agrupamos temporalmente por capítulo
+    $agrupadoPorCapitulo = $resultados->groupBy('chapter_id');
 
-		$this->porcentajePorItem = $this->totalesPorItem->mapWithKeys(function ($valor, $itemId) use ($totalGeneral) {
-			$porcentaje = $totalGeneral > 0 ? ($valor / $totalGeneral) * 100 : 0;
-			return [$itemId => round($porcentaje, 2)];
-		});
-		
-		logger('TOTALES POR ITEM:', $this->totalesPorItem->toArray());
-		logger('PORCENTAJE POR ITEM:', $this->porcentajePorItem->toArray());
-	}
+    $this->porcentajePorItem = collect();
+
+    foreach ($agrupadoPorCapitulo as $chapterId => $items) {
+    $chapterTotal = $items->sum('total');
+
+    foreach ($items as $item) {
+        $itemId = $item->item_id;
+        $valor = (float) $item->total;
+        $porcentaje = $chapterTotal > 0 ? ($valor / $chapterTotal) * 100 : 0;
+
+        // Guardamos con más precisión (4 decimales)
+        $this->porcentajePorItem[$itemId] = round($porcentaje, 4);
+    }
+}
+
+    $this->totalGeneral = $resultados->sum('total');
+
+    logger('TOTALES POR ITEM (plano):', $this->totalesPorItem->toArray());
+    logger('PORCENTAJE POR ITEM (capítulo):', $this->porcentajePorItem->toArray());
+}
+
+
+
 
 	public function loadItemsRedirect()
 	{
