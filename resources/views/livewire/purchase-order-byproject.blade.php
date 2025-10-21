@@ -34,7 +34,7 @@
         <tr id="purchaseOrderRow_{{ $order->id }}" class="d-flex" data-bs-toggle="collapse"
             data-bs-target="#collapse{{ $order->id }}" aria-expanded="false"
             aria-controls="collapse{{ $order->id }}">
-            <td class="col-md-1">{{ $order->id }}</td>
+            <td class="col-md-1">{{ $order->invoice_number }}</td>
             <td class="col-md-2">{{ $order->order_name }}</td>
             <td class="col-md-2">{{ $order->contractor_name }}</td>
             <td class="col-md-2">{{ $order->company_name }}</td>

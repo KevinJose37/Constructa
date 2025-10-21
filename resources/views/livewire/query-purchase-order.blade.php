@@ -229,7 +229,7 @@
                                     <tbody>
                                         @foreach ($order->invoiceDetails as $detail)
                                         <tr>
-                                            <td>{{ $detail->id_purchase_order }}</td>
+                                            <td>{{ $order->invoice_number }}</td>
                                             <td>{{ $detail->id_item }}</td>
                                             <td>{{ $detail->item->name }}</td>
                                             <td>{{ $detail->item->unit_measurement }}</td>
