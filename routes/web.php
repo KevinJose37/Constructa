@@ -68,9 +68,11 @@ Route::middleware(['auth'])->group(function () {
 	});
 
 	// Rutas relacionadas con proyectos
-	Route::middleware(['permission:view.project'])->group(function () {
-		Route::get('/proyectos', ShowProjects::class)->name('projects.index');
-	});
+	// Route::middleware(['permission:view.project'])->group(function () {
+	// 	Route::get('/proyectos', ShowProjects::class)->name('projects.index');
+	// });
+
+	Route::get('/proyectos', ShowProjects::class)->name('projects.index');
 
 	// Presupuesto
 	Route::middleware(['permission:view.budget'])->group(function () {
