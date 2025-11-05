@@ -402,18 +402,22 @@ class CreatePurchaseOrder extends Component
 
 			DB::commit();
 
-			$this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se guardó correctamente la orden de compra');
-			sleep(1);
-			$this->redirect(route('purchaseorder.redirect', ['id' => $invoiceHeader->id]));
-			$this->clearProjectCache();
-		} catch (\Exception $e) {
-			DB::rollBack();
-			$this->dispatch('alert', type: 'error', title: 'Error al guardar', message: 'Ocurrió un error: ' . $e->getMessage());
-		}
-		ProjectChatLogger::log(
-    $this->project_id,
-    'creé una nueva orden de compra (' . $invoiceHeader->invoice_number . ') llamada "' . $invoiceHeader->order_name . '" con un valor total de $' . number_format($invoiceHeader->total_with_iva, 2, ',', '.'));
-	}
+    ProjectChatLogger::log(
+        $this->project_id,
+        'creé una nueva orden de compra (' . $invoiceHeader->invoice_number . ') llamada "' . $invoiceHeader->order_name . '" con un valor total de $' . number_format($invoiceHeader->total_with_iva, 2, ',', '.')
+    );
+
+    $this->dispatch('alert', type: 'success', title: 'Órdenes de compra', message: 'Se guardó correctamente la orden de compra');
+    sleep(1);
+    $this->redirect(route('purchaseorder.redirect', ['id' => $invoiceHeader->id]));
+    $this->clearProjectCache();
+
+	} catch (\Exception $e) {
+		DB::rollBack();
+		$this->dispatch('alert', type: 'error', title: 'Error al guardar', message: 'Ocurrió un error: ' . $e->getMessage());
+}
+}
+
 
 	public function updated(string $property, $value)
 	{
