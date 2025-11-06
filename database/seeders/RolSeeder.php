@@ -32,7 +32,7 @@ class RolSeeder extends Seeder
 			'delete.project'     => ['GERENTE', 'SUBGERENTE'],
 			'assign.user.project' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
 			'unassign.user.project' => ['DIRECTOR', 'GERENTE', 'SUBGERENTE'],
-			'view.project'       => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'SUBGERENTE', 'VISITANTE'],
+			'view.project'       => ['CONTADOR', 'DIRECTOR', 'GERENTE', 'SUBGERENTE', 'VISITANTE', 'RESIDENTE'],
 
 			// PRESUPUESTO
 			'store.budget'       => ['DIRECTOR', 'GERENTE', 'RESIDENTE', 'SUBGERENTE'],
