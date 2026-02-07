@@ -12,20 +12,18 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string("rol_name");
-        });
-
-        
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger("rol_id");
-            $table->foreign('rol_id')
-                ->references('id')
-                ->on('roles')
-                ->onDelete('restrict')
-                ->onUpdate('cascade');
-        });
+        // Schema::create('roles', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string("rol_name");
+        // });
+        // Schema::table('users', function (Blueprint $table) {
+        //     $table->unsignedBigInteger("rol_id");
+        //     $table->foreign('rol_id')
+        //         ->references('id')
+        //         ->on('roles')
+        //         ->onDelete('restrict')
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**

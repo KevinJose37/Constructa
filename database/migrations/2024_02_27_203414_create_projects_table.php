@@ -20,11 +20,16 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string("project_name");
+            $table->string("contract_number"); // Nueva columna
             $table->string("project_description");
             $table->unsignedBigInteger("project_status_id");
+            $table->string("nit");
+            $table->string("contratista");
+            $table->string("entidad_contratante"); // Nueva columna
             $table->date("project_start_date");
             $table->date("project_estimated_end");
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('project_status_id')
                 ->references('id')

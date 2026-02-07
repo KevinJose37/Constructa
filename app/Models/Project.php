@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,10 +17,24 @@ class Project extends Model
         'project_status_id',
         'project_start_date',
         'project_estimated_end',
+        'nit',
+        'contratista',
+        'entidad_contratante',  // Nuevo campo
+        'contract_number'      // Nuevo campo
     ];
 
     public function projectStatus()
     {
-        return $this->belongsTo(ProjectStatus::class, 'rol_id');
+        return $this->belongsTo(ProjectStatus::class, 'project_status_id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'participants_project', 'project_id', 'user_id')->withTimestamps();
+    }
+
+    public function invoiceHeaders()
+    {
+        return $this->hasMany(InvoiceHeader::class);
     }
 }
