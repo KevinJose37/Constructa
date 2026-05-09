@@ -12,28 +12,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['projectId'])) {
     $projectOwner = $_POST['projectOwner'];
     $projectStatus = $_POST['projectStatus'];
 
-    var_dump($projectId, $projectName, $projectOwner, $projectStatus);
     $sql = "UPDATE proyectos SET projectName = :projectName, projectOwner = :projectOwner, projectStatus = :projectStatus WHERE id_proyecto = :projectId";
-$stmt = $pdo->prepare($sql);
+    $stmt = $pdo->prepare($sql);
 
-// Ejecuta la declaración con los valores proporcionados y asigna el resultado a $result
-$result = $stmt->execute([
-    ':projectId' => $projectId,
-    ':projectName' => $projectName,
-    ':projectOwner' => $projectOwner,
-    ':projectStatus' => $projectStatus
-]);
+    // Ejecuta la declaración con los valores proporcionados y asigna el resultado a $result
+    $result = $stmt->execute([
+        ':projectId' => $projectId,
+        ':projectName' => $projectName,
+        ':projectOwner' => $projectOwner,
+        ':projectStatus' => $projectStatus
+    ]);
 
-// Verifica el resultado de la ejecución
-if ($result) {
-    echo "Registro actualizado con éxito.";
-    // Redirige o realiza cualquier otra acción necesaria después de la actualización exitosa
-} else {
-    echo "Error al actualizar el registro.";
-    // Maneja el caso de error en la actualización
-}
-    // Redirige a la página de proyectos o muestra un mensaje de confirmación
-    // header("Location: ../view/Proyectos.php");
+    // Liberar recursos para evitar conexiones MySQL huérfanas
+    $stmt = null;
+    $pdo = null;
+    $db = null;
+
+    // Redirige a la página de proyectos
+    header("Location: ../view/Proyectos.php");
     exit();
 }
 

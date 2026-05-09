@@ -18,10 +18,19 @@ if (isset($_GET['id'])) {
     // Ejecuta la declaración con el ID del proyecto
     $stmt->execute([':projectId' => $projectId]);
 
+    // Liberar recursos para evitar conexiones MySQL huérfanas
+    $stmt = null;
+    $pdo = null;
+    $db = null;
+
     // Redirige de nuevo a la página con la tabla
     header("Location: ../view/Proyectos.php");
     exit();
 } else {
+    // Liberar recursos
+    $pdo = null;
+    $db = null;
+
     // Si no hay un ID, redirige de vuelta a la página de proyectos o maneja el error como prefieras
     header("Location: ../view/Proyectos.php");
     exit();

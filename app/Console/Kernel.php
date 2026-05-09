@@ -12,7 +12,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Limpiar sesiones expiradas (previene acumulación de archivos en storage/framework/sessions)
+        $schedule->command('session:gc')->hourly();
+        
+        // Limpiar vistas compiladas obsoletas semanalmente
+        $schedule->command('view:clear')->weekly();
     }
 
     /**

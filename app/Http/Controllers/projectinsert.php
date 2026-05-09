@@ -24,6 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ':projectStatus' => $projectStatus
     ]);
 
+    // Liberar recursos para evitar conexiones MySQL huérfanas
+    $stmt = null;
+    $pdo = null;
+    $db = null;
+
     // Redirige a la página con la tabla o a donde desees mostrar un mensaje de éxito
     header("Location: ../view/Proyectos.php");
     exit();

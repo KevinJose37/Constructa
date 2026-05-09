@@ -63,7 +63,7 @@ class UserController extends Controller
             ], 404);
         }
 
-        return response()->json($this->userService->getById($id));
+        return response()->json($userInfo);
     }
 
     /**
